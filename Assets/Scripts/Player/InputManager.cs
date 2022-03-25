@@ -2,17 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class InputManager : MonoBehaviour{
+    PlayerInput playerInput;
+
+    [SerializeField] Vector2 rightStick;
+    [SerializeField] Vector2 leftStick;
+
+    private void Awake() {
+        playerInput = new PlayerInput();
+
+        //Right Stick
+        playerInput.PlayerActions.RightStick.performed += ContextMenu => {
+            rightStick = ContextMenu.ReadValue<Vector2>();
+        };
+        playerInput.PlayerActions.RightStick.canceled += ContextMenu => {
+            rightStick = Vector2.zero;
+        };
+
+        //Left Stick
+        playerInput.PlayerActions.LeftStick.performed += ContextMenu => {
+            leftStick = ContextMenu.ReadValue<Vector2>();
+        };
+        playerInput.PlayerActions.LeftStick.canceled += ContextMenu => {
+            leftStick = Vector2.zero;
+        };          
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void OnEnable() {
+        playerInput.Enable();
     }
+
+    private void OnDisable() {
+        playerInput.Disable();
+    }
+
 }

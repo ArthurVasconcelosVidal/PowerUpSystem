@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovementManager : MonoBehaviour{
 
     Vector3 direction = Vector3.zero;
+    [SerializeField] float movementSpeed;
     [SerializeField] float rotationVelocity;
 
     public Vector3 RealPlayerDirection { get { return direction; } }
@@ -15,6 +16,7 @@ public class MovementManager : MonoBehaviour{
 
     void FixedUpdate(){
         direction = ObjectRelatedDirection(PlayerManager.instance.InputManager.LeftStickValue, Camera.main.gameObject);
+        MovePlayer();
         RotatePlayer();
     }
 
@@ -24,6 +26,8 @@ public class MovementManager : MonoBehaviour{
         var finalDirection = forwardDirection * inputDirection.y + rightDirection * inputDirection.x;
         return finalDirection.normalized;
     }
+
+    void MovePlayer() => PlayerManager.instance.CharacterRigidbody.MovePosition(transform.position + direction * movementSpeed  * Time.fixedDeltaTime);  
 
     void RotatePlayer(){
         var newRotation = Quaternion.FromToRotation(PlayerManager.instance.MeshObject.transform.forward, direction) * PlayerManager.instance.MeshObject.transform.rotation; 

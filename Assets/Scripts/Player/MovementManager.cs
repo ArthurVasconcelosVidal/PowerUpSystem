@@ -9,15 +9,14 @@ public class MovementManager : MonoBehaviour{
     [SerializeField] float rotationVelocity;
 
     public Vector3 RealPlayerDirection { get { return direction; } }
-    
-    void Start(){
-        
-    }
 
     void FixedUpdate(){
         direction = ObjectRelatedDirection(PlayerManager.instance.InputManager.LeftStickValue, Camera.main.gameObject);
-        MovePlayer();
-        RotatePlayer();
+        
+        if (direction != Vector3.zero){  
+            MovePlayer();
+            RotatePlayer();
+        }
     }
 
     Vector3 ObjectRelatedDirection(Vector2 inputDirection, GameObject relatedObject){
@@ -30,7 +29,7 @@ public class MovementManager : MonoBehaviour{
     void MovePlayer() => PlayerManager.instance.CharacterRigidbody.MovePosition(transform.position + direction * movementSpeed  * Time.fixedDeltaTime);  
 
     void RotatePlayer(){
-        var newRotation = Quaternion.FromToRotation(PlayerManager.instance.MeshObject.transform.forward, direction) * PlayerManager.instance.MeshObject.transform.rotation; 
+        var newRotation = Quaternion.LookRotation(direction, PlayerManager.instance.MeshObject.transform.up); 
         PlayerManager.instance.MeshObject.transform.rotation = Quaternion.Lerp(PlayerManager.instance.MeshObject.transform.rotation, newRotation, rotationVelocity * Time.fixedDeltaTime);
     }
 

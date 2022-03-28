@@ -607,6 +607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec32454231d048f42bf955f7b4ce8262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 5
+  rotationVelocity: 20
 --- !u!114 &1694306909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,6 +624,7 @@ MonoBehaviour:
   movementManager: {fileID: 1694306908}
   inputManager: {fileID: 1694306907}
   rigidbody: {fileID: 1694306910}
+  meshObject: {fileID: 2118339488}
 --- !u!54 &1694306910
 Rigidbody:
   m_ObjectHideFlags: 0

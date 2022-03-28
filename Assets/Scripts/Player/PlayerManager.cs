@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour{
     public Rigidbody CharacterRigidbody { get { return rigidbody; } }
     
     private void Awake() {
-        if (instance != null) instance = this;
+        if (instance == null) instance = this;
         else Destroy(this);
     } 
 

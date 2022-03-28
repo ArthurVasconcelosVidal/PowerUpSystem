@@ -8,6 +8,9 @@ public class InputManager : MonoBehaviour{
     [SerializeField] Vector2 rightStick;
     [SerializeField] Vector2 leftStick;
 
+    public Vector2 RightStickValue { get { return rightStick; } }
+    public Vector2 LeftStickValue { get { return leftStick; } }
+
     private void Awake() {
         playerInput = new PlayerInput();
 

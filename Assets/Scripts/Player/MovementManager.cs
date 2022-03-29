@@ -12,7 +12,6 @@ public class MovementManager : MonoBehaviour{
 
     void FixedUpdate(){
         direction = ObjectRelatedDirection(PlayerManager.instance.InputManager.LeftStickValue, Camera.main.gameObject);
-        
         if (direction != Vector3.zero){  
             MovePlayer();
             RotatePlayer();
@@ -22,7 +21,7 @@ public class MovementManager : MonoBehaviour{
     Vector3 ObjectRelatedDirection(Vector2 inputDirection, GameObject relatedObject){
         var forwardDirection = Vector3.ProjectOnPlane(relatedObject.transform.forward, transform.up);
         var rightDirection = Vector3.ProjectOnPlane(relatedObject.transform.right, transform.up);
-        var finalDirection = forwardDirection * inputDirection.y + rightDirection * inputDirection.x;
+        Vector3 finalDirection = forwardDirection * inputDirection.y + rightDirection * inputDirection.x;
         return finalDirection.normalized;
     }
 
@@ -36,6 +35,6 @@ public class MovementManager : MonoBehaviour{
     //Debug
     private void OnDrawGizmos() {
         Gizmos.color = Color.blue;
-        if(direction != Vector3.zero) Gizmos.DrawLine(transform.position, direction * 5);
+        Gizmos.DrawRay(transform.position, direction * 5);
     }
 }

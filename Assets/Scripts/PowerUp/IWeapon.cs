@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IWeapon{
 
-    void NormalWeaponUse();
-    void SpecialWeaponUse();
+    public void NormalWeaponUse();
+    public void SpecialWeaponUse();
 }

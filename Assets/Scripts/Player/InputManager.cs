@@ -32,11 +32,7 @@ public class InputManager : MonoBehaviour{
 
         //Action Button
         playerInput.PlayerActions.ActionButton.performed += ContextMenu => {
-            if(PlayerManager.instance.InteractiveObject) 
-                PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
-            else{
-                Debug.Log("Nothing here");
-            }
+            PlayerManager.instance.ActionManager.ActionButtonBehaviour();
         };         
     }
 

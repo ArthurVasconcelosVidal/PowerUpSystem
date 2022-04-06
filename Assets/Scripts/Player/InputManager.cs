@@ -28,7 +28,17 @@ public class InputManager : MonoBehaviour{
         };
         playerInput.PlayerActions.LeftStick.canceled += ContextMenu => {
             leftStick = Vector2.zero;
-        };          
+        };
+
+        //Action Button
+        playerInput.PlayerActions.ActionButton.performed += ContextMenu => {
+            PlayerManager.instance.ActionManager.ActionButtonBehaviour();
+        };
+
+        //Action Button
+        playerInput.PlayerActions.WestButton.performed += ContextMenu => {
+            PlayerManager.instance.ActionManager.AttackBehaviour();
+        };                 
     }
 
     private void OnEnable() {

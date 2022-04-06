@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "WestButton",
+                    "type": "Button",
+                    "id": "34e7ff3c-f072-4b11-9bfe-8518f734e068",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -180,11 +189,33 @@
                 {
                     "name": "",
                     "id": "aed99cec-9f41-4920-966d-1eb67dcd9fc7",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "ActionButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "090b41ed-f70e-4c3c-b4e5-ee3fef323b87",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WestButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4fc8289c-9a64-4d08-8b30-78b4c149a615",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WestButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

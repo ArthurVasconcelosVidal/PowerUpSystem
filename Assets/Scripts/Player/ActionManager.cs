@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour{
 
-    // Start is called before the first frame update
-    void Start(){
-        
+    public void ActionButtonBehaviour(){
+        if(PlayerManager.instance.InteractiveObject) 
+                PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
+            else{
+                Debug.Log("Jump");
+            }
     }
 
-    // Update is called once per frame
-    void Update(){
-        
+    public void AttackBehaviour(){
+        PlayerManager.instance.WeaponManager.ActualWeapon.NormalWeaponUse();
     }
 }

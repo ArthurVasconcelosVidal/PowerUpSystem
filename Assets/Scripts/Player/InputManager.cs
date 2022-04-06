@@ -33,7 +33,12 @@ public class InputManager : MonoBehaviour{
         //Action Button
         playerInput.PlayerActions.ActionButton.performed += ContextMenu => {
             PlayerManager.instance.ActionManager.ActionButtonBehaviour();
-        };         
+        };
+
+        //Action Button
+        playerInput.PlayerActions.WestButton.performed += ContextMenu => {
+            PlayerManager.instance.ActionManager.AttackBehaviour();
+        };                 
     }
 
     private void OnEnable() {

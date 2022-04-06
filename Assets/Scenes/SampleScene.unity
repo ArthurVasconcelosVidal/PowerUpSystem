@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47abf28f1331bc43bf511dcffe9f657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 0
+  weaponType: 1
 --- !u!54 &435253145
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -805,7 +805,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965876480}
-  m_LocalRotation: {x: 3.2044305e-17, y: 0.017801058, z: -5.7051283e-19, w: 0.9998416}
+  m_LocalRotation: {x: -3.2044312e-17, y: 0.017801058, z: 5.7051293e-19, w: 0.9998416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -879,7 +879,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113673332}
-  m_LocalRotation: {x: -0.018186605, y: 0.01779813, z: 0.00032379242, w: 0.99967617}
+  m_LocalRotation: {x: -0.018186605, y: 0.017798096, z: 0.0003237918, w: 0.99967617}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

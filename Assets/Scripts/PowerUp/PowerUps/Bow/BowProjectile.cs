@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BowProjectile : MonoBehaviour{
     Rigidbody rigidbody;
-    public Vector3 ArrowDirection { get; }
-    public float DragForce { get; }
-    public float ShootForce { get; }
+    public Vector3 ArrowDirection { get; set;}
+    float DragForce { get; set;}
+    float ShootForce { get; set;}
     bool init = false;
-
-    public BowProjectile(Vector3 arrowDirection, float dragForce, float shootForce){
+    
+    public void Initialize(Vector3 arrowDirection, float dragForce, float shootForce){
         ArrowDirection = arrowDirection;
         DragForce = dragForce;
         ShootForce = shootForce;

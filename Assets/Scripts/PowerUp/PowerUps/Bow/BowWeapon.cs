@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BowWeapon : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class BowWeapon :MonoBehaviour, IWeapon{
+    [SerializeField] GameObject bowProjectilePrefab;
+
+    public WeaponType Weapon { get => WeaponType.bow; }
+
+    public void NormalWeaponUse(){
+        throw new System.NotImplementedException();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void RespawnPowerUp(){
+        throw new System.NotImplementedException();
+    }
+
+    public void SpecialWeaponUse(){
+        throw new System.NotImplementedException();
     }
 }

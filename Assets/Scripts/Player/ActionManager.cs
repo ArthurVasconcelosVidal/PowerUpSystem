@@ -13,6 +13,7 @@ public class ActionManager : MonoBehaviour{
     }
 
     public void AttackBehaviour(){
-        PlayerManager.instance.WeaponManager.ActualWeapon.NormalWeaponUse();
+        if(PlayerManager.instance.WeaponManager.ActualWeapon != null)
+            PlayerManager.instance.WeaponManager.ActualWeapon.NormalWeaponUse();
     }
 }

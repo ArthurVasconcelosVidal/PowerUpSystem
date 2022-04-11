@@ -1,7 +1,7 @@
 namespace StructLibrary{
     public struct MinMaxFloat {
-        float Min { get; set; }
-        float Max { get; set; }
+        public float Min { get; set; }
+        public float Max { get; set; }
         public MinMaxFloat(float min, float max){
             Min = min;
             Max = max;

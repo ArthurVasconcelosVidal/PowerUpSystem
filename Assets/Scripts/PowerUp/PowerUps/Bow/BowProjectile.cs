@@ -1,32 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using StructLibrary;
 public class BowProjectile : MonoBehaviour{
     Rigidbody rigidbody;
     public Vector3 ArrowDirection { get; set;}
-    float DragForce { get; set;}
+    MinMaxFloat arrowTimeToDecay = new MinMaxFloat(0,4);
+    float arrowIntensity;
+    float actualDragForce= 0;
+    [SerializeField] float dragForce;
     float ShootForce { get; set;}
     bool init = false;
     
-    public void Initialize(Vector3 arrowDirection, float dragForce, float shootForce){
+    public void Initialize(Vector3 arrowDirection, MinMaxFloat MinMaxForce, float actualForce){
         ArrowDirection = arrowDirection;
-        DragForce = dragForce;
-        ShootForce = shootForce;
+        ShootForce = actualForce;
+
+        arrowIntensity = Mathf.InverseLerp(MinMaxForce.Min, MinMaxForce.Max, actualForce);
+        float timeToDecay = Mathf.Lerp(arrowTimeToDecay.Min, arrowTimeToDecay.Max, arrowIntensity);
+
+        rigidbody = GetComponent<Rigidbody>();
+        Invoke("ArrowDecay", timeToDecay);
+        
         init = true;
+        
+        Debug.Log($"Lerp Result: {arrowIntensity} || Min value: {MinMaxForce.Min} || Max value: {MinMaxForce.Max} || ActualValue: {actualForce}");
+        Debug.Log($"Time to Decay: {timeToDecay}");
     }
 
     // Start is called before the first frame update
     void Start(){
-        rigidbody = GetComponent<Rigidbody>();
-        Debug.Log($"Arrow direction: {ArrowDirection} || Drag Force: {DragForce} || ShootForce: {ShootForce}");
+        Debug.Log($"Arrow direction: {ArrowDirection} || Drag Force: {dragForce} || ShootForce: {ShootForce}");
     }
 
     // Update is called once per frame
     void FixedUpdate(){
         if(init)
-            ApplyArrowForce(ArrowDirection, ShootForce, DragForce);
+            ApplyArrowForce(ArrowDirection, ShootForce, actualDragForce);
     }
+
+    void ArrowDecay() => actualDragForce = dragForce;
 
     public void ApplyArrowForce(Vector3 arrowDirection, float arrowStartForce, float dragForce){
         rigidbody.velocity = arrowDirection.normalized * arrowStartForce;

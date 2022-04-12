@@ -28,11 +28,6 @@ public class BowProjectile : MonoBehaviour{
         Debug.Log($"Time to Decay: {timeToDecay}");
     }
 
-    // Start is called before the first frame update
-    void Start(){
-        Debug.Log($"Arrow direction: {ArrowDirection} || Drag Force: {dragForce} || ShootForce: {ShootForce}");
-    }
-
     // Update is called once per frame
     void FixedUpdate(){
         if(init)

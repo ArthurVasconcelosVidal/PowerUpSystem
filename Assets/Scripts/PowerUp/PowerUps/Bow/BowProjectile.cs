@@ -11,7 +11,7 @@ public class BowProjectile : MonoBehaviour{
     [SerializeField] float dragForce;
     float ShootForce { get; set;}
     bool init = false;
-    
+    [SerializeField] Vector4 teste = Vector4.one;
     public void Initialize(Vector3 arrowDirection, MinMaxFloat MinMaxForce, float actualForce){
         ArrowDirection = arrowDirection;
         ShootForce = actualForce;
@@ -28,14 +28,32 @@ public class BowProjectile : MonoBehaviour{
         Debug.Log($"Time to Decay: {timeToDecay}");
     }
 
-    // Update is called once per frame
-    void FixedUpdate(){
-        if(init)
-            ApplyArrowForce(ArrowDirection, ShootForce, actualDragForce);
-    }
 
     void ArrowDecay() => actualDragForce = dragForce;
 
+    IEnumerator ArrowMovement(){
+
+
+        yield return null;
+    }
+    
+    Vector3 PositionAtQuadraticBezierCurve(float t, Vector3 p1, Vector3 p2, Vector3 p3) => (((1 - t) * (1 - t)) * p1) + (2 * (1 - t) * t * p2) + (t * t) * p3;
+    
+    void OnDrawGizmos() {
+        Gizmos.color = new Color(.5f,0,1,0.5f);
+
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(0, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.1f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.2f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.3f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.4f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.5f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.6f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.7f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.8f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.9f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(1f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
+    }
     public void ApplyArrowForce(Vector3 arrowDirection, float arrowStartForce, float dragForce){
         rigidbody.velocity = arrowDirection.normalized * arrowStartForce;
         rigidbody.drag = dragForce;

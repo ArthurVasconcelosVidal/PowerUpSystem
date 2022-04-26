@@ -36,7 +36,7 @@ public class BowProjectile : MonoBehaviour{
         Vector3 firstPoint = transform.position;
         Vector3 secondPoint = transform.position + (transform.forward * 13);
         Vector3 thirdPoint = transform.position + (transform.forward * 13) - (transform.up * 3);
-        
+
         for (int i = 0; i < arrowBezierPositions.Length; i++){
             arrowBezierPositions[i] = PositionAtQuadraticBezierCurve(time, firstPoint, secondPoint, thirdPoint);
             time += 0.1f;
@@ -51,7 +51,7 @@ public class BowProjectile : MonoBehaviour{
         yield return null;
     }
     
-    Vector3 PositionAtQuadraticBezierCurve(float t, Vector3 p1, Vector3 p2, Vector3 p3) => (((1 - t) * (1 - t)) * p1) + (2 * (1 - t) * t * p2) + (t * t) * p3;
+    Vector3 PositionAtQuadraticBezierCurve(float time, Vector3 p1, Vector3 p2, Vector3 p3) => (((1 - time) * (1 - time)) * p1) + (2 * (1 - time) * time * p2) + (time * time) * p3;
 
     void OnDrawGizmos() {
         Gizmos.color = new Color(.5f,0,1,0.5f);

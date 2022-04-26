@@ -7,27 +7,22 @@ public class BowProjectile : MonoBehaviour{
     public Vector3 ArrowDirection { get; set;}
     MinMaxFloat arrowTimeToDecay = new MinMaxFloat(0,4);
     float arrowIntensity;
-    float actualDragForce= 0;
     [SerializeField] float dragForce;
     float ShootForce { get; set;}
     bool init = false;
     [SerializeField] Vector4 teste = Vector4.one;
     Vector3[] arrowBezierPositions = new Vector3[10];
-    public void Initialize(Vector3 arrowDirection, MinMaxFloat MinMaxForce, float actualForce){
-        ArrowDirection = arrowDirection;
-        ShootForce = actualForce;
 
-        arrowIntensity = Mathf.InverseLerp(MinMaxForce.Min, MinMaxForce.Max, actualForce);
-        float timeToDecay = Mathf.Lerp(arrowTimeToDecay.Min, arrowTimeToDecay.Max, arrowIntensity);
+    public void Initialize(Vector3 arrowDirection, MinMaxFloat MinMaxForce, float shootForce){
+        ArrowDirection = arrowDirection;
+        ShootForce = shootForce;
+
+        arrowIntensity = Mathf.InverseLerp(MinMaxForce.Min, MinMaxForce.Max, shootForce);
 
         rigidbody = GetComponent<Rigidbody>();
-        Invoke("ArrowDecay", timeToDecay);
         GetAllBezierPositions();
 
-        init = true;
-        
-        Debug.Log($"Lerp Result: {arrowIntensity} || Min value: {MinMaxForce.Min} || Max value: {MinMaxForce.Max} || ActualValue: {actualForce}");
-        Debug.Log($"Time to Decay: {timeToDecay}");
+        StartCoroutine("ArrowMovement");
     }
 
     void GetAllBezierPositions(){
@@ -43,30 +38,33 @@ public class BowProjectile : MonoBehaviour{
         }
     }
 
-    void ArrowDecay() => actualDragForce = dragForce;
-
     IEnumerator ArrowMovement(){
-        
-
+        for (int i = 0; i < arrowBezierPositions.Length - 1; i++){
+            float progres = 0;
+            const float SPEED = 2;
+            while (transform.position != arrowBezierPositions[i + 1]){
+                progres += SPEED * Time.fixedDeltaTime;
+                progres = Mathf.Clamp01(progres);
+                transform.position = Vector3.Lerp(arrowBezierPositions[i], arrowBezierPositions[i+1], progres);
+                yield return null;
+            }
+            //ArrowRotation(arrowBezierPositions[i] - arrowBezierPositions[1+1]);
+        }
+        Debug.Log("terminou");
         yield return null;
     }
-    
-    Vector3 PositionAtQuadraticBezierCurve(float time, Vector3 p1, Vector3 p2, Vector3 p3) => (((1 - time) * (1 - time)) * p1) + (2 * (1 - time) * time * p2) + (time * time) * p3;
+        Vector3 PositionAtQuadraticBezierCurve(float time, Vector3 p1, Vector3 p2, Vector3 p3) => (((1 - time) * (1 - time)) * p1) + (2 * (1 - time) * time * p2) + (time * time) * p3;
 
     void OnDrawGizmos() {
         Gizmos.color = new Color(.5f,0,1,0.5f);
-        /*
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(0, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.1f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.2f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.3f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.4f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.5f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.6f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.7f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.8f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(.9f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        Gizmos.DrawSphere(PositionAtQuadraticBezierCurve(1f, transform.position * teste.x, transform.position + (transform.forward * teste.y), transform.position + (transform.forward * teste.z) - (transform.up * teste.w) ), 0.2f);
-        */
+        Gizmos.DrawSphere(arrowBezierPositions[0],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[1],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[2],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[3],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[4],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[5],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[6],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[8],0.2f);
+        Gizmos.DrawSphere(arrowBezierPositions[9],0.2f);
     }
 }

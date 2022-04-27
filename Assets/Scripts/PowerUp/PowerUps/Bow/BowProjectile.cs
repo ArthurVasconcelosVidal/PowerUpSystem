@@ -39,23 +39,18 @@ public class BowProjectile : MonoBehaviour{
     }
 
     IEnumerator ArrowMovement(){
+        const float SPEED = 2;
         for (int i = 0; i < arrowBezierPositions.Length - 1; i++){
-            float progres = 0;
-            const float SPEED = 2;
-            while (transform.position != arrowBezierPositions[i + 1]){
-                progres += SPEED * Time.fixedDeltaTime;
-                progres = Mathf.Clamp01(progres);
-                ArrowRotation(arrowBezierPositions[i+1] - transform.position);
-                transform.position = Vector3.Lerp(arrowBezierPositions[i], arrowBezierPositions[i+1], progres);
+            while (Vector3.Distance(transform.position,arrowBezierPositions[i + 1]) > 0.1f){
+                var direction = arrowBezierPositions[i+1] - transform.position;
+                ArrowRotation(direction.normalized);
+                transform.position += direction.normalized * SPEED * Time.fixedDeltaTime;
                 yield return null;
             }
-            
         }
-        Debug.Log("terminou");
         yield return null;
     }
     void ArrowRotation(Vector3 direction){
-        direction = direction.normalized;
         const float ROTATION_SPEED = 100;
         var newRotation = Quaternion.FromToRotation(transform.forward, direction) * transform.rotation;
         transform.rotation = Quaternion.Lerp(PlayerManager.instance.MeshObject.transform.rotation, newRotation, ROTATION_SPEED * Time.fixedDeltaTime);

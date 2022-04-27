@@ -45,15 +45,23 @@ public class BowProjectile : MonoBehaviour{
             while (transform.position != arrowBezierPositions[i + 1]){
                 progres += SPEED * Time.fixedDeltaTime;
                 progres = Mathf.Clamp01(progres);
+                ArrowRotation(arrowBezierPositions[i+1] - transform.position);
                 transform.position = Vector3.Lerp(arrowBezierPositions[i], arrowBezierPositions[i+1], progres);
                 yield return null;
             }
-            //ArrowRotation(arrowBezierPositions[i] - arrowBezierPositions[1+1]);
+            
         }
         Debug.Log("terminou");
         yield return null;
     }
-        Vector3 PositionAtQuadraticBezierCurve(float time, Vector3 p1, Vector3 p2, Vector3 p3) => (((1 - time) * (1 - time)) * p1) + (2 * (1 - time) * time * p2) + (time * time) * p3;
+    void ArrowRotation(Vector3 direction){
+        direction = direction.normalized;
+        const float ROTATION_SPEED = 100;
+        var newRotation = Quaternion.FromToRotation(transform.forward, direction) * transform.rotation;
+        transform.rotation = Quaternion.Lerp(PlayerManager.instance.MeshObject.transform.rotation, newRotation, ROTATION_SPEED * Time.fixedDeltaTime);
+    }
+
+    Vector3 PositionAtQuadraticBezierCurve(float time, Vector3 p1, Vector3 p2, Vector3 p3) => (((1 - time) * (1 - time)) * p1) + (2 * (1 - time) * time * p2) + (time * time) * p3;
 
     void OnDrawGizmos() {
         Gizmos.color = new Color(.5f,0,1,0.5f);

@@ -13,7 +13,7 @@ public class BowProjectile : MonoBehaviour{
         rigidbody = GetComponent<Rigidbody>();
         GetAllBezierPositions(arrowIntensity);
 
-        StartCoroutine("ArrowMovementAndRotation ");
+        StartCoroutine("ArrowMovementAndRotation");
     }
 
     void GetAllBezierPositions(float arrowForce){

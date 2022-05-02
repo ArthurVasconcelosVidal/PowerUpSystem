@@ -4,33 +4,27 @@ using UnityEngine;
 using StructLibrary;
 public class BowProjectile : MonoBehaviour{
     Rigidbody rigidbody;
-    public Vector3 ArrowDirection { get; set;}
-    MinMaxFloat arrowTimeToDecay = new MinMaxFloat(0,4);
     float arrowIntensity;
-    [SerializeField] float dragForce;
-    float ShootForce { get; set;}
-    bool init = false;
-    [SerializeField] Vector4 teste = Vector4.one;
     Vector3[] arrowBezierPositions = new Vector3[10];
 
     public void Initialize(Vector3 arrowDirection, MinMaxFloat MinMaxForce, float shootForce){
-        //ArrowDirection = arrowDirection;
-        //ShootForce = shootForce;
-
-        //arrowIntensity = Mathf.InverseLerp(MinMaxForce.Min, MinMaxForce.Max, shootForce);
+        arrowIntensity = Mathf.InverseLerp(MinMaxForce.Min, MinMaxForce.Max, shootForce);
 
         rigidbody = GetComponent<Rigidbody>();
-        GetAllBezierPositions();
+        GetAllBezierPositions(arrowIntensity);
 
         StartCoroutine("ArrowMovementAndRotation ");
     }
 
-    void GetAllBezierPositions(){
+    void GetAllBezierPositions(float arrowForce){
         float time = 0;
+        arrowForce = Mathf.Clamp01(arrowForce);
+        const float MAX_LENGTH = 13;
+        const float MIN_LENGTH = 3;
 
         Vector3 firstPoint = transform.position;
-        Vector3 secondPoint = transform.position + (transform.forward * 13);
-        Vector3 thirdPoint = transform.position + (transform.forward * 13) - (transform.up * 3);
+        Vector3 secondPoint = transform.position + (transform.forward * (MAX_LENGTH * arrowForce));
+        Vector3 thirdPoint = transform.position + (transform.forward * (MAX_LENGTH * arrowForce)) - (transform.up * (MIN_LENGTH * arrowForce));
 
         for (int i = 0; i < arrowBezierPositions.Length; i++){
             arrowBezierPositions[i] = PositionAtQuadraticBezierCurve(time, firstPoint, secondPoint, thirdPoint);

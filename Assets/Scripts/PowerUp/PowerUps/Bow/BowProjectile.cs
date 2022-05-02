@@ -14,15 +14,15 @@ public class BowProjectile : MonoBehaviour{
     Vector3[] arrowBezierPositions = new Vector3[10];
 
     public void Initialize(Vector3 arrowDirection, MinMaxFloat MinMaxForce, float shootForce){
-        ArrowDirection = arrowDirection;
-        ShootForce = shootForce;
+        //ArrowDirection = arrowDirection;
+        //ShootForce = shootForce;
 
-        arrowIntensity = Mathf.InverseLerp(MinMaxForce.Min, MinMaxForce.Max, shootForce);
+        //arrowIntensity = Mathf.InverseLerp(MinMaxForce.Min, MinMaxForce.Max, shootForce);
 
         rigidbody = GetComponent<Rigidbody>();
         GetAllBezierPositions();
 
-        StartCoroutine("ArrowMovement");
+        StartCoroutine("ArrowMovementAndRotation ");
     }
 
     void GetAllBezierPositions(){
@@ -38,18 +38,23 @@ public class BowProjectile : MonoBehaviour{
         }
     }
 
-    IEnumerator ArrowMovement(){
-        const float SPEED = 2;
+    IEnumerator ArrowMovementAndRotation(){
         for (int i = 0; i < arrowBezierPositions.Length - 1; i++){
             while (Vector3.Distance(transform.position,arrowBezierPositions[i + 1]) > 0.1f){
                 var direction = arrowBezierPositions[i+1] - transform.position;
                 ArrowRotation(direction.normalized);
-                transform.position += direction.normalized * SPEED * Time.fixedDeltaTime;
+                MoveArrow(direction);
                 yield return null;
             }
         }
         yield return null;
     }
+
+    void MoveArrow(Vector3 direction){
+        const float SPEED = 2;
+        transform.position += direction.normalized * SPEED * Time.fixedDeltaTime;
+    }
+
     void ArrowRotation(Vector3 direction){
         const float ROTATION_SPEED = 100;
         var newRotation = Quaternion.FromToRotation(transform.forward, direction) * transform.rotation;

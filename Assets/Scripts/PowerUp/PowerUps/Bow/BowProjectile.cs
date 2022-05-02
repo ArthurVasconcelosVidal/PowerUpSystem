@@ -18,7 +18,7 @@ public class BowProjectile : MonoBehaviour{
 
     void GetAllBezierPositions(float arrowForce){
         float time = 0;
-        arrowForce = Mathf.Clamp01(arrowForce);
+        arrowForce = Mathf.Clamp(arrowForce,.1f,1);
         const float MAX_LENGTH = 13;
         const float MIN_LENGTH = 3;
 

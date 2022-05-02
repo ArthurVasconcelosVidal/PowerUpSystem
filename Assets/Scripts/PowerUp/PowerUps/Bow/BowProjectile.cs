@@ -19,12 +19,12 @@ public class BowProjectile : MonoBehaviour{
     void GetAllBezierPositions(float arrowForce){
         float time = 0;
         arrowForce = Mathf.Clamp(arrowForce,.1f,1);
-        const float MAX_LENGTH = 13;
-        const float MIN_LENGTH = 3;
+        const float FIRST_LENGTH = 13;
+        const float SECOND_LENGTH = 3;
 
         Vector3 firstPoint = transform.position;
-        Vector3 secondPoint = transform.position + (transform.forward * (MAX_LENGTH * arrowForce));
-        Vector3 thirdPoint = transform.position + (transform.forward * (MAX_LENGTH * arrowForce)) - (transform.up * (MIN_LENGTH * arrowForce));
+        Vector3 secondPoint = transform.position + (transform.forward * (FIRST_LENGTH * arrowForce));
+        Vector3 thirdPoint = transform.position + (transform.forward * (FIRST_LENGTH * arrowForce)) - (transform.up * (SECOND_LENGTH * arrowForce));
 
         for (int i = 0; i < arrowBezierPositions.Length; i++){
             arrowBezierPositions[i] = PositionAtQuadraticBezierCurve(time, firstPoint, secondPoint, thirdPoint);

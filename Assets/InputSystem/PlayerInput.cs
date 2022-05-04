@@ -46,7 +46,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""ActionButton"",
+                    ""name"": ""SouthButton"",
                     ""type"": ""Button"",
                     ""id"": ""6c3448d7-d689-4b94-b832-968a1ba9cf8e"",
                     ""expectedControlType"": ""Button"",
@@ -58,6 +58,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""WestButton"",
                     ""type"": ""Button"",
                     ""id"": ""34e7ff3c-f072-4b11-9bfe-8518f734e068"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NorthButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""27d9204e-982b-4d9b-9a6f-525949578709"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EastButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a8e9d16-7d40-4883-98ca-b16cb3be23d0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -204,7 +222,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ActionButton"",
+                    ""action"": ""SouthButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -215,7 +233,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ActionButton"",
+                    ""action"": ""SouthButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -240,6 +258,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""WestButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b7dc084-8195-4fe1-adde-6d22b03491da"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NorthButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b02598a-0313-43c9-9cf9-ba7bfdce1b30"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EastButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -250,8 +290,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
         m_PlayerActions_LeftStick = m_PlayerActions.FindAction("LeftStick", throwIfNotFound: true);
         m_PlayerActions_RightStick = m_PlayerActions.FindAction("RightStick", throwIfNotFound: true);
-        m_PlayerActions_ActionButton = m_PlayerActions.FindAction("ActionButton", throwIfNotFound: true);
+        m_PlayerActions_SouthButton = m_PlayerActions.FindAction("SouthButton", throwIfNotFound: true);
         m_PlayerActions_WestButton = m_PlayerActions.FindAction("WestButton", throwIfNotFound: true);
+        m_PlayerActions_NorthButton = m_PlayerActions.FindAction("NorthButton", throwIfNotFound: true);
+        m_PlayerActions_EastButton = m_PlayerActions.FindAction("EastButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -313,16 +355,20 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_LeftStick;
     private readonly InputAction m_PlayerActions_RightStick;
-    private readonly InputAction m_PlayerActions_ActionButton;
+    private readonly InputAction m_PlayerActions_SouthButton;
     private readonly InputAction m_PlayerActions_WestButton;
+    private readonly InputAction m_PlayerActions_NorthButton;
+    private readonly InputAction m_PlayerActions_EastButton;
     public struct PlayerActionsActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActionsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @LeftStick => m_Wrapper.m_PlayerActions_LeftStick;
         public InputAction @RightStick => m_Wrapper.m_PlayerActions_RightStick;
-        public InputAction @ActionButton => m_Wrapper.m_PlayerActions_ActionButton;
+        public InputAction @SouthButton => m_Wrapper.m_PlayerActions_SouthButton;
         public InputAction @WestButton => m_Wrapper.m_PlayerActions_WestButton;
+        public InputAction @NorthButton => m_Wrapper.m_PlayerActions_NorthButton;
+        public InputAction @EastButton => m_Wrapper.m_PlayerActions_EastButton;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -338,12 +384,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @RightStick.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightStick;
                 @RightStick.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightStick;
                 @RightStick.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightStick;
-                @ActionButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnActionButton;
-                @ActionButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnActionButton;
-                @ActionButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnActionButton;
+                @SouthButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSouthButton;
+                @SouthButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSouthButton;
+                @SouthButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSouthButton;
                 @WestButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWestButton;
                 @WestButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWestButton;
                 @WestButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWestButton;
+                @NorthButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnNorthButton;
+                @NorthButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnNorthButton;
+                @NorthButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnNorthButton;
+                @EastButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnEastButton;
+                @EastButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnEastButton;
+                @EastButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnEastButton;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -354,12 +406,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @RightStick.started += instance.OnRightStick;
                 @RightStick.performed += instance.OnRightStick;
                 @RightStick.canceled += instance.OnRightStick;
-                @ActionButton.started += instance.OnActionButton;
-                @ActionButton.performed += instance.OnActionButton;
-                @ActionButton.canceled += instance.OnActionButton;
+                @SouthButton.started += instance.OnSouthButton;
+                @SouthButton.performed += instance.OnSouthButton;
+                @SouthButton.canceled += instance.OnSouthButton;
                 @WestButton.started += instance.OnWestButton;
                 @WestButton.performed += instance.OnWestButton;
                 @WestButton.canceled += instance.OnWestButton;
+                @NorthButton.started += instance.OnNorthButton;
+                @NorthButton.performed += instance.OnNorthButton;
+                @NorthButton.canceled += instance.OnNorthButton;
+                @EastButton.started += instance.OnEastButton;
+                @EastButton.performed += instance.OnEastButton;
+                @EastButton.canceled += instance.OnEastButton;
             }
         }
     }
@@ -368,7 +426,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnLeftStick(InputAction.CallbackContext context);
         void OnRightStick(InputAction.CallbackContext context);
-        void OnActionButton(InputAction.CallbackContext context);
+        void OnSouthButton(InputAction.CallbackContext context);
         void OnWestButton(InputAction.CallbackContext context);
+        void OnNorthButton(InputAction.CallbackContext context);
+        void OnEastButton(InputAction.CallbackContext context);
     }
 }

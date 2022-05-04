@@ -24,7 +24,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ActionButton",
+                    "name": "SouthButton",
                     "type": "Button",
                     "id": "6c3448d7-d689-4b94-b832-968a1ba9cf8e",
                     "expectedControlType": "Button",
@@ -36,6 +36,24 @@
                     "name": "WestButton",
                     "type": "Button",
                     "id": "34e7ff3c-f072-4b11-9bfe-8518f734e068",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NorthButton",
+                    "type": "Button",
+                    "id": "27d9204e-982b-4d9b-9a6f-525949578709",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EastButton",
+                    "type": "Button",
+                    "id": "6a8e9d16-7d40-4883-98ca-b16cb3be23d0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -182,7 +200,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ActionButton",
+                    "action": "SouthButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -193,7 +211,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ActionButton",
+                    "action": "SouthButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -216,6 +234,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "WestButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b7dc084-8195-4fe1-adde-6d22b03491da",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NorthButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b02598a-0313-43c9-9cf9-ba7bfdce1b30",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EastButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

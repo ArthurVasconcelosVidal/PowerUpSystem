@@ -2,6 +2,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour{
     PlayerInput playerInput;
@@ -13,7 +14,7 @@ public class InputManager : MonoBehaviour{
     public Vector2 LeftStickValue { get { return leftStick; } }
     
     #region Button Delegates
-    public delegate void SouthButtonBehaviour(float buttonValue);
+    public delegate void SouthButtonBehaviour(InputAction.CallbackContext buttonContext);
     public SouthButtonBehaviour southButtonBehaviour;
 
     public delegate void WestButtonBehaviour(float buttonValue);
@@ -30,34 +31,39 @@ public class InputManager : MonoBehaviour{
     private void Awake() {
         playerInput = new PlayerInput();
 
-        playerInput.PlayerActions.RightStick.performed += ContextMenu => {
-            rightStick = ContextMenu.ReadValue<Vector2>();
+        SetUpPlayerActions();
+
+    }
+
+    void SetUpPlayerActions(){
+        playerInput.PlayerActions.RightStick.performed += contextMenu => {
+            rightStick = contextMenu.ReadValue<Vector2>();
         };
-        playerInput.PlayerActions.RightStick.canceled += ContextMenu => {
+        playerInput.PlayerActions.RightStick.canceled += contextMenu => {
             rightStick = Vector2.zero;
         };
 
-        playerInput.PlayerActions.LeftStick.performed += ContextMenu => {
-            leftStick = ContextMenu.ReadValue<Vector2>();
+        playerInput.PlayerActions.LeftStick.performed += contextMenu => {
+            leftStick = contextMenu.ReadValue<Vector2>();
         };
-        playerInput.PlayerActions.LeftStick.canceled += ContextMenu => {
+        playerInput.PlayerActions.LeftStick.canceled += contextMenu => {
             leftStick = Vector2.zero;
         };
 
-        playerInput.PlayerActions.SouthButton.performed += ContextMenu => {
-            southButtonBehaviour(ContextMenu.ReadValue<float>());
+        playerInput.PlayerActions.SouthButton.performed += contextMenu => {
+            southButtonBehaviour(contextMenu);
         };
 
-        playerInput.PlayerActions.WestButton.performed += ContextMenu => {
-            westButtonBehaviour(ContextMenu.ReadValue<float>());
+        playerInput.PlayerActions.WestButton.performed += contextMenu => {
+            westButtonBehaviour(contextMenu.ReadValue<float>());
         };
 
-        playerInput.PlayerActions.NorthButton.performed += ContextMenu => {
-            northButtonBehaviour(ContextMenu.ReadValue<float>());
+        playerInput.PlayerActions.NorthButton.performed += contextMenu => {
+            northButtonBehaviour(contextMenu.ReadValue<float>());
         };
 
-        playerInput.PlayerActions.EastButton.performed += ContextMenu => {
-            eastButtonBehaviour(ContextMenu.ReadValue<float>());
+        playerInput.PlayerActions.EastButton.performed += contextMenu => {
+            eastButtonBehaviour(contextMenu.ReadValue<float>());
         };
     }
 

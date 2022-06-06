@@ -2,7 +2,7 @@
     "name": "PlayerInput",
     "maps": [
         {
-            "name": "PlayerActions",
+            "name": "GameAction",
             "id": "dab94763-c8fa-4f82-bd94-235b05ce4cd4",
             "actions": [
                 {
@@ -256,6 +256,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "EastButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UIAction",
+            "id": "8b26bc07-dc9c-424c-8f63-98e9ca2ce31f",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "f35dc037-f58e-4613-aac9-8e23b910257b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bc9531a2-a2da-44c0-b812-e74b64c55d41",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

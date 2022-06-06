@@ -5,8 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour{
-    PlayerInput playerInput;
-
+    InputManager inputManager;
     [SerializeField] Vector2 rightStick;
     [SerializeField] Vector2 leftStick;
 
@@ -29,59 +28,54 @@ public class PlayerInputManager : MonoBehaviour{
     #endregion
 
     private void Awake() {
-        playerInput = new PlayerInput();
 
+    }
+
+    void Start() {
+        inputManager = InputManager.instance;
         SetUpGameAction();
         
-        playerInput.GameAction.Disable();
-        playerInput.UIAction.Enable();
-        var teste = playerInput.GameAction.Get();
-        teste.Disable();
+        //inputManager.MainPlayerInput.GameAction.Disable();
+        //inputManager.MainPlayerInput.UIAction.Enable();
+        //var teste = inputManager.MainPlayerInput.GameAction.Get();
+        //teste.Disable();
         //InputAction outAction;
-        //Debug.Log($"{playerInput.FindBinding(0, outAction)}");
-        //playerInput.Disable(); //Disable Evertything
-        Debug.Log($"GameAction = {playerInput.GameAction.enabled}");
-        Debug.Log($"UIAction = {playerInput.UIAction.enabled}");
+        //Debug.Log($"{inputManager.MainPlayerInput.FindBinding(0, outAction)}");
+        //inputManager.MainPlayerInput.Disable(); //Disable Evertything
+        //Debug.Log($"GameAction = {inputManager.MainPlayerInput.GameAction.enabled}");
+        //Debug.Log($"UIAction = {inputManager.MainPlayerInput.UIAction.enabled}");
     }
 
     void SetUpGameAction(){
-        playerInput.GameAction.RightStick.performed += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.RightStick.performed += contextMenu => {
             rightStick = contextMenu.ReadValue<Vector2>();
         };
-        playerInput.GameAction.RightStick.canceled += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.RightStick.canceled += contextMenu => {
             rightStick = Vector2.zero;
         };
 
-        playerInput.GameAction.LeftStick.performed += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.LeftStick.performed += contextMenu => {
             leftStick = contextMenu.ReadValue<Vector2>();
         };
-        playerInput.GameAction.LeftStick.canceled += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.LeftStick.canceled += contextMenu => {
             leftStick = Vector2.zero;
         };
 
-        playerInput.GameAction.SouthButton.performed += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.SouthButton.performed += contextMenu => {
             southButtonBehaviour(contextMenu);
         };
 
-        playerInput.GameAction.WestButton.performed += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.WestButton.performed += contextMenu => {
             westButtonBehaviour(contextMenu.ReadValue<float>());
         };
 
-        playerInput.GameAction.NorthButton.performed += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.NorthButton.performed += contextMenu => {
             northButtonBehaviour(contextMenu.ReadValue<float>());
         };
 
-        playerInput.GameAction.EastButton.performed += contextMenu => {
+        inputManager.MainPlayerInput.GameAction.EastButton.performed += contextMenu => {
             eastButtonBehaviour(contextMenu.ReadValue<float>());
         };
-    }
-
-    private void OnEnable() {
-        playerInput.Enable();
-    }
-
-    private void OnDisable() {
-        playerInput.Disable();
     }
 
 }

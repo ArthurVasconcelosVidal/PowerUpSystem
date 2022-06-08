@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour{
     public static PlayerManager instance;
 
     [SerializeField] MovementManager movementManager;
-    [SerializeField] PlayerInputManager inputManager;
+    [SerializeField] InputActionManager inputActionManager;
     [SerializeField] Rigidbody rigidbody;
     [SerializeField] GameObject meshObject;
     [SerializeField] ActionManager actionManager;
@@ -17,7 +17,7 @@ public class PlayerManager : MonoBehaviour{
     [SerializeField] GameObject spawnProjectilePoint;
 
     public MovementManager MovementManager { get => movementManager; }
-    public PlayerInputManager InputManager { get => inputManager; }
+    public InputActionManager InputActionManager { get => inputActionManager; }
     public Rigidbody CharacterRigidbody { get => rigidbody; }
     public GameObject MeshObject { get => meshObject; }
     public ActionManager ActionManager { get => actionManager; }

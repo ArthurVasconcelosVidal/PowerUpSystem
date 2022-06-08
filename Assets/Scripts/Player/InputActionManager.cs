@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputManager : MonoBehaviour{
+public class InputActionManager : MonoBehaviour{
     InputManager inputManager;
     [SerializeField] Vector2 rightStick;
     [SerializeField] Vector2 leftStick;
@@ -16,13 +16,13 @@ public class PlayerInputManager : MonoBehaviour{
     public delegate void SouthButtonBehaviour(InputAction.CallbackContext buttonContext);
     public SouthButtonBehaviour southButtonBehaviour;
 
-    public delegate void WestButtonBehaviour(float buttonValue);
+    public delegate void WestButtonBehaviour(InputAction.CallbackContext buttonContext);
     public WestButtonBehaviour westButtonBehaviour;
 
-    public delegate void NorthButtonBehaviour(float buttonValue);
+    public delegate void NorthButtonBehaviour(InputAction.CallbackContext buttonContext);
     public NorthButtonBehaviour northButtonBehaviour;
 
-    public delegate void EastButtonBehaviour(float buttonValue);
+    public delegate void EastButtonBehaviour(InputAction.CallbackContext buttonContext);
     public EastButtonBehaviour eastButtonBehaviour;
     
     #endregion
@@ -53,21 +53,13 @@ public class PlayerInputManager : MonoBehaviour{
             leftStick = Vector2.zero;
         };
 
-        inputManager.MainPlayerInput.GameAction.SouthButton.performed += contextMenu => {
-            southButtonBehaviour(contextMenu);
-        };
+        inputManager.MainPlayerInput.GameAction.SouthButton.performed += contextMenu => southButtonBehaviour(contextMenu);
 
-        inputManager.MainPlayerInput.GameAction.WestButton.performed += contextMenu => {
-            westButtonBehaviour(contextMenu.ReadValue<float>());
-        };
+        inputManager.MainPlayerInput.GameAction.WestButton.performed += contextMenu => westButtonBehaviour(contextMenu);
 
-        inputManager.MainPlayerInput.GameAction.NorthButton.performed += contextMenu => {
-            northButtonBehaviour(contextMenu.ReadValue<float>());
-        };
+        inputManager.MainPlayerInput.GameAction.NorthButton.performed += contextMenu => northButtonBehaviour(contextMenu);
 
-        inputManager.MainPlayerInput.GameAction.EastButton.performed += contextMenu => {
-            eastButtonBehaviour(contextMenu.ReadValue<float>());
-        };
+        inputManager.MainPlayerInput.GameAction.EastButton.performed += contextMenu => eastButtonBehaviour(contextMenu);
     }
 
 }

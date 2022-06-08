@@ -34,16 +34,8 @@ public class PlayerInputManager : MonoBehaviour{
     void Start() {
         inputManager = InputManager.instance;
         SetUpGameAction();
-        
-        //inputManager.MainPlayerInput.GameAction.Disable();
-        //inputManager.MainPlayerInput.UIAction.Enable();
-        //var teste = inputManager.MainPlayerInput.GameAction.Get();
-        //teste.Disable();
-        //InputAction outAction;
-        //Debug.Log($"{inputManager.MainPlayerInput.FindBinding(0, outAction)}");
-        //inputManager.MainPlayerInput.Disable(); //Disable Evertything
-        //Debug.Log($"GameAction = {inputManager.MainPlayerInput.GameAction.enabled}");
-        //Debug.Log($"UIAction = {inputManager.MainPlayerInput.UIAction.enabled}");
+        inputManager.EnableInputAsset(inputManager.MainPlayerInput);
+        //inputManager.MainPlayerInput.GameAction.Disable(); //Disable some action in input actions
     }
 
     void SetUpGameAction(){

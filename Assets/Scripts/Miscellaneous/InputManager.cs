@@ -14,10 +14,6 @@ public class InputManager : MonoBehaviour{
         AddNewPlayerInput();
     }
 
-    void Start() {
-        EnableInputAsset(MainPlayerInput);    
-    }
-
     void SingletonPattern(){
         if(instance == null) instance = this;
         else Destroy(this);
@@ -26,14 +22,14 @@ public class InputManager : MonoBehaviour{
     void AddNewPlayerInput() => playerInputList.Add(new PlayerInput());
     void RemovePlayerInput(PlayerInput playerInput) => playerInputList.Remove(playerInput);
     
-    void EnableInputAsset( PlayerInput playerInput, bool enable = true ) {
+    public void EnableInputAsset(PlayerInput playerInput, bool enable = true) {
         if(enable) playerInput.Enable();
         else playerInput.Disable();
     }
 
-    public void DisableAllInputs(){
+    public void EnableAllInputs(bool enable = true){
         foreach (var inputAsset in playerInputList){
-            EnableInputAsset(inputAsset, false);
+            EnableInputAsset(inputAsset, enable);
         }
     }
 

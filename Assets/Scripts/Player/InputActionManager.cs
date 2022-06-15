@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputActionManager : MonoBehaviour{
-    InputManager inputManager;
+    InputManager InputManager { get {return InputManager.instance;} }
     [SerializeField] Vector2 rightStick;
     [SerializeField] Vector2 leftStick;
 
@@ -32,34 +32,33 @@ public class InputActionManager : MonoBehaviour{
     }
 
     void Start() {
-        inputManager = InputManager.instance;
         SetUpGameAction();
-        inputManager.EnableInputAsset(inputManager.MainPlayerInput);
+        InputManager.EnableInputAsset(InputManager.MainPlayerInput);
         //inputManager.MainPlayerInput.GameAction.Disable(); //Disable some action in input actions
     }
 
     void SetUpGameAction(){
-        inputManager.MainPlayerInput.GameAction.RightStick.performed += contextMenu => {
+        InputManager.MainPlayerInput.GameAction.RightStick.performed += contextMenu => {
             rightStick = contextMenu.ReadValue<Vector2>();
         };
-        inputManager.MainPlayerInput.GameAction.RightStick.canceled += contextMenu => {
+        InputManager.MainPlayerInput.GameAction.RightStick.canceled += contextMenu => {
             rightStick = Vector2.zero;
         };
 
-        inputManager.MainPlayerInput.GameAction.LeftStick.performed += contextMenu => {
+        InputManager.MainPlayerInput.GameAction.LeftStick.performed += contextMenu => {
             leftStick = contextMenu.ReadValue<Vector2>();
         };
-        inputManager.MainPlayerInput.GameAction.LeftStick.canceled += contextMenu => {
+        InputManager.MainPlayerInput.GameAction.LeftStick.canceled += contextMenu => {
             leftStick = Vector2.zero;
         };
 
-        inputManager.MainPlayerInput.GameAction.SouthButton.performed += contextMenu => southButtonBehaviour(contextMenu);
+        InputManager.MainPlayerInput.GameAction.SouthButton.performed += contextMenu => southButtonBehaviour(contextMenu);
 
-        inputManager.MainPlayerInput.GameAction.WestButton.performed += contextMenu => westButtonBehaviour(contextMenu);
+        InputManager.MainPlayerInput.GameAction.WestButton.performed += contextMenu => westButtonBehaviour(contextMenu);
 
-        inputManager.MainPlayerInput.GameAction.NorthButton.performed += contextMenu => northButtonBehaviour(contextMenu);
+        InputManager.MainPlayerInput.GameAction.NorthButton.performed += contextMenu => northButtonBehaviour(contextMenu);
 
-        inputManager.MainPlayerInput.GameAction.EastButton.performed += contextMenu => eastButtonBehaviour(contextMenu);
+        InputManager.MainPlayerInput.GameAction.EastButton.performed += contextMenu => eastButtonBehaviour(contextMenu);
     }
 
 }

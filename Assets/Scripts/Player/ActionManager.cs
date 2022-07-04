@@ -6,19 +6,18 @@ using UnityEngine.InputSystem;
 public class ActionManager : MonoBehaviour{
     InputActionManager playerInputManager;
 
-    private void Awake() {
+    private void Start() {
         playerInputManager = PlayerManager.instance.InputActionManager;
 
-        playerInputManager.southButtonBehaviour += ActionButtonBehaviour;
-        playerInputManager.westButtonBehaviour += AttackBehaviour;
+        playerInputManager.southButtonPerformed += ActionButtonBehaviour;
+        playerInputManager.westButtonPerformed += AttackBehaviour;
     }
 
     public void ActionButtonBehaviour(InputAction.CallbackContext buttonContext){
         if(PlayerManager.instance.InteractiveObject) 
-                PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
-            else{
-                Debug.Log("Jump");
-            }
+            PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
+        else
+            Debug.Log("Jump");
 
         Debug.Log($"Button Value: {buttonContext.ReadValue<float>()}");
     }

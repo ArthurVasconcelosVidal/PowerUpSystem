@@ -805,7 +805,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965876480}
-  m_LocalRotation: {x: 3.2044305e-17, y: 0.017801058, z: -5.7051283e-19, w: 0.9998416}
+  m_LocalRotation: {x: -3.2044312e-17, y: 0.017801058, z: 5.7051293e-19, w: 0.9998416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1387,6 +1387,7 @@ GameObject:
   - component: {fileID: 1694306908}
   - component: {fileID: 1694306907}
   - component: {fileID: 1694306912}
+  - component: {fileID: 1694306913}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1505,6 +1506,18 @@ MonoBehaviour:
   freeLookCM: {fileID: 494928243}
   camSpeedY: 1
   camSpeedX: 80
+--- !u!114 &1694306913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694306905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f70eb4c7735be408f555d6b559ef88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1695324229
 GameObject:
   m_ObjectHideFlags: 0

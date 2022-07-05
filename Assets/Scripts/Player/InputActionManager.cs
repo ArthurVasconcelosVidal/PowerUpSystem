@@ -11,18 +11,20 @@ public class InputActionManager : MonoBehaviour{
 
     public Vector2 RightStickValue { get { return rightStick; } }
     public Vector2 LeftStickValue { get { return leftStick; } }
-    
 
-    public delegate void ButtonPerformed(InputAction.CallbackContext buttonContext);
-    public ButtonPerformed southButtonPerformed, westButtonPerformed, northButtonPerformed, eastButtonPerformed;
+    public event EventHandler<InputAction.CallbackContext> 
+    OnSouthButtonPerformed, OnWestButtonPerformed, OnNorthButtonPerformed, OnEastButtonPerformed,
+    OnSouthButtonCanceled, OnWestButtonCanceled, OnNorthButtonCanceled, OnEastButtonCanceled;
 
     void Start() {
-        SetUpGameAction();
+        StickConfig();
+        ButtonsPerformedConfig();
+        ButtonsCanceledConfig();
         InputManager.EnableInputAsset(InputManager.MainPlayerInput);
         //inputManager.MainPlayerInput.GameAction.Disable(); //Disable some action in input actions
     }
 
-    void SetUpGameAction(){
+    void StickConfig(){
         InputManager.MainPlayerInput.GameAction.RightStick.performed += contextMenu => {
             rightStick = contextMenu.ReadValue<Vector2>();
         };
@@ -36,14 +38,25 @@ public class InputActionManager : MonoBehaviour{
         InputManager.MainPlayerInput.GameAction.LeftStick.canceled += contextMenu => {
             leftStick = Vector2.zero;
         };
+    } 
 
-        InputManager.MainPlayerInput.GameAction.SouthButton.performed += contextMenu => southButtonPerformed(contextMenu);
+    void ButtonsPerformedConfig(){
+        InputManager.MainPlayerInput.GameAction.SouthButton.performed += contextMenu => OnSouthButtonPerformed?.Invoke(this, contextMenu);
 
-        InputManager.MainPlayerInput.GameAction.WestButton.performed += contextMenu => westButtonPerformed(contextMenu);
+        InputManager.MainPlayerInput.GameAction.WestButton.performed += contextMenu => OnWestButtonPerformed?.Invoke(this, contextMenu);
 
-        InputManager.MainPlayerInput.GameAction.NorthButton.performed += contextMenu => northButtonPerformed(contextMenu);
+        InputManager.MainPlayerInput.GameAction.NorthButton.performed += contextMenu => OnNorthButtonPerformed?.Invoke(this, contextMenu);
 
-        InputManager.MainPlayerInput.GameAction.EastButton.performed += contextMenu => eastButtonPerformed(contextMenu);
+        InputManager.MainPlayerInput.GameAction.EastButton.performed += contextMenu => OnEastButtonPerformed?.Invoke(this, contextMenu);
     }
 
+    void ButtonsCanceledConfig(){
+        InputManager.MainPlayerInput.GameAction.SouthButton.canceled += contextMenu => OnSouthButtonCanceled?.Invoke(this, contextMenu);
+
+        InputManager.MainPlayerInput.GameAction.WestButton.canceled += contextMenu => OnWestButtonCanceled?.Invoke(this, contextMenu);
+
+        InputManager.MainPlayerInput.GameAction.NorthButton.canceled += contextMenu => OnNorthButtonCanceled?.Invoke(this, contextMenu);
+
+        InputManager.MainPlayerInput.GameAction.EastButton.canceled += contextMenu => OnEastButtonCanceled?.Invoke(this, contextMenu);
+    }
 }

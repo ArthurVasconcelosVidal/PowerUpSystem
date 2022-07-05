@@ -9,11 +9,11 @@ public class ActionManager : MonoBehaviour{
     private void Start() {
         playerInputManager = PlayerManager.instance.InputActionManager;
 
-        playerInputManager.southButtonPerformed += ActionButtonBehaviour;
-        playerInputManager.westButtonPerformed += AttackBehaviour;
+        playerInputManager.OnSouthButtonPerformed += ActionButtonBehaviour;
+        playerInputManager.OnWestButtonPerformed += AttackBehaviour;
     }
 
-    public void ActionButtonBehaviour(InputAction.CallbackContext buttonContext){
+    public void ActionButtonBehaviour(object sender, InputAction.CallbackContext buttonContext){
         if(PlayerManager.instance.InteractiveObject) 
             PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
         else
@@ -22,7 +22,7 @@ public class ActionManager : MonoBehaviour{
         Debug.Log($"Button Value: {buttonContext.ReadValue<float>()}");
     }
 
-    public void AttackBehaviour(InputAction.CallbackContext buttonContext){
+    public void AttackBehaviour(object sender, InputAction.CallbackContext buttonContext){
         if(PlayerManager.instance.WeaponManager.ActualWeapon != null)
             PlayerManager.instance.WeaponManager.ActualWeapon.NormalWeaponUse();
     }

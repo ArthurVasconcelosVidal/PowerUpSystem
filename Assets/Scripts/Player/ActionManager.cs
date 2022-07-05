@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ActionManager : MonoBehaviour{
-    //InputActionManager playerInputManager;
     InputActionManager PlayerInputManager { get{ return PlayerManager.instance.InputActionManager; } }
 
     public void ActionButtonBehaviour(object sender, InputAction.CallbackContext buttonContext){

@@ -4,14 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ActionManager : MonoBehaviour{
-    InputActionManager playerInputManager;
-
-    private void Start() {
-        playerInputManager = PlayerManager.instance.InputActionManager;
-
-        playerInputManager.OnSouthButtonPerformed += ActionButtonBehaviour;
-        playerInputManager.OnWestButtonPerformed += AttackBehaviour;
-    }
+    //InputActionManager playerInputManager;
+    InputActionManager PlayerInputManager { get{ return PlayerManager.instance.InputActionManager; } }
 
     public void ActionButtonBehaviour(object sender, InputAction.CallbackContext buttonContext){
         if(PlayerManager.instance.InteractiveObject) 
@@ -25,5 +19,15 @@ public class ActionManager : MonoBehaviour{
     public void AttackBehaviour(object sender, InputAction.CallbackContext buttonContext){
         if(PlayerManager.instance.WeaponManager.ActualWeapon != null)
             PlayerManager.instance.WeaponManager.ActualWeapon.NormalWeaponUse();
+    }
+
+    void OnEnable() {
+        PlayerInputManager.OnSouthButtonPerformed += ActionButtonBehaviour;
+        PlayerInputManager.OnWestButtonPerformed += AttackBehaviour;
+    }
+
+    void OnDisable() {
+        PlayerInputManager.OnSouthButtonPerformed -= ActionButtonBehaviour;
+        PlayerInputManager.OnWestButtonPerformed -= AttackBehaviour;
     }
 }

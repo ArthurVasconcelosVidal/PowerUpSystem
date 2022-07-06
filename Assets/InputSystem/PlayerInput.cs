@@ -24,7 +24,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     ""name"": ""PlayerInput"",
     ""maps"": [
         {
-            ""name"": ""PlayerActions"",
+            ""name"": ""GameAction"",
             ""id"": ""dab94763-c8fa-4f82-bd94-235b05ce4cd4"",
             ""actions"": [
                 {
@@ -282,18 +282,49 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UIAction"",
+            ""id"": ""8b26bc07-dc9c-424c-8f63-98e9ca2ce31f"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""f35dc037-f58e-4613-aac9-8e23b910257b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""bc9531a2-a2da-44c0-b812-e74b64c55d41"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // PlayerActions
-        m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
-        m_PlayerActions_LeftStick = m_PlayerActions.FindAction("LeftStick", throwIfNotFound: true);
-        m_PlayerActions_RightStick = m_PlayerActions.FindAction("RightStick", throwIfNotFound: true);
-        m_PlayerActions_SouthButton = m_PlayerActions.FindAction("SouthButton", throwIfNotFound: true);
-        m_PlayerActions_WestButton = m_PlayerActions.FindAction("WestButton", throwIfNotFound: true);
-        m_PlayerActions_NorthButton = m_PlayerActions.FindAction("NorthButton", throwIfNotFound: true);
-        m_PlayerActions_EastButton = m_PlayerActions.FindAction("EastButton", throwIfNotFound: true);
+        // GameAction
+        m_GameAction = asset.FindActionMap("GameAction", throwIfNotFound: true);
+        m_GameAction_LeftStick = m_GameAction.FindAction("LeftStick", throwIfNotFound: true);
+        m_GameAction_RightStick = m_GameAction.FindAction("RightStick", throwIfNotFound: true);
+        m_GameAction_SouthButton = m_GameAction.FindAction("SouthButton", throwIfNotFound: true);
+        m_GameAction_WestButton = m_GameAction.FindAction("WestButton", throwIfNotFound: true);
+        m_GameAction_NorthButton = m_GameAction.FindAction("NorthButton", throwIfNotFound: true);
+        m_GameAction_EastButton = m_GameAction.FindAction("EastButton", throwIfNotFound: true);
+        // UIAction
+        m_UIAction = asset.FindActionMap("UIAction", throwIfNotFound: true);
+        m_UIAction_Newaction = m_UIAction.FindAction("New action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -350,54 +381,54 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // PlayerActions
-    private readonly InputActionMap m_PlayerActions;
-    private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
-    private readonly InputAction m_PlayerActions_LeftStick;
-    private readonly InputAction m_PlayerActions_RightStick;
-    private readonly InputAction m_PlayerActions_SouthButton;
-    private readonly InputAction m_PlayerActions_WestButton;
-    private readonly InputAction m_PlayerActions_NorthButton;
-    private readonly InputAction m_PlayerActions_EastButton;
-    public struct PlayerActionsActions
+    // GameAction
+    private readonly InputActionMap m_GameAction;
+    private IGameActionActions m_GameActionActionsCallbackInterface;
+    private readonly InputAction m_GameAction_LeftStick;
+    private readonly InputAction m_GameAction_RightStick;
+    private readonly InputAction m_GameAction_SouthButton;
+    private readonly InputAction m_GameAction_WestButton;
+    private readonly InputAction m_GameAction_NorthButton;
+    private readonly InputAction m_GameAction_EastButton;
+    public struct GameActionActions
     {
         private @PlayerInput m_Wrapper;
-        public PlayerActionsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @LeftStick => m_Wrapper.m_PlayerActions_LeftStick;
-        public InputAction @RightStick => m_Wrapper.m_PlayerActions_RightStick;
-        public InputAction @SouthButton => m_Wrapper.m_PlayerActions_SouthButton;
-        public InputAction @WestButton => m_Wrapper.m_PlayerActions_WestButton;
-        public InputAction @NorthButton => m_Wrapper.m_PlayerActions_NorthButton;
-        public InputAction @EastButton => m_Wrapper.m_PlayerActions_EastButton;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
+        public GameActionActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @LeftStick => m_Wrapper.m_GameAction_LeftStick;
+        public InputAction @RightStick => m_Wrapper.m_GameAction_RightStick;
+        public InputAction @SouthButton => m_Wrapper.m_GameAction_SouthButton;
+        public InputAction @WestButton => m_Wrapper.m_GameAction_WestButton;
+        public InputAction @NorthButton => m_Wrapper.m_GameAction_NorthButton;
+        public InputAction @EastButton => m_Wrapper.m_GameAction_EastButton;
+        public InputActionMap Get() { return m_Wrapper.m_GameAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActionsActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerActionsActions instance)
+        public static implicit operator InputActionMap(GameActionActions set) { return set.Get(); }
+        public void SetCallbacks(IGameActionActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsActionsCallbackInterface != null)
+            if (m_Wrapper.m_GameActionActionsCallbackInterface != null)
             {
-                @LeftStick.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftStick;
-                @LeftStick.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftStick;
-                @LeftStick.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftStick;
-                @RightStick.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightStick;
-                @RightStick.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightStick;
-                @RightStick.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightStick;
-                @SouthButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSouthButton;
-                @SouthButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSouthButton;
-                @SouthButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSouthButton;
-                @WestButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWestButton;
-                @WestButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWestButton;
-                @WestButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWestButton;
-                @NorthButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnNorthButton;
-                @NorthButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnNorthButton;
-                @NorthButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnNorthButton;
-                @EastButton.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnEastButton;
-                @EastButton.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnEastButton;
-                @EastButton.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnEastButton;
+                @LeftStick.started -= m_Wrapper.m_GameActionActionsCallbackInterface.OnLeftStick;
+                @LeftStick.performed -= m_Wrapper.m_GameActionActionsCallbackInterface.OnLeftStick;
+                @LeftStick.canceled -= m_Wrapper.m_GameActionActionsCallbackInterface.OnLeftStick;
+                @RightStick.started -= m_Wrapper.m_GameActionActionsCallbackInterface.OnRightStick;
+                @RightStick.performed -= m_Wrapper.m_GameActionActionsCallbackInterface.OnRightStick;
+                @RightStick.canceled -= m_Wrapper.m_GameActionActionsCallbackInterface.OnRightStick;
+                @SouthButton.started -= m_Wrapper.m_GameActionActionsCallbackInterface.OnSouthButton;
+                @SouthButton.performed -= m_Wrapper.m_GameActionActionsCallbackInterface.OnSouthButton;
+                @SouthButton.canceled -= m_Wrapper.m_GameActionActionsCallbackInterface.OnSouthButton;
+                @WestButton.started -= m_Wrapper.m_GameActionActionsCallbackInterface.OnWestButton;
+                @WestButton.performed -= m_Wrapper.m_GameActionActionsCallbackInterface.OnWestButton;
+                @WestButton.canceled -= m_Wrapper.m_GameActionActionsCallbackInterface.OnWestButton;
+                @NorthButton.started -= m_Wrapper.m_GameActionActionsCallbackInterface.OnNorthButton;
+                @NorthButton.performed -= m_Wrapper.m_GameActionActionsCallbackInterface.OnNorthButton;
+                @NorthButton.canceled -= m_Wrapper.m_GameActionActionsCallbackInterface.OnNorthButton;
+                @EastButton.started -= m_Wrapper.m_GameActionActionsCallbackInterface.OnEastButton;
+                @EastButton.performed -= m_Wrapper.m_GameActionActionsCallbackInterface.OnEastButton;
+                @EastButton.canceled -= m_Wrapper.m_GameActionActionsCallbackInterface.OnEastButton;
             }
-            m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
+            m_Wrapper.m_GameActionActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @LeftStick.started += instance.OnLeftStick;
@@ -421,8 +452,41 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             }
         }
     }
-    public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
-    public interface IPlayerActionsActions
+    public GameActionActions @GameAction => new GameActionActions(this);
+
+    // UIAction
+    private readonly InputActionMap m_UIAction;
+    private IUIActionActions m_UIActionActionsCallbackInterface;
+    private readonly InputAction m_UIAction_Newaction;
+    public struct UIActionActions
+    {
+        private @PlayerInput m_Wrapper;
+        public UIActionActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_UIAction_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_UIAction; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActionActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActionActions instance)
+        {
+            if (m_Wrapper.m_UIActionActionsCallbackInterface != null)
+            {
+                @Newaction.started -= m_Wrapper.m_UIActionActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_UIActionActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_UIActionActionsCallbackInterface.OnNewaction;
+            }
+            m_Wrapper.m_UIActionActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+        }
+    }
+    public UIActionActions @UIAction => new UIActionActions(this);
+    public interface IGameActionActions
     {
         void OnLeftStick(InputAction.CallbackContext context);
         void OnRightStick(InputAction.CallbackContext context);
@@ -430,5 +494,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnWestButton(InputAction.CallbackContext context);
         void OnNorthButton(InputAction.CallbackContext context);
         void OnEastButton(InputAction.CallbackContext context);
+    }
+    public interface IUIActionActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

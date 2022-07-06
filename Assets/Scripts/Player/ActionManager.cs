@@ -4,27 +4,29 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ActionManager : MonoBehaviour{
-    InputActionManager playerInputManager;
+    InputActionManager PlayerInputManager { get{ return PlayerManager.instance.InputActionManager; } }
 
-    private void Awake() {
-        playerInputManager = PlayerManager.instance.InputActionManager;
-
-        playerInputManager.southButtonBehaviour += ActionButtonBehaviour;
-        playerInputManager.westButtonBehaviour += AttackBehaviour;
-    }
-
-    public void ActionButtonBehaviour(InputAction.CallbackContext buttonContext){
+    public void ActionButtonBehaviour(object sender, InputAction.CallbackContext buttonContext){
         if(PlayerManager.instance.InteractiveObject) 
-                PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
-            else{
-                Debug.Log("Jump");
-            }
+            PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
+        else
+            Debug.Log("Jump");
 
         Debug.Log($"Button Value: {buttonContext.ReadValue<float>()}");
     }
 
-    public void AttackBehaviour(InputAction.CallbackContext buttonContext){
+    public void AttackBehaviour(object sender, InputAction.CallbackContext buttonContext){
         if(PlayerManager.instance.WeaponManager.ActualWeapon != null)
             PlayerManager.instance.WeaponManager.ActualWeapon.NormalWeaponUse();
+    }
+
+    void OnEnable() {
+        PlayerInputManager.OnSouthButtonPerformed += ActionButtonBehaviour;
+        PlayerInputManager.OnWestButtonPerformed += AttackBehaviour;
+    }
+
+    void OnDisable() {
+        PlayerInputManager.OnSouthButtonPerformed -= ActionButtonBehaviour;
+        PlayerInputManager.OnWestButtonPerformed -= AttackBehaviour;
     }
 }

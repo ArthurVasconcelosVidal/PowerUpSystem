@@ -9,9 +9,10 @@ public class MovementManager : MonoBehaviour{
     [SerializeField] float rotationVelocity;
 
     public Vector3 RealPlayerDirection { get { return direction; } }
+    PlayerManager PlayerManager { get {return PlayerManager.instance; } }
 
     void FixedUpdate(){
-        direction = ObjectRelatedDirection(PlayerManager.instance.InputManager.LeftStickValue, Camera.main.gameObject);
+        direction = ObjectRelatedDirection(PlayerManager.InputActionManager.LeftStickValue, Camera.main.gameObject);
         if (direction != Vector3.zero){  
             MovePlayer();
             RotatePlayer();

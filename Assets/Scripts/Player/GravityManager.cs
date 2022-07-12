@@ -9,8 +9,11 @@ public class GravityManager : MonoBehaviour{
 
     [SerializeField] GravityType gravityType = GravityType.onGrounded;
     [SerializeField] string groundTag;
-    [SerializeField] Vector3 gravityForce;
-    public Vector3 GravityForce { get => gravityForce; set{ gravityForce = value; } }
+    [SerializeField] float gravityForce;
+    Vector3 gravityDirection = Vector3.down;
+
+    public float GravityForce { get => gravityForce; set{ gravityForce = value; } }
+    public Vector3 GravityDirection { get => gravityDirection; set{ gravityDirection = value; } }
 
     void FixedUpdate() {
         GravityApply();
@@ -18,14 +21,6 @@ public class GravityManager : MonoBehaviour{
 
     public void GravityTypeSelector(GravityType gravityType) => this.gravityType = gravityType;
 
-    void GravityApply() => PlayerManager.CharacterRigidbody.velocity = GravityForce;
-
-    public bool IsGrounded(float distToGround = 0.1f, float groundDistanceOffset = 0) {
-        RaycastHit hitGround;
-        if (Physics.Raycast(transform.position, -transform.up, out hitGround, distToGround + 0.1f + groundDistanceOffset) && hitGround.transform.gameObject.CompareTag(groundTag))
-            return true;
-        else
-            return false;
-    }
+    void GravityApply() => PlayerManager.CharacterRigidbody.velocity = gravityDirection * gravityForce;
 
 }

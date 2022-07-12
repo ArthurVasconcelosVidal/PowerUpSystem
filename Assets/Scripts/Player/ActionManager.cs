@@ -10,7 +10,7 @@ public class ActionManager : MonoBehaviour{
         if(PlayerManager.instance.InteractiveObject) 
             PlayerManager.instance.InteractiveObject.GetComponent<IInteractBehaviour>().InteractionBehaviour();
         else
-            Debug.Log("Jump");
+            //Debug.Log("Jump");
 
         Debug.Log($"Button Value: {buttonContext.ReadValue<float>()}");
     }
@@ -21,7 +21,7 @@ public class ActionManager : MonoBehaviour{
     }
 
     void OnEnable() {
-        PlayerInputManager.OnSouthButtonPerformed += ActionButtonBehaviour;
+        //PlayerInputManager.OnSouthButtonPerformed += ActionButtonBehaviour;
         PlayerInputManager.OnWestButtonPerformed += AttackBehaviour;
     }
 

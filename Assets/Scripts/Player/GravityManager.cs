@@ -10,13 +10,15 @@ public class GravityManager : MonoBehaviour{
     [SerializeField] float gravityForce;
     Vector3 gravityDirection = Vector3.down;
     bool isGrounded = false;
-
+    bool isUsingSpecialGravity = false;
     public bool IsGrounded  { get => isGrounded;
                                 set{
                                     isGrounded = value;
                                     GravityBehaviour();
                                     }
                             }
+    public bool IsUsingSpecialGravity { get => isUsingSpecialGravity; set => isUsingSpecialGravity = value; }
+
     public float GravityForce { get => gravityForce; set{ gravityForce = value; } }
     public Vector3 GravityDirection { get => gravityDirection; set{ gravityDirection = value; } }
 
@@ -35,12 +37,14 @@ public class GravityManager : MonoBehaviour{
                 const float BASE_GRAVITY_FORCE = 2f;
                 gravityForce = BASE_GRAVITY_FORCE;
             }
-            else{
+            else if(!isUsingSpecialGravity){
                 const float FALLING_GRAVITY_FORCE = 9.8f;
                 gravityForce = FALLING_GRAVITY_FORCE;
             }
+            
+            isUsingSpecialGravity = true;
     }
 
-    void GravityApply() => PlayerManager.CharacterRigidbody.velocity = gravityDirection * gravityForce;
+    void GravityApply() => PlayerManager.CharacterRigidbody.AddForce(gravityDirection * gravityForce);
 
 }

@@ -34,7 +34,7 @@ public class GravityManager : MonoBehaviour{
 
     void GravityBehaviour(){
             if(IsGrounded){
-                const float BASE_GRAVITY_FORCE = 2f;
+                const float BASE_GRAVITY_FORCE = 9.8f;
                 gravityForce = BASE_GRAVITY_FORCE;
             }
             else if(!isUsingSpecialGravity){

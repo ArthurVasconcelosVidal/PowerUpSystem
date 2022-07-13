@@ -20,23 +20,44 @@ public struct JumpFeature{
 }
 
 public class JumpBehaviour : MonoBehaviour{
-    InputActionManager PlayerInputManager { get{ return PlayerManager.instance.InputActionManager; } }
 
+    PlayerManager PlayerManager{ get{ return PlayerManager.instance; } }
     JumpFeature[] jumpList = new JumpFeature[3];
+    bool inJump = false;
+    const float GRAVITY_FALL_MULTIPLIER = 1.8f;
+
+    void Awake(){
+        jumpList[0] = new JumpFeature(0.5f, 5); 
+        jumpList[1] = new JumpFeature(0.7f, 7); 
+        jumpList[2] = new JumpFeature(0.8f, 10); 
+    }
+
     void Start() {
         
     }
 
     void Jump(object sender, InputAction.CallbackContext buttonContext){
         Debug.Log("jump");
+        if(PlayerManager.GravityManager.IsGrounded){
+            PlayerManager.GravityManager.IsUsingSpecialGravity = true;
+            Debug.Log(jumpList[0].IniJumpVelocity);
+            PlayerManager.CharacterRigidbody.AddForce(jumpList[0].IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
+            PlayerManager.GravityManager.GravityForce = -jumpList[0].JumpGravity;
+            inJump = true;
+        }         
+    }
+
+    void CancelJump(object sender, InputAction.CallbackContext buttonContext){
+        //Behaviour
     }
 
     void OnEnable() {
-        //Debug.Log($"maxJumpTime: {teste.MaxJumpTime} \n maxJumpHeight: {teste.MaxJumpHeight} \n timeToApex: {teste.TimeToApex} \n jumpGravity: {teste.JumpGravity} \n iniJumpVelocity: {teste.IniJumpVelocity}");
-        PlayerInputManager.OnSouthButtonPerformed += Jump;
+        PlayerManager.InputActionManager.OnSouthButtonPerformed += Jump;
+        PlayerManager.InputActionManager.OnSouthButtonCanceled += CancelJump;
     }
 
     void OnDisable() {
-        PlayerInputManager.OnSouthButtonPerformed -= Jump;
+        PlayerManager.InputActionManager.OnSouthButtonPerformed -= Jump;
+        PlayerManager.InputActionManager.OnSouthButtonCanceled -= CancelJump;
     }
 }

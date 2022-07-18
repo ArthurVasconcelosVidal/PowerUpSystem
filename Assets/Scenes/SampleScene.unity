@@ -805,7 +805,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965876480}
-  m_LocalRotation: {x: -3.2044312e-17, y: 0.017801058, z: 5.7051293e-19, w: 0.9998416}
+  m_LocalRotation: {x: 3.2044305e-17, y: 0.017801058, z: -5.7051283e-19, w: 0.9998416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1537,7 +1537,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  jumpPhase: 0
 --- !u!114 &1694306915
 MonoBehaviour:
   m_ObjectHideFlags: 0

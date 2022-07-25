@@ -6,16 +6,11 @@ using UnityEngine.InputSystem;
 public class DoubleJump : MonoBehaviour{
     PlayerManager PlayerManager{ get{ return PlayerManager.instance; } }
     [SerializeField] LayerMask groundLayer;
-    JumpFeature firstJump;
-    JumpFeature secondJump;
+    [SerializeField] JumpFeature firstJump;
+    [SerializeField] JumpFeature secondJump;
     JumpFeature actualJump;
 
     bool canDoubleJump;
-
-    void Awake(){
-        firstJump = new JumpFeature(0.5f, 4); 
-        secondJump = new JumpFeature(0.8f, 7); 
-    }
 
     void Jump(object sender, InputAction.CallbackContext buttonContext){
         if(IsGrounded()){

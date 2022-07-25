@@ -8,16 +8,12 @@ using System.Threading;
 public class JumpBehaviour : MonoBehaviour{
 
     PlayerManager PlayerManager{ get{ return PlayerManager.instance; } }
-    JumpFeature[] jumpList = new JumpFeature[3];
+    [SerializeField] JumpFeature[] jumpList = new JumpFeature[3];
+
+    [SerializeField] JumpFeature teste;
     [SerializeField] LayerMask groundLayer;
     int jumpPhase = -1;
     float lastTimeClicked = 0;
-
-    void Awake(){
-        jumpList[0] = new JumpFeature(0.5f, 4); 
-        jumpList[1] = new JumpFeature(0.8f, 7); 
-        jumpList[2] = new JumpFeature(0.9f, 8.5f); 
-    }
 
     void Jump(object sender, InputAction.CallbackContext buttonContext){
         if(IsGrounded()){

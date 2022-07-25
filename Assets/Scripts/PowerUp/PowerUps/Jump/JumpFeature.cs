@@ -1,19 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public struct JumpFeature{
-    public float MaxJumpTime { get; }
-    public float MaxJumpHeight { get; }
-    public float TimeToApex { get; } 
-    public float JumpGravity { get; } 
-    public float IniJumpVelocity { get; }
+[CreateAssetMenu(menuName = "ScriptableObjects/JumpFeature", order = 1)]
+public class JumpFeature: ScriptableObject{
+    [SerializeField] float maxJumpTime = 0;
+    [SerializeField] float maxJumpHeight = 0;
+    public float MaxJumpTime { get => maxJumpTime; set => maxJumpTime = value; }
+    public float MaxJumpHeight { get => maxJumpHeight; set => maxJumpHeight = value; }
+    public float TimeToApex { get; private set;} 
+    public float JumpGravity { get; private set;} 
+    public float IniJumpVelocity { get; private set;}
 
-    public JumpFeature(float maxJumpTime, float maxJumpHeight){
+    void OnValidate() {
+        Initialize();
+    }
+
+    void Initialize(){
         MaxJumpTime = maxJumpTime;
         MaxJumpHeight = maxJumpHeight;
         TimeToApex = maxJumpTime / 2;
         JumpGravity = (-2 * maxJumpHeight) / Mathf.Pow(TimeToApex, 2);
         IniJumpVelocity = (2 * maxJumpHeight) / TimeToApex;
     }
+
+
 }

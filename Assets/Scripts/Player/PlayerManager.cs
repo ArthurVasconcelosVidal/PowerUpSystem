@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour{
     [SerializeField] GameObject interactiveObject;
     [SerializeField] WeaponManager weaponManager;
     [SerializeField] GameObject spawnProjectilePoint;
+    [SerializeField] GravityManager gravityManager;
 
     public MovementManager MovementManager { get => movementManager; }
     public InputActionManager InputActionManager { get => inputActionManager; }
@@ -29,6 +30,7 @@ public class PlayerManager : MonoBehaviour{
     public ColliderManager ColliderManager { get => colliderManager; }
     public WeaponManager WeaponManager { get => weaponManager; }
     public GameObject SpawnProjectilePoint { get => spawnProjectilePoint; }
+    public GravityManager GravityManager { get => gravityManager;}
     private void Awake() {
         if (instance == null) instance = this;
         else Destroy(this);

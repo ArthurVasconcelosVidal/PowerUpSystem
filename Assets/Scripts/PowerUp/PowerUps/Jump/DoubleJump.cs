@@ -46,12 +46,12 @@ public class DoubleJump : MonoBehaviour{
     }
 
     void OnEnable() {
-        PlayerManager.InputActionManager.OnSouthButtonPerformed += Jump;
-        PlayerManager.InputActionManager.OnSouthButtonCanceled += CancelJump;
+        PlayerManager.InputActionManager.OnSouthSecondaryButtonPerformed += Jump;
+        PlayerManager.InputActionManager.OnSouthSecondaryButtonCanceled += CancelJump;
     }
 
     void OnDisable() {
-        PlayerManager.InputActionManager.OnSouthButtonPerformed -= Jump;
-        PlayerManager.InputActionManager.OnSouthButtonCanceled -= CancelJump;
+        PlayerManager.InputActionManager.OnSouthSecondaryButtonPerformed -= Jump;
+        PlayerManager.InputActionManager.OnSouthSecondaryButtonCanceled -= CancelJump;
     }
 }

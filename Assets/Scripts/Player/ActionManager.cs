@@ -26,7 +26,7 @@ public class ActionManager : MonoBehaviour{
     }
 
     void OnDisable() {
-        PlayerInputManager.OnSouthButtonPerformed -= ActionButtonBehaviour;
+        //PlayerInputManager.OnSouthButtonPerformed -= ActionButtonBehaviour;
         PlayerInputManager.OnWestButtonPerformed -= AttackBehaviour;
     }
 }

@@ -9,6 +9,7 @@ public class InteractionBehahviour : MonoBehaviour{
 
     void InteractBehaviour(object sender, InputAction.CallbackContext context){
         Debug.Log($"interagindo: {this.gameObject.name}");
+        GetComponent<IinteractionBehaviour>().InteractionBehahviour();
     }
 
     void OnTriggerEnter(Collider other) {

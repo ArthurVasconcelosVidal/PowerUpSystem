@@ -8,7 +8,6 @@ public class InteractionBehahviour : MonoBehaviour{
     InputActionManager PlayerInput { get => PlayerManager.instance.InputActionManager; }
 
     void InteractBehaviour(object sender, InputAction.CallbackContext context){
-        Debug.Log($"interagindo: {this.gameObject.name}");
         GetComponent<IinteractionBehaviour>().InteractionBehahviour();
     }
 

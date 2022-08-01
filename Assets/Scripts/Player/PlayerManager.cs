@@ -10,7 +10,6 @@ public class PlayerManager : MonoBehaviour{
     [SerializeField] InputActionManager inputActionManager;
     [SerializeField] Rigidbody rigidbody;
     [SerializeField] GameObject meshObject;
-    [SerializeField] WeaponManager weaponManager;
     [SerializeField] GameObject spawnProjectilePoint;
     [SerializeField] GravityManager gravityManager;
 
@@ -18,7 +17,6 @@ public class PlayerManager : MonoBehaviour{
     public InputActionManager InputActionManager { get => inputActionManager; }
     public Rigidbody CharacterRigidbody { get => rigidbody; }
     public GameObject MeshObject { get => meshObject; }
-    public WeaponManager WeaponManager { get => weaponManager; }
     public GameObject SpawnProjectilePoint { get => spawnProjectilePoint; }
     public GravityManager GravityManager { get => gravityManager;}
     private void Awake() {

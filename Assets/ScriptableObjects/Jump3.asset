@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3d21fa3ebb34942ad7b23e14611bd6, type: 3}
   m_Name: Jump3
   m_EditorClassIdentifier: 
-  maxJumpTime: 0
-  maxJumpHeight: 0
+  maxJumpTime: 1
+  maxJumpHeight: 1

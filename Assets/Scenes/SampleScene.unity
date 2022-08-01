@@ -231,7 +231,9 @@ GameObject:
   - component: {fileID: 435253147}
   - component: {fileID: 435253146}
   - component: {fileID: 435253145}
+  - component: {fileID: 435253144}
   - component: {fileID: 435253143}
+  - component: {fileID: 435253150}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -248,10 +250,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 435253142}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b47abf28f1331bc43bf511dcffe9f657, type: 3}
+  m_Script: {fileID: 11500000, guid: f93cf271e31d9c04581a2651ccc8e333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 1
+  playerTag: Player
+--- !u!135 &435253144
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435253142}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &435253145
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -344,6 +359,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &435253150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435253142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47abf28f1331bc43bf511dcffe9f657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &494928242
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,7 +832,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965876480}
-  m_LocalRotation: {x: -3.2044312e-17, y: 0.017801058, z: 5.7051293e-19, w: 0.9998416}
+  m_LocalRotation: {x: 3.2044305e-17, y: 0.017801058, z: -5.7051283e-19, w: 0.9998416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -879,7 +906,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113673332}
-  m_LocalRotation: {x: -0.018186605, y: 0.017798096, z: 0.0003237918, w: 0.99967617}
+  m_LocalRotation: {x: -0.018186605, y: 0.01779813, z: 0.00032379242, w: 0.99967617}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1393,7 +1420,7 @@ GameObject:
   - component: {fileID: 1694306916}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1430,6 +1457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightStick: {x: 0, y: 0}
   leftStick: {x: 0, y: 0}
+  southButtonPrimary: 0
 --- !u!114 &1694306908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1460,9 +1488,6 @@ MonoBehaviour:
   inputActionManager: {fileID: 1694306907}
   rigidbody: {fileID: 1694306910}
   meshObject: {fileID: 2118339488}
-  actionManager: {fileID: 0}
-  colliderManager: {fileID: 507491168}
-  interactiveObject: {fileID: 0}
   weaponManager: {fileID: 1695324232}
   spawnProjectilePoint: {fileID: 1984991358}
   gravityManager: {fileID: 1694306915}

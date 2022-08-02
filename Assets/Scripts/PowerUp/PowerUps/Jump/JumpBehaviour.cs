@@ -45,8 +45,9 @@ public class JumpBehaviour : MonoBehaviour{
     }
  
     bool IsGrounded(float groundDistanceOffset = 0) {
-        float distToGround = transform.localScale.y; 
-        if (Physics.Raycast(transform.position, -transform.up, distToGround + 0.05f + groundDistanceOffset, groundLayer))
+        float distToGround = transform.localScale.y;
+        const float OFFSET = 0.5f;  
+        if (Physics.Raycast(transform.position, -transform.up, distToGround + OFFSET + groundDistanceOffset, groundLayer))
             return true;
         else
             return false;

@@ -10,22 +10,23 @@ public class DoubleJump : MonoBehaviour{
     [SerializeField] JumpFeature secondJump;
     JumpFeature actualJump;
 
-    bool canDoubleJump;
+    bool canDoubleJump = true;
 
     void Jump(object sender, InputAction.CallbackContext buttonContext){
         if(IsGrounded()){
-            canDoubleJump = true;
             actualJump = firstJump;
-            Test(actualJump);
+            SetJumpValues(actualJump);
+            canDoubleJump = true;
         }else if(canDoubleJump){
             actualJump = secondJump;
-            Test(actualJump);
+            SetJumpValues(actualJump);
             canDoubleJump = false;
         }         
     }
     
-    void Test(JumpFeature jump){
+    void SetJumpValues(JumpFeature jump){
         PlayerManager.GravityManager.IsUsingSpecialGravity = true;
+         PlayerManager.CharacterRigidbody.velocity = Vector3.zero;
         PlayerManager.GravityManager.GravityForce = -jump.JumpGravity;
         PlayerManager.CharacterRigidbody.AddForce(jump.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
     }
@@ -38,8 +39,9 @@ public class DoubleJump : MonoBehaviour{
     }
 
     bool IsGrounded(float groundDistanceOffset = 0) {
-        float distToGround = transform.localScale.y; 
-        if (Physics.Raycast(transform.position, -transform.up, distToGround + 0.05f + groundDistanceOffset, groundLayer))
+        float distToGround = transform.localScale.y;
+        const float OFFSET = 0.5f;   
+        if (Physics.Raycast(transform.position, -transform.up, distToGround + OFFSET + groundDistanceOffset, groundLayer))
             return true;
         else
             return false;

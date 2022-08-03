@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DoubleJump1
   m_EditorClassIdentifier: 
   maxJumpTime: 0.8
-  maxJumpHeight: 5
+  maxJumpHeight: 4

@@ -26,7 +26,7 @@ public class DoubleJump : MonoBehaviour{
     
     void SetJumpValues(JumpFeature jump){
         PlayerManager.GravityManager.IsUsingSpecialGravity = true;
-         PlayerManager.CharacterRigidbody.velocity = Vector3.zero;
+        PlayerManager.CharacterRigidbody.velocity = Vector3.zero;
         PlayerManager.GravityManager.GravityForce = -jump.JumpGravity;
         PlayerManager.CharacterRigidbody.AddForce(jump.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
     }

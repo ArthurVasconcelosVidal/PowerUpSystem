@@ -1490,6 +1490,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 1694306907}
+  playerRigidBody: {fileID: 1694306910}
+  forwardReference: {fileID: 2118339488}
+  dashSpeed: 50
+  dashTime: 0.4
+  dashRecoveryTime: 1
 --- !u!114 &1694306914
 MonoBehaviour:
   m_ObjectHideFlags: 0

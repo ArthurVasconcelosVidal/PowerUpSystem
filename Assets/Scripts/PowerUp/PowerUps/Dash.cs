@@ -21,7 +21,8 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
     void DashAction(){
         if(!canDash)
             return;
-        
+            
+        canDash = false;
         DashActive(forwardReference.transform.forward.normalized, dashTime);
     }
 

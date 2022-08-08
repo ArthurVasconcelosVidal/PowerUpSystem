@@ -37,7 +37,7 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
 
     void CancelJump(){
         if(!IsGrounded()){
-            const float GRAVITY_FALL_MULTIPLIER = 1.8f;
+            const float GRAVITY_FALL_MULTIPLIER = 1.7f;
             PlayerManager.GravityManager.GravityForce = -actualJump.JumpGravity * GRAVITY_FALL_MULTIPLIER;
         }
     }

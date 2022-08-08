@@ -16,12 +16,14 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
 
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => DashAction();
 
-    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => Debug.Log("Fisnish");
+    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext){
+        
+    }
 
     void DashAction(){
         if(!canDash)
             return;
-            
+
         canDash = false;
         DashActive(forwardReference.transform.forward.normalized, dashTime);
     }

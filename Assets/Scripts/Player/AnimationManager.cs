@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationManager : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public class AnimationManager : MonoBehaviour{
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] Animator playerAnimator;
+
+    public void EnableRootMotion(bool enable =  true) => playerAnimator.applyRootMotion = enable;
 }

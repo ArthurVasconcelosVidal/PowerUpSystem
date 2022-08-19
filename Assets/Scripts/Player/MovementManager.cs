@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementManager : MonoBehaviour{
-
+    /*  TODO:   
+            - Refactor the script to make more independent
+            - The movement has to have the own implementation of left stick values
+            - Remove player manager dependency
+    */
+    
     Vector3 direction = Vector3.zero;
     [SerializeField] Animator playerAnimator;
     [SerializeField] float movementSpeed;

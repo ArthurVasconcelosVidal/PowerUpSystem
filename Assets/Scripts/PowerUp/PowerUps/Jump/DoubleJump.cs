@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     PlayerManager PlayerManager{ get{ return PlayerManager.instance; } }
-
+    [SerializeField] Animator animator = null;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] JumpFeature firstJump;
     [SerializeField] JumpFeature secondJump;
@@ -20,14 +20,23 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
         if(IsGrounded()){
             actualJump = firstJump;
             SetJumpValues(actualJump);
+            CallJumpAnimation();
             canDoubleJump = true;
         }else if(canDoubleJump){
             actualJump = secondJump;
             SetJumpValues(actualJump);
+            CallJumpAnimation();
             canDoubleJump = false;
         }         
     }
     
+    void CallJumpAnimation(){
+        if(!animator)
+            return;     
+        animator.applyRootMotion = false;
+        animator.SetTrigger("Jump");
+    }
+
     void SetJumpValues(JumpFeature jump){
         PlayerManager.GravityManager.IsUsingSpecialGravity = true;
         PlayerManager.CharacterRigidbody.velocity = Vector3.zero;

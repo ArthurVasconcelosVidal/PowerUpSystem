@@ -5,13 +5,18 @@ using UnityEngine.InputSystem;
 
 public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     PlayerManager PlayerManager{ get{ return PlayerManager.instance; } }
-
+    [SerializeField] Animator animator = null;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] JumpFeature firstJump;
     [SerializeField] JumpFeature secondJump;
     JumpFeature actualJump;
     bool canDoubleJump = true;
-
+    /*
+        TODO: 
+            - Refactor to make the script more independent
+            - Remove PLayer Manager dependency
+            - Add a variable to control the cancel fall Gravity constant
+    */
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Jump();
 
     public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => CancelJump();
@@ -20,14 +25,23 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
         if(IsGrounded()){
             actualJump = firstJump;
             SetJumpValues(actualJump);
+            CallJumpAnimation();
             canDoubleJump = true;
         }else if(canDoubleJump){
             actualJump = secondJump;
             SetJumpValues(actualJump);
+            CallJumpAnimation();
             canDoubleJump = false;
         }         
     }
     
+    void CallJumpAnimation(){
+        if(!animator)
+            return;     
+        animator.applyRootMotion = false;
+        animator.SetTrigger("Jump");
+    }
+
     void SetJumpValues(JumpFeature jump){
         PlayerManager.GravityManager.IsUsingSpecialGravity = true;
         PlayerManager.CharacterRigidbody.velocity = Vector3.zero;

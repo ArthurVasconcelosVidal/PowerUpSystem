@@ -11,6 +11,7 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     [SerializeField] LayerMask groundLayer;
     [SerializeField] JumpFeature firstJump;
     [SerializeField] JumpFeature secondJump;
+    [SerializeField] [Range(1,2)] float fallMultiplier = 1.7f;
     JumpFeature actualJump;
     bool canDoubleJump = true;
     /*
@@ -52,10 +53,8 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     }
 
     void CancelJump(){
-        if(!IsGrounded()){
-            const float GRAVITY_FALL_MULTIPLIER = 1.7f;
-            gravityManager.GravityForce = -actualJump.JumpGravity * GRAVITY_FALL_MULTIPLIER;
-        }
+        if(!IsGrounded())
+            gravityManager.GravityForce = -actualJump.JumpGravity * fallMultiplier;
     }
 
     bool IsGrounded(float groundDistanceOffset = 0) {

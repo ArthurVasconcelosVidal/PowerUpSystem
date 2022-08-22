@@ -11,7 +11,11 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     [SerializeField] JumpFeature secondJump;
     JumpFeature actualJump;
     bool canDoubleJump = true;
-
+    /*
+        TODO: 
+            - Refactor to make the script more independent
+            - Remove PLayer Manager dependency
+    */
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Jump();
 
     public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => CancelJump();

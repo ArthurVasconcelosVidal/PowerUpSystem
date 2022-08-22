@@ -3,28 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementManager : MonoBehaviour{
-    /*  TODO:   
-            - Refactor the script to make more independent
-            - The movement has to have the own implementation of left stick values
-            - Remove player manager dependency
-    */
-    
+        
     Vector3 direction = Vector3.zero;
     [SerializeField] Animator playerAnimator;
+    [SerializeField] InputActionManager inputActionManager;
+    [SerializeField] GameObject meshObject;
+    [SerializeField] Rigidbody rigidbody;
     [SerializeField] float movementSpeed;
     [SerializeField] float rotationVelocity;
     public Vector3 RealPlayerDirection { get { return direction; } }
-    PlayerManager PlayerManager { get {return PlayerManager.instance; } }
 
     void FixedUpdate(){
-        direction = ObjectRelatedDirection(PlayerManager.InputActionManager.LeftStickValue, Camera.main.gameObject);
+        direction = ObjectRelatedDirection(inputActionManager.LeftStickValue, Camera.main.gameObject);
         if (direction != Vector3.zero){  
             MovePlayer();
             RotatePlayer();
         } 
         WalkAnimation();
     }
-
 
     Vector3 ObjectRelatedDirection(Vector2 inputDirection, GameObject relatedObject){
         var forwardDirection = Vector3.ProjectOnPlane(relatedObject.transform.forward, transform.up);
@@ -33,15 +29,15 @@ public class MovementManager : MonoBehaviour{
         return finalDirection.normalized;
     }
 
-    void MovePlayer() => PlayerManager.instance.CharacterRigidbody.MovePosition(transform.position + direction * PlayerManager.InputActionManager.LeftStickValue.sqrMagnitude * movementSpeed * Time.fixedDeltaTime);
+    void MovePlayer() => rigidbody.MovePosition(transform.position + direction * inputActionManager.LeftStickValue.sqrMagnitude * movementSpeed * Time.fixedDeltaTime);
 
     void RotatePlayer(){
-        var newRotation = Quaternion.LookRotation(direction, PlayerManager.instance.MeshObject.transform.up); 
-        PlayerManager.instance.MeshObject.transform.rotation = Quaternion.Lerp(PlayerManager.instance.MeshObject.transform.rotation, newRotation, rotationVelocity * Time.fixedDeltaTime);
+        var newRotation = Quaternion.LookRotation(direction, meshObject.transform.up); 
+        meshObject.transform.rotation = Quaternion.Lerp(meshObject.transform.rotation, newRotation, rotationVelocity * Time.fixedDeltaTime);
     }
 
     public void WalkAnimation() {
-		playerAnimator.SetFloat("MovVelocity", PlayerManager.InputActionManager.LeftStickValue.sqrMagnitude);
+		playerAnimator.SetFloat("MovVelocity", inputActionManager.LeftStickValue.sqrMagnitude);
 	}
 
     //Debug

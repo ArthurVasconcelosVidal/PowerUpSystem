@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class DoubleJump : MonoBehaviour, IPressReleaseAction{
-    PlayerManager PlayerManager{ get{ return PlayerManager.instance; } }
     [SerializeField] Animator animator = null;
+    [SerializeField] GravityManager gravityManager;
+    [SerializeField] InputActionManager inputActionManager;
+    [SerializeField] Rigidbody rigidbody;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] JumpFeature firstJump;
     [SerializeField] JumpFeature secondJump;
@@ -43,16 +45,16 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     }
 
     void SetJumpValues(JumpFeature jump){
-        PlayerManager.GravityManager.IsUsingSpecialGravity = true;
-        PlayerManager.CharacterRigidbody.velocity = Vector3.zero;
-        PlayerManager.GravityManager.GravityForce = -jump.JumpGravity;
-        PlayerManager.CharacterRigidbody.AddForce(jump.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
+        gravityManager.IsUsingSpecialGravity = true;
+        rigidbody.velocity = Vector3.zero;
+        gravityManager.GravityForce = -jump.JumpGravity;
+        rigidbody.AddForce(jump.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
     }
 
     void CancelJump(){
         if(!IsGrounded()){
             const float GRAVITY_FALL_MULTIPLIER = 1.7f;
-            PlayerManager.GravityManager.GravityForce = -actualJump.JumpGravity * GRAVITY_FALL_MULTIPLIER;
+            gravityManager.GravityForce = -actualJump.JumpGravity * GRAVITY_FALL_MULTIPLIER;
         }
     }
 
@@ -66,12 +68,12 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     }
 
     void OnEnable() {
-        PlayerManager.InputActionManager.OnSouthSecondaryButtonPerformed += OnButtonPressed;
-        PlayerManager.InputActionManager.OnSouthSecondaryButtonCanceled += OnButtonReleased;
+        inputActionManager.OnSouthSecondaryButtonPerformed += OnButtonPressed;
+        inputActionManager.OnSouthSecondaryButtonCanceled += OnButtonReleased;
     }
 
     void OnDisable() {
-        PlayerManager.InputActionManager.OnSouthSecondaryButtonPerformed -= OnButtonPressed;
-        PlayerManager.InputActionManager.OnSouthSecondaryButtonCanceled -= OnButtonReleased;
+        inputActionManager.OnSouthSecondaryButtonPerformed -= OnButtonPressed;
+        inputActionManager.OnSouthSecondaryButtonCanceled -= OnButtonReleased;
     }
 }

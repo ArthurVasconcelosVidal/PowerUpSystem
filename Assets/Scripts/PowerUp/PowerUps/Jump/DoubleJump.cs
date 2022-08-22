@@ -15,6 +15,7 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
         TODO: 
             - Refactor to make the script more independent
             - Remove PLayer Manager dependency
+            - Add a variable to control the cancel fall Gravity constant
     */
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Jump();
 

@@ -6,32 +6,35 @@ public class Trampoline : MonoBehaviour{
     [SerializeField] string playerTag;
     [SerializeField] JumpFeature jumpFeature;
 
-    void Start() {
-
-    }
-
-    void OnCollisionEnter(Collision other) {
-        if(other.gameObject.CompareTag(playerTag)){
-        }
-    }
-
-    void OnCollisionExit(Collision other) {
-        if(other.gameObject.CompareTag(playerTag)){
-
-        }
-    }
-
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.CompareTag(playerTag)){
-            Rigidbody rigidbody = other.gameObject.GetComponent<Rigidbody>();
-            GravityManager gravityManager = GetComponent<GravityManager>();
-            //gravityManager.gra
-            //rigidbody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            TrampolineJump(other.gameObject);
+            CallJumpAnimation(other.gameObject);
+            ResetDoubleJump(other.gameObject);
         }
     }
 
-    void OnTriggerExit(Collider other) {
-        
+    void TrampolineJump(GameObject target){
+        Rigidbody rigidbody = target.GetComponent<Rigidbody>();
+        GravityManager gravityManager = target.GetComponent<GravityManager>();
+        gravityManager.IsUsingSpecialGravity = true;
+        rigidbody.velocity = Vector3.zero;
+        gravityManager.GravityForce = -jumpFeature.JumpGravity;
+        rigidbody.AddForce(jumpFeature.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
+    }
+    
+    void CallJumpAnimation(GameObject target){
+        Animator playerAnimator;
+        if(target.TryGetComponent<Animator>(out playerAnimator)){
+            playerAnimator.applyRootMotion = false;
+            playerAnimator.SetTrigger("TrampolineJump");
+        }
     }
 
+    void ResetDoubleJump(GameObject target){
+        DoubleJump playerJumpBehaviour;
+        if(target.TryGetComponent<DoubleJump>(out playerJumpBehaviour)){
+            playerJumpBehaviour.CanDoubleJump = true;
+        }
+    }
 }

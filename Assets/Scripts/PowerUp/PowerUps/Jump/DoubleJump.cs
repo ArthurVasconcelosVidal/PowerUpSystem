@@ -14,12 +14,7 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     [SerializeField] [Range(1,2)] float fallMultiplier = 1.7f;
     JumpFeature actualJump;
     bool canDoubleJump = true;
-    /*
-        TODO: 
-            - Refactor to make the script more independent
-            - Remove PLayer Manager dependency
-            - Add a variable to control the cancel fall Gravity constant
-    */
+    
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Jump();
 
     public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => CancelJump();

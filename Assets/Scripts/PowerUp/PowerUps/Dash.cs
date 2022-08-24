@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 public class Dash : MonoBehaviour, IPressReleaseAction{
     [SerializeField] InputActionManager playerInput;
+    [SerializeField] Animator animator;
     [SerializeField] Rigidbody playerRigidBody;
     [SerializeField] GameObject forwardReference; 
     bool canDash = true;
@@ -26,6 +27,14 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
 
         canDash = false;
         DashActive(forwardReference.transform.forward.normalized, dashTime);
+        CallDashAnimation();
+    }
+
+    void CallDashAnimation(){
+        if(!animator)
+            return;     
+        animator.applyRootMotion = false;
+        animator.SetTrigger("Dash");
     }
 
     async void DashActive(Vector3 direction, float dashTime) {

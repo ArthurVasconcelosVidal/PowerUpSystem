@@ -10,7 +10,7 @@ public class GravityManager : MonoBehaviour{
     [SerializeField] float gravityForce;
     Vector3 gravityDirection = Vector3.down;
     bool isGrounded = false;
-    bool isUsingSpecialGravity = false;
+    [SerializeField] bool isUsingSpecialGravity = false;
     public bool IsGrounded  { get => isGrounded;
                                 set{
                                     isGrounded = value;
@@ -36,13 +36,12 @@ public class GravityManager : MonoBehaviour{
             if(IsGrounded){
                 const float BASE_GRAVITY_FORCE = 9.8f;
                 gravityForce = BASE_GRAVITY_FORCE;
+                isUsingSpecialGravity = false;
             }
             else if(!isUsingSpecialGravity){
                 const float FALLING_GRAVITY_FORCE = 9.8f;
                 gravityForce = FALLING_GRAVITY_FORCE;
             }
-            
-            isUsingSpecialGravity = true;
     }
 
     void GravityApply() => PlayerManager.CharacterRigidbody.AddForce(gravityDirection * gravityForce);

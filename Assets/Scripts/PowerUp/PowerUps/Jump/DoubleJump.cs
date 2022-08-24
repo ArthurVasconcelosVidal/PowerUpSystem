@@ -14,7 +14,7 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     [SerializeField] [Range(1,2)] float fallMultiplier = 1.7f;
     JumpFeature actualJump;
     bool canDoubleJump = true;
-    
+    public bool CanDoubleJump {get => canDoubleJump; set => canDoubleJump = value;}
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Jump();
 
     public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => CancelJump();

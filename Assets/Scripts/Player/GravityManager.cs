@@ -11,6 +11,9 @@ public class GravityManager : MonoBehaviour{
     Vector3 gravityDirection = Vector3.down;
     bool isGrounded = false;
     [SerializeField] bool isUsingSpecialGravity = false;
+    const float FALLING_GRAVITY_FORCE = 9.8f;
+    const float BASE_GRAVITY_FORCE = 9.8f;
+
     public bool IsGrounded  { get => isGrounded;
                                 set{
                                     isGrounded = value;
@@ -18,7 +21,6 @@ public class GravityManager : MonoBehaviour{
                                     }
                             }
     public bool IsUsingSpecialGravity { get => isUsingSpecialGravity; set => isUsingSpecialGravity = value; }
-
     public float GravityForce { get => gravityForce; set{ gravityForce = value; } }
     public Vector3 GravityDirection { get => gravityDirection; set{ gravityDirection = value; } }
 
@@ -34,16 +36,21 @@ public class GravityManager : MonoBehaviour{
 
     void GravityBehaviour(){
             if(IsGrounded){
-                const float BASE_GRAVITY_FORCE = 9.8f;
                 gravityForce = BASE_GRAVITY_FORCE;
                 isUsingSpecialGravity = false;
+                GravityDirection = Vector3.down;
             }
             else if(!isUsingSpecialGravity){
-                const float FALLING_GRAVITY_FORCE = 9.8f;
                 gravityForce = FALLING_GRAVITY_FORCE;
+                GravityDirection = Vector3.down;
             }
     }
 
     void GravityApply() => PlayerManager.CharacterRigidbody.AddForce(gravityDirection * gravityForce);
 
+    public void ResetGravity(){
+        GravityDirection = Vector3.down;
+        GravityForce = BASE_GRAVITY_FORCE;
+        isUsingSpecialGravity = false;
+    }
 }

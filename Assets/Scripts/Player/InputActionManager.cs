@@ -11,10 +11,6 @@ public class InputActionManager : MonoBehaviour{
     [SerializeField] Vector2 leftStick;
     public Vector2 RightStickValue { get { return rightStick; } }
     public Vector2 LeftStickValue { get { return leftStick; } }
-    
-    [Header("Primary buttons active (DEBUG)")]
-    [SerializeField] bool southButtonPrimary = false;
-    [SerializeField] bool eastButtonPrimary = false;
 
     [Header("Active Buttons")]
     public bool southButtonActive; 
@@ -59,11 +55,9 @@ public class InputActionManager : MonoBehaviour{
             if(southButtonActive){
                 if(OnSouthPrimaryButtonPerformed != null){
                     OnSouthPrimaryButtonPerformed.Invoke(this, contextMenu);
-                    southButtonPrimary = true;
                 }
                 else{
                     OnSouthSecondaryButtonPerformed?.Invoke(this, contextMenu);
-                    southButtonPrimary = false;
                 }
             }
         };
@@ -76,11 +70,9 @@ public class InputActionManager : MonoBehaviour{
             if(eastButtonActive){
                 if(OnEastPrimaryButtonPerformed != null){
                     OnEastPrimaryButtonPerformed.Invoke(this, contextMenu);
-                    eastButtonPrimary = true;
                 }
                 else{
                     OnEastSecondaryButtonPerformed?.Invoke(this, contextMenu);
-                    eastButtonPrimary = false;
                 }
             }
         };
@@ -89,7 +81,7 @@ public class InputActionManager : MonoBehaviour{
     void ButtonsCanceledConfig(){
         InputManager.MainPlayerInput.GameAction.SouthButton.canceled += contextMenu => {
             if(southButtonActive){
-                if(southButtonPrimary)
+                if(OnSouthPrimaryButtonPerformed != null)
                     OnSouthPrimaryButtonCanceled?.Invoke(this, contextMenu);
                 else
                     OnSouthSecondaryButtonCanceled?.Invoke(this, contextMenu);
@@ -102,7 +94,7 @@ public class InputActionManager : MonoBehaviour{
 
         InputManager.MainPlayerInput.GameAction.EastButton.canceled += contextMenu => {
             if(eastButtonActive){
-                if(eastButtonPrimary)
+                if(OnEastPrimaryButtonPerformed != null)
                     OnEastPrimaryButtonCanceled?.Invoke(this, contextMenu);
                 else
                     OnEastSecondaryButtonCanceled?.Invoke(this, contextMenu);

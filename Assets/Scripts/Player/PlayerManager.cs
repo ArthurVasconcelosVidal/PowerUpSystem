@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour{
     [SerializeField] GameObject meshObject;
     [SerializeField] GameObject spawnProjectilePoint;
     [SerializeField] GravityManager gravityManager;
+    [SerializeField] List<IPressReleaseAction> poewers = new List<IPressReleaseAction>();
 
     public MovementManager MovementManager { get => movementManager; }
     public InputActionManager InputActionManager { get => inputActionManager; }
@@ -23,5 +24,13 @@ public class PlayerManager : MonoBehaviour{
         if (instance == null) instance = this;
         else Destroy(this);
     } 
+
+    public void EnableMovement(bool enable) => movementManager.enabled = enable;
+
+    public void EnablePowers(bool enable){
+
+    }
+
+    public void EnableGravity(bool enable) => gravityManager.enabled = enable;
 
 }

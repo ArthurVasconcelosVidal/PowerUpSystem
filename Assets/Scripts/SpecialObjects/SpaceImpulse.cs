@@ -4,90 +4,75 @@ using UnityEngine;
 using System.Threading.Tasks;
 using UnityEngine.InputSystem;
 
-public class SpaceImpulse : MonoBehaviour, IPressReleaseAction{
-    [SerializeField] SpaceImpulse targetSpaceImpulse;
-    [SerializeField] bool usingSpaceImpulse;
+public class SpaceImpulse : MonoBehaviour{
+    [SerializeField] GameObject target;
     [SerializeField] string playerTag;
-    [SerializeField] float velocity;
-    [SerializeField] float gravityForce;
-    [SerializeField] float timeToEnd;
-    GravityManager playerGravity;
-
+    [SerializeField] float speedToTarget;
+    [SerializeField] float speedToCenter;
+    [SerializeField] float timeToEnableCollider;
     GameObject player;
     /*
         TODO:
+            REMAKE
+
             - Neutralize gravity force and apply a force to the center (Feito)
             - Disable gravity point after a certain quantity of time or when the player press a button to cancel the space impulse (Feito)
             - Disable any movement or powerUp (Make easy to disable specific inputs (like disable a button)) (Feito)
 
-            - Make the movement to the next object (can use spherical interpolation to move between two points)
-            - Make the posibility of unlimited stop points in the movement (can make a trail if space impulse)
+            - Make the movement to the next object (can use spherical interpolation to move between two points) (Feito)
             - make the movement Smooth
             - get some animation to no gravity space
     */
-    
-    void OnTriggerEnter(Collider other) {
+
+    void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag(playerTag)){
-            usingSpaceImpulse = true;
+            GetComponent<SphereCollider>().enabled = false;
             player = other.gameObject;
-            playerGravity = player.GetComponent<GravityManager>();
-            ChangeGravity();
-            EnablePlayerComponents(false);
-            ButtonBehaviour(true);
-            TimeToQuit();
+            EnableComponents(false);
+            StartCoroutine(MoveTo(transform.position, speedToCenter));
+            EnableButtonBehaviour(true);
         }
     }
 
-    void OnTriggerStay(Collider other) {
-        if(other.gameObject.CompareTag(playerTag) && usingSpaceImpulse){
-            playerGravity.GravityDirection = (transform.position - other.transform.position).normalized;
-        }
+    void EnableComponents(bool enable){
+        player.GetComponent<GravityManager>().enabled = enable;
+        player.GetComponent<MovementManager>().enabled = enable;
+        player.GetComponent<Rigidbody>().isKinematic = !enable;
     }
 
-    void OnTriggerExit(Collider other) {
-        if(other.gameObject.CompareTag(playerTag)){
-            EnablePlayerComponents(true);
-            ButtonBehaviour(false);
-            playerGravity.ResetGravity();
-            usingSpaceImpulse = false;    
-        }
+    void QuitSpace(){
+        EnableComponents(true);
+        EnableButtonBehaviour(false);
+        EnableSphereCollider();
+        StopAllCoroutines();
     }
-
-    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => QuitImpulseSpace();
-
-    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => LaunchPlayer();
-
-    void EnablePlayerComponents(bool enable = true){
-        var playerInput = player.GetComponent<InputActionManager>();
-        playerInput.EnableAllControlInputs(enable);
-        playerInput.southButtonActive = true;
-        playerInput.eastButtonActive = true;
-    }
-
-    void ChangeGravity(){
-        var playerRb = player.GetComponent<Rigidbody>();
-        playerRb.velocity = Vector3.zero;
-        playerGravity.IsUsingSpecialGravity = true;
-        playerGravity.GravityForce = gravityForce;
-    }
-
-    async void TimeToQuit(){
-        await Task.Delay((int)timeToEnd*1000);
-        QuitImpulseSpace();
-    }
-
-    void QuitImpulseSpace(){
-        if(usingSpaceImpulse){
-            playerGravity.ResetGravity();
-            usingSpaceImpulse = false;
-        }
+    
+    async void EnableSphereCollider(){
+        await Task.Delay((int)(timeToEnableCollider*1000));
+        GetComponent<SphereCollider>().enabled = true;
     }
 
     void LaunchPlayer(){
-        //var playerGravity = player.GetComponent<> 
+        StartCoroutine(MoveTo(target.transform.position, speedToTarget, true));
     }
 
-    void ButtonBehaviour(bool enable){
+    IEnumerator MoveTo(Vector3 position, float speed, bool activeComponetsAtEnd = false){
+        float actualTime = 0;
+        var playerRb = player.GetComponent<Rigidbody>();
+        Vector3 iniPoint = player.transform.position;
+        while (actualTime < 1){
+            playerRb.MovePosition(Vector3.Lerp(iniPoint, position, actualTime));
+            actualTime += speed * Time.deltaTime;
+            yield return null;
+        }
+
+        if(activeComponetsAtEnd){
+            EnableComponents(true);
+            EnableSphereCollider();
+        }
+    }
+
+    void EnableButtonBehaviour(bool enable){
         var playerInput = player.GetComponent<InputActionManager>();
         if(enable){
             playerInput.OnEastPrimaryButtonPerformed += OnButtonPressed;
@@ -97,4 +82,8 @@ public class SpaceImpulse : MonoBehaviour, IPressReleaseAction{
             playerInput.OnSouthPrimaryButtonPerformed -= OnButtonReleased;
         }
     }
+
+    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => QuitSpace();
+
+    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => LaunchPlayer();
 }

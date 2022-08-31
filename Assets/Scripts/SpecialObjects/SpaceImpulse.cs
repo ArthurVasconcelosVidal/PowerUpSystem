@@ -11,18 +11,6 @@ public class SpaceImpulse : MonoBehaviour{
     [SerializeField] float speedToCenter;
     [SerializeField] float timeToEnableCollider;
     GameObject player;
-    /*
-        TODO:
-            REMAKE
-
-            - Neutralize gravity force and apply a force to the center (Feito)
-            - Disable gravity point after a certain quantity of time or when the player press a button to cancel the space impulse (Feito)
-            - Disable any movement or powerUp (Make easy to disable specific inputs (like disable a button)) (Feito)
-
-            - Make the movement to the next object (can use spherical interpolation to move between two points) (Feito)
-            - make the movement Smooth
-            - get some animation to no gravity space
-    */
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag(playerTag)){
@@ -53,7 +41,9 @@ public class SpaceImpulse : MonoBehaviour{
     }
 
     void LaunchPlayer(){
+        StopAllCoroutines();
         StartCoroutine(MoveTo(target.transform.position, speedToTarget, true));
+        EnableButtonBehaviour(false);
     }
 
     IEnumerator MoveTo(Vector3 position, float speed, bool activeComponetsAtEnd = false){
@@ -65,6 +55,8 @@ public class SpaceImpulse : MonoBehaviour{
             actualTime += speed * Time.deltaTime;
             yield return null;
         }
+
+        playerRb.velocity = Vector3.zero;
 
         if(activeComponetsAtEnd){
             EnableComponents(true);

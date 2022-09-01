@@ -1,39 +1,119 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
+using UnityEngine.InputSystem;
 
 public class SpaceImpulse : MonoBehaviour{
-    [SerializeField] SpaceImpulse targetSpaceImpulse;
+    [SerializeField] GameObject target;
     [SerializeField] string playerTag;
-    [SerializeField] float velocity;
-    [SerializeField] float timeToEnd;
+    [SerializeField] float speedToTarget;
+    [SerializeField] float speedToCenter;
+    [SerializeField] float rotationSpeed;
+    [SerializeField] float timeToEnableCollider;
+    [SerializeField] bool applyForceAtEnd;
+    [SerializeField] float forceAtEnd;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject meshObject;
 
-    GravityManager playerGravity;
+    void OnTriggerEnter(Collider other){
+        if(other.gameObject.CompareTag(playerTag)){
+            GetComponent<SphereCollider>().enabled = false;
+            EnableComponents(false);
+            StartCoroutine(MoveTo(transform.position, speedToCenter));
+            EnableButtonBehaviour(true);
+            var animator = player.GetComponent<Animator>();
+            RotateTo();
+            ToFlyAnimation();
+        }
+    }
 
-    /*
-        TODO:
-            - Neutralize gravity force and apply a force to the center
-            - Disable any movement or powerUp (Make easy to disable specific inputs (like disable a button))
-            - Make the movement to the next object (can use spherical interpolation to move between two points)
-            - Make the posibility of unlimited stop points in the movement (can make a trail if space impulse)
-            - Disable gravity point after a certain quantity of time or when the player press a button to cancel the space impulse
-            - make the movement Smooth
-            - get some animation to no gravity space
-    */
+    void EnableComponents(bool enable){
+        player.GetComponent<GravityManager>().enabled = enable;
+        player.GetComponent<MovementManager>().enabled = enable;
+        player.GetComponent<Rigidbody>().isKinematic = !enable;
+    }
+
+    void QuitSpace(){
+        EnableComponents(true);
+        EnableButtonBehaviour(false);
+        EnableSphereCollider();
+        StopAllCoroutines();
+        ToRollAnimation();
+    }
     
-    void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag(playerTag)){}
+    async void EnableSphereCollider(){
+        await Task.Delay((int)(timeToEnableCollider*1000));
+        GetComponent<SphereCollider>().enabled = true;
     }
 
-    void OnTriggerStay(Collider other) {
-        if(other.gameObject.CompareTag(playerTag)){}
+    void LaunchPlayer(){
+        StopAllCoroutines();
+        StartCoroutine(MoveTo(target.transform.position, speedToTarget, true, applyForceAtEnd));
+        EnableButtonBehaviour(false);
     }
 
-    void EnablePlayerComponents(GameObject player, bool enable = true){
+    IEnumerator MoveTo(Vector3 position, float speed, bool activeComponetsAtEnd = false, bool applyForceAtEnd = false){
+        float actualTime = 0;
+        var playerRb = player.GetComponent<Rigidbody>();
+        Vector3 iniPoint = player.transform.position;
+        while (actualTime < 1){
+            playerRb.MovePosition(Vector3.Lerp(iniPoint, position, actualTime));
+            actualTime += speed * Time.deltaTime;
+            yield return null;
+        }
 
+        playerRb.velocity = Vector3.zero;
+        
+        if(activeComponetsAtEnd) ActiveComponents();
+        if(applyForceAtEnd) ApplyForce(playerRb);
+    }
+    
+    async void RotateTo(){
+        float actualTime = 0;
+        var playerRb = player.GetComponent<Rigidbody>();
+        Quaternion iniRotation = meshObject.transform.rotation;
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        Quaternion rotateToDirection = Quaternion.LookRotation(direction, meshObject.transform.up);
+        while (actualTime < 1){
+            meshObject.transform.rotation = Quaternion.Lerp(iniRotation, rotateToDirection, actualTime);
+            actualTime += rotationSpeed * Time.deltaTime;
+            await Task.Yield();
+        }
     }
 
-    void DisableGravity(){
-
+    void ActiveComponents(){
+        EnableComponents(true);
+        EnableSphereCollider();
+        ToRollAnimation();
     }
+
+    void ApplyForce(Rigidbody playerRb){
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        playerRb.AddForce(direction * forceAtEnd, ForceMode.Impulse);
+    }
+
+    void ToFlyAnimation(){
+        var animator = player.GetComponent<Animator>();
+        animator.SetTrigger("FlyPose");
+    }
+    void ToRollAnimation() {
+        var animator = player.GetComponent<Animator>();
+        animator.SetTrigger("RollSpaceImpulse");
+    }
+
+    void EnableButtonBehaviour(bool enable){
+        var playerInput = player.GetComponent<InputActionManager>();
+        if(enable){
+            playerInput.OnEastPrimaryButtonPerformed += OnButtonPressed;
+            playerInput.OnSouthPrimaryButtonPerformed += OnButtonReleased;
+        }else{
+            playerInput.OnEastPrimaryButtonPerformed -= OnButtonPressed;
+            playerInput.OnSouthPrimaryButtonPerformed -= OnButtonReleased;
+        }
+    }
+
+    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => QuitSpace();
+
+    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => LaunchPlayer();
 }

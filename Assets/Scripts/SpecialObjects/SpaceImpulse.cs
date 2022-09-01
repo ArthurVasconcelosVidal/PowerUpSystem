@@ -9,18 +9,22 @@ public class SpaceImpulse : MonoBehaviour{
     [SerializeField] string playerTag;
     [SerializeField] float speedToTarget;
     [SerializeField] float speedToCenter;
+    [SerializeField] float rotationSpeed;
     [SerializeField] float timeToEnableCollider;
     [SerializeField] bool applyForceAtEnd;
     [SerializeField] float forceAtEnd;
-    GameObject player;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject meshObject;
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag(playerTag)){
             GetComponent<SphereCollider>().enabled = false;
-            player = other.gameObject;
             EnableComponents(false);
             StartCoroutine(MoveTo(transform.position, speedToCenter));
             EnableButtonBehaviour(true);
+            var animator = player.GetComponent<Animator>();
+            RotateTo();
+            ToFlyAnimation();
         }
     }
 
@@ -35,6 +39,7 @@ public class SpaceImpulse : MonoBehaviour{
         EnableButtonBehaviour(false);
         EnableSphereCollider();
         StopAllCoroutines();
+        ToRollAnimation();
     }
     
     async void EnableSphereCollider(){
@@ -59,16 +64,42 @@ public class SpaceImpulse : MonoBehaviour{
         }
 
         playerRb.velocity = Vector3.zero;
-
-        if(activeComponetsAtEnd){
-            EnableComponents(true);
-            EnableSphereCollider();
-        }
         
-        if(applyForceAtEnd){
-            Vector3 direction = (target.transform.position - transform.position).normalized;
-            playerRb.AddForce(direction * forceAtEnd, ForceMode.Impulse);
+        if(activeComponetsAtEnd) ActiveComponents();
+        if(applyForceAtEnd) ApplyForce(playerRb);
+    }
+    
+    async void RotateTo(){
+        float actualTime = 0;
+        var playerRb = player.GetComponent<Rigidbody>();
+        Quaternion iniRotation = meshObject.transform.rotation;
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        Quaternion rotateToDirection = Quaternion.LookRotation(direction, meshObject.transform.up);
+        while (actualTime < 1){
+            meshObject.transform.rotation = Quaternion.Lerp(iniRotation, rotateToDirection, actualTime);
+            actualTime += rotationSpeed * Time.deltaTime;
+            await Task.Yield();
         }
+    }
+
+    void ActiveComponents(){
+        EnableComponents(true);
+        EnableSphereCollider();
+        ToRollAnimation();
+    }
+
+    void ApplyForce(Rigidbody playerRb){
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        playerRb.AddForce(direction * forceAtEnd, ForceMode.Impulse);
+    }
+
+    void ToFlyAnimation(){
+        var animator = player.GetComponent<Animator>();
+        animator.SetTrigger("FlyPose");
+    }
+    void ToRollAnimation() {
+        var animator = player.GetComponent<Animator>();
+        animator.SetTrigger("RollSpaceImpulse");
     }
 
     void EnableButtonBehaviour(bool enable){

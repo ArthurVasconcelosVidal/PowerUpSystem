@@ -10,6 +10,8 @@ public class SpaceImpulse : MonoBehaviour{
     [SerializeField] float speedToTarget;
     [SerializeField] float speedToCenter;
     [SerializeField] float timeToEnableCollider;
+    [SerializeField] bool applyForceAtEnd;
+    [SerializeField] float forceAtEnd;
     GameObject player;
 
     void OnTriggerEnter(Collider other){
@@ -42,11 +44,11 @@ public class SpaceImpulse : MonoBehaviour{
 
     void LaunchPlayer(){
         StopAllCoroutines();
-        StartCoroutine(MoveTo(target.transform.position, speedToTarget, true));
+        StartCoroutine(MoveTo(target.transform.position, speedToTarget, true, applyForceAtEnd));
         EnableButtonBehaviour(false);
     }
 
-    IEnumerator MoveTo(Vector3 position, float speed, bool activeComponetsAtEnd = false){
+    IEnumerator MoveTo(Vector3 position, float speed, bool activeComponetsAtEnd = false, bool applyForceAtEnd = false){
         float actualTime = 0;
         var playerRb = player.GetComponent<Rigidbody>();
         Vector3 iniPoint = player.transform.position;
@@ -61,6 +63,11 @@ public class SpaceImpulse : MonoBehaviour{
         if(activeComponetsAtEnd){
             EnableComponents(true);
             EnableSphereCollider();
+        }
+        
+        if(applyForceAtEnd){
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            playerRb.AddForce(direction * forceAtEnd, ForceMode.Impulse);
         }
     }
 

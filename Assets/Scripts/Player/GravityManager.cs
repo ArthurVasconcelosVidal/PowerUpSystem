@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityManager : MonoBehaviour{
-    
-    PlayerManager PlayerManager { get{ return PlayerManager.instance; } }
+
     [SerializeField] GravityType gravityType = GravityType.onGrounded;
+    [SerializeField] Rigidbody characterRigidbody;
     [SerializeField] float gravityForce;
     Vector3 gravityDirection = Vector3.down;
     bool isGrounded = false;
@@ -39,6 +39,7 @@ public class GravityManager : MonoBehaviour{
                 gravityForce = BASE_GRAVITY_FORCE;
                 isUsingSpecialGravity = false;
                 GravityDirection = Vector3.down;
+                characterRigidbody.velocity = Vector3.zero;
             }
             else if(!isUsingSpecialGravity){
                 gravityForce = FALLING_GRAVITY_FORCE;
@@ -46,7 +47,7 @@ public class GravityManager : MonoBehaviour{
             }
     }
 
-    void GravityApply() => PlayerManager.CharacterRigidbody.AddForce(gravityDirection * gravityForce);
+    void GravityApply() => characterRigidbody.AddForce(gravityDirection * gravityForce);
 
     public void ResetGravity(){
         GravityDirection = Vector3.down;

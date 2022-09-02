@@ -13,8 +13,8 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     [SerializeField] float movementSpeed;
     [SerializeField] float runningSpeed;
     [SerializeField] float increasingSpeedFactor = 6;
-    [SerializeField] float speed;
-    [SerializeField] float animValue;
+    float speed;
+    float animValue;
     const float INPUT_THRESHOLD = 0.9f;
     [SerializeField] float rotationVelocity;
     [SerializeField] bool isRunning = false;

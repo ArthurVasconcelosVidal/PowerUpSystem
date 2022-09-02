@@ -12,12 +12,16 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     [SerializeField] Rigidbody rigidbody;
     [SerializeField] float movementSpeed;
     [SerializeField] float runningSpeed;
+    [SerializeField] float increasingSpeedFactor = 6;
+    [SerializeField] float speed;
+    [SerializeField] float animValue;
+    const float INPUT_THRESHOLD = 0.9f;
     [SerializeField] float rotationVelocity;
     [SerializeField] bool isRunning = false;
     public Vector3 RealPlayerDirection { get { return direction; } }
 
     void FixedUpdate(){
-        direction = ObjectRelatedDirection(inputActionManager.LeftStickValue, Camera.main.gameObject);
+        direction = ObjectRelatedDirection(inputActionManager.LeftStickValue.normalized, Camera.main.gameObject);
         if (direction != Vector3.zero){  
             MovePlayer();
             RotatePlayer();
@@ -33,10 +37,13 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     }
 
     void MovePlayer(){
-        if (isRunning) 
-            rigidbody.MovePosition(transform.position + direction * inputActionManager.LeftStickValue.sqrMagnitude * runningSpeed * Time.fixedDeltaTime);
-        else
-            rigidbody.MovePosition(transform.position + direction * inputActionManager.LeftStickValue.sqrMagnitude * movementSpeed * Time.fixedDeltaTime);
+        if(!isRunning)
+            speed = movementSpeed;
+        else if(speed < runningSpeed && inputActionManager.LeftStickValue.sqrMagnitude > INPUT_THRESHOLD)
+            speed += increasingSpeedFactor * Time.fixedDeltaTime;
+
+        speed = Mathf.Clamp(speed, 0, runningSpeed);
+        rigidbody.MovePosition(transform.position + direction * inputActionManager.LeftStickValue.sqrMagnitude * speed * Time.fixedDeltaTime);
     }
 
     void RotatePlayer(){
@@ -45,11 +52,21 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     }
 
     public void WalkAnimation(bool isRunning){
-        float animValue =  inputActionManager.LeftStickValue.sqrMagnitude;
         const float RUNNING_ANIM_VALUE = 2;
-        if (isRunning && animValue > 0.9) animValue = RUNNING_ANIM_VALUE; 
+        if(!isRunning && animValue > inputActionManager.LeftStickValue.sqrMagnitude){
+            animValue -= increasingSpeedFactor * Time.fixedDeltaTime;
+            animValue = Mathf.Clamp(animValue, inputActionManager.LeftStickValue.sqrMagnitude, RUNNING_ANIM_VALUE);
+        }
+        else if(!isRunning){
+            animValue = inputActionManager.LeftStickValue.sqrMagnitude;
+        }
+        else if(inputActionManager.LeftStickValue.sqrMagnitude > INPUT_THRESHOLD){
+            animValue += increasingSpeedFactor * Time.fixedDeltaTime;
+            animValue = Mathf.Clamp(animValue, INPUT_THRESHOLD, RUNNING_ANIM_VALUE);
+        }
 		playerAnimator.SetFloat("MovVelocity", animValue);
 	}
+
     //Debug
     private void OnDrawGizmos() {
         Gizmos.color = Color.blue;
@@ -68,5 +85,6 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     void OnDisable() {
         inputActionManager.OnWestButtonPerformed -= OnButtonPressed;
         inputActionManager.OnWestButtonCanceled -= OnButtonReleased;
+        isRunning = false;
     }
 }

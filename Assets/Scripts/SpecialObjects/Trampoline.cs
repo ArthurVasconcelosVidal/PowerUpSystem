@@ -20,7 +20,7 @@ public class Trampoline : MonoBehaviour{
         gravityManager.IsUsingSpecialGravity = true;
         rigidbody.velocity = Vector3.zero;
         gravityManager.GravityForce = -jumpFeature.JumpGravity;
-        rigidbody.AddForce(jumpFeature.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
+        rigidbody.AddForce(jumpFeature.IniJumpVelocity * transform.up, ForceMode.VelocityChange);
     }
     
     void CallJumpAnimation(GameObject target){

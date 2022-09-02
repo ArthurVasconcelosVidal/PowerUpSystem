@@ -19,10 +19,14 @@ public class InputActionManager : MonoBehaviour{
     public bool eastButtonActive;
     public bool rightStickActive;
     public bool leftStickActive;
+    public bool rightShoulderActive;
+    public bool leftShoulderActive;
+    public bool rightTriggerActive;
+    public bool leftTriggerActive; 
 
     public event EventHandler<InputAction.CallbackContext> 
-    OnSouthSecondaryButtonPerformed, OnSouthPrimaryButtonPerformed, OnWestButtonPerformed, OnNorthButtonPerformed, OnEastPrimaryButtonPerformed,OnEastSecondaryButtonPerformed,
-    OnSouthSecondaryButtonCanceled, OnSouthPrimaryButtonCanceled, OnWestButtonCanceled, OnNorthButtonCanceled, OnEastPrimaryButtonCanceled,OnEastSecondaryButtonCanceled;
+    OnSouthSecondaryButtonPerformed, OnSouthPrimaryButtonPerformed, OnWestButtonPerformed, OnNorthButtonPerformed, OnEastPrimaryButtonPerformed,OnEastSecondaryButtonPerformed, OnRightShoulderButtonPerformed, OnLeftShoulderButtonPerformed, OnRightTriggerButtonPerformed, OnLeftTriggerButtonPerformed,
+    OnSouthSecondaryButtonCanceled, OnSouthPrimaryButtonCanceled, OnWestButtonCanceled, OnNorthButtonCanceled, OnEastPrimaryButtonCanceled,OnEastSecondaryButtonCanceled, OnRightShoulderButtonCanceled, OnLeftShoulderButtonCanceled, OnRightTriggerButtonCanceled, OnLeftTriggerButtonCanceled;
 
     void Start() {
         StickConfig();
@@ -76,6 +80,14 @@ public class InputActionManager : MonoBehaviour{
                 }
             }
         };
+
+        InputManager.MainPlayerInput.GameAction.RightShoulder.performed += ContextMenu =>{ if(rightShoulderActive) OnRightShoulderButtonPerformed?.Invoke(this,ContextMenu);};
+
+        InputManager.MainPlayerInput.GameAction.LeftShoulder.performed += ContextMenu =>{ if(leftShoulderActive) OnLeftShoulderButtonPerformed?.Invoke(this,ContextMenu);};
+
+        InputManager.MainPlayerInput.GameAction.RightTrigger.performed += ContextMenu =>{ if(rightTriggerActive) OnRightTriggerButtonPerformed?.Invoke(this,ContextMenu);};
+        
+        InputManager.MainPlayerInput.GameAction.LeftTrigger.performed += ContextMenu =>{ if(leftTriggerActive) OnLeftTriggerButtonPerformed?.Invoke(this,ContextMenu);};
     }
 
     void ButtonsCanceledConfig(){
@@ -90,7 +102,7 @@ public class InputActionManager : MonoBehaviour{
 
         InputManager.MainPlayerInput.GameAction.WestButton.canceled += contextMenu => { if(westButtonActive) OnWestButtonCanceled?.Invoke(this, contextMenu);};
 
-        InputManager.MainPlayerInput.GameAction.NorthButton.canceled += contextMenu => {if(northButtonActive) OnNorthButtonCanceled?.Invoke(this, contextMenu);};
+        InputManager.MainPlayerInput.GameAction.NorthButton.canceled += contextMenu => { if(northButtonActive) OnNorthButtonCanceled?.Invoke(this, contextMenu);};
 
         InputManager.MainPlayerInput.GameAction.EastButton.canceled += contextMenu => {
             if(eastButtonActive){
@@ -100,6 +112,14 @@ public class InputActionManager : MonoBehaviour{
                     OnEastSecondaryButtonCanceled?.Invoke(this, contextMenu);
             }
         };
+
+        InputManager.MainPlayerInput.GameAction.RightShoulder.canceled += ContextMenu =>{ if(rightShoulderActive) OnRightShoulderButtonCanceled?.Invoke(this,ContextMenu);};
+
+        InputManager.MainPlayerInput.GameAction.LeftShoulder.canceled += ContextMenu =>{ if(leftShoulderActive) OnLeftShoulderButtonCanceled?.Invoke(this,ContextMenu);};
+
+        InputManager.MainPlayerInput.GameAction.RightTrigger.canceled += ContextMenu =>{ if(rightTriggerActive) OnRightTriggerButtonCanceled?.Invoke(this,ContextMenu);};
+
+        InputManager.MainPlayerInput.GameAction.LeftTrigger.canceled += ContextMenu =>{ if(leftTriggerActive) OnLeftTriggerButtonCanceled?.Invoke(this,ContextMenu);};
     }
 
     public void EnableAllControlInputs(bool enable = true){
@@ -123,6 +143,9 @@ public class InputActionManager : MonoBehaviour{
         //TODO: Implement if necessary
     }
     public void EnableBackButtons(bool enable = true){
-        //TODO: Implement if necessary
+        rightShoulderActive = enable;
+        leftShoulderActive = enable;
+        rightTriggerActive = enable;
+        leftTriggerActive = enable;
     }
 }

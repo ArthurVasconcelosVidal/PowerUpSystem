@@ -54,11 +54,11 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
     }
 
     void OnEnable() {
-        playerInput.OnWestButtonPerformed += OnButtonPressed;
-        playerInput.OnWestButtonCanceled += OnButtonReleased;
+        playerInput.OnRightShoulderButtonPerformed += OnButtonPressed;
+        playerInput.OnRightShoulderButtonCanceled += OnButtonReleased;
     }
     void OnDisable() {
-        playerInput.OnWestButtonPerformed -= OnButtonPressed;
-        playerInput.OnWestButtonCanceled -= OnButtonReleased;
+        playerInput.OnRightShoulderButtonPerformed -= OnButtonPressed;
+        playerInput.OnRightShoulderButtonCanceled -= OnButtonReleased;
     }
 }

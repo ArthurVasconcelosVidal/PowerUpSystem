@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: d96be4a7631e7be4ab78006bda852bde
+guid: b5d6e9460218eb54291f831e9fd1efdd
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable:
   - first:
-      74: 3776802826753362957
-    second: Armature.001|FlyPose
+      74: -3414425176460063398
+    second: MFlyPose
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,8 +35,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature.001|FlyPose
-      takeName: Armature.001|FlyPose
+      name: MFlyPose
+      takeName: Armature.001|Armature.001|Armature.001|FlyPose
       internalID: 0
       firstFrame: 0
       lastFrame: 1
@@ -48,9 +48,9 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
@@ -104,25 +104,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 9a9858b092eaaba468f6ada16ec9072a
-  - 9fa6cd682c2594c40a6a8372bfd18978
-  - 4adc6b44f1e29f64d9abbe08923e30c8
-  - 0af6919910f396048af1c076cc2e3d5f
-  - 48923c2195d6cf541af1dfc7b5f64333
-  - 0b75786102f85c14db00f72f92e8eead
-  - 772a0bff8eefe8445bfdc34e36e29fe4
-  - 34453d6be5b2e55478234a57be9bb645
-  - e95b63675336f9748b6e759723e3c011
-  - 0ea20081342ba394cac99a347ac89d92
-  - ba632dc96252c474d8bc868b21c13998
-  - 36d1b3f3e1e81904f87afa1a199620b7
-  - 20d62d0fa2697274aa2b65d77d1333d5
-  - d4ed9223996048e42a2e59129d6200f3
-  - 537924094e947614f96f99168da10b98
-  - 240010cf8fb54804e8b8352473121996
-  - 31e48b93fa7086f46a29b09139f6f1be
-  - 1e8b5d7e8019d9344934735f67398d2b
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3

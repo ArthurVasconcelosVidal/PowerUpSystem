@@ -13,6 +13,7 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
     [SerializeField] float dashSpeed = 5;
     [SerializeField] float dashTime;
     [SerializeField] int dashRecoveryTime = 1;
+    [SerializeField] AnimationClip dashAnimation;
 
 
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => DashAction();
@@ -33,8 +34,7 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
     void CallDashAnimation(){
         if(!animator)
             return;     
-        animator.applyRootMotion = false;
-        animator.SetTrigger("Dash");
+        animator.Play(Animations.DashPose.ToString(), 0);
     }
 
     async void DashActive(Vector3 direction, float dashTime) {

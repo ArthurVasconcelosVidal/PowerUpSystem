@@ -8,3 +8,13 @@ public enum GravityType{
     onFalling,
     onJumping
 }
+
+public enum Animations{
+    IdleToRunTree,
+    FallingIdle,
+    FirstJumping,
+    DoubleJumpFlip,
+    DashPose,
+    TrampolineJump,
+    FlyPose
+}

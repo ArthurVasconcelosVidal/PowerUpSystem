@@ -95,7 +95,7 @@ public class SpaceImpulse : MonoBehaviour{
 
     void ToFlyAnimation(){
         var animator = player.GetComponent<Animator>();
-        animator.Play(Animations.FlyPose.ToString(), 0);
+        animator.CrossFadeInFixedTime(Animations.FlyPose.ToString(), 0.3f);
     }
     void ToRollAnimation() {
         var animator = player.GetComponent<Animator>();

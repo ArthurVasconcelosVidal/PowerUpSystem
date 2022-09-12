@@ -36,8 +36,8 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     void CallJumpAnimation(){
         if(!animator)
             return;     
-        animator.applyRootMotion = false;
-        animator.SetTrigger("Jump");
+        if(IsGrounded()) animator.CrossFadeInFixedTime(Animations.FirstJumping.ToString(), 0.1f);
+        else if(canDoubleJump) animator.Play(Animations.DoubleJumpFlip.ToString(), 0);
     }
 
     void SetJumpValues(JumpFeature jump){

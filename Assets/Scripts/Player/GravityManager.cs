@@ -7,10 +7,12 @@ public class GravityManager : MonoBehaviour{
 
     [SerializeField] GravityType gravityType = GravityType.onGrounded;
     [SerializeField] Rigidbody characterRigidbody;
+    [SerializeField] GameObject meshObject;
     [SerializeField] float gravityForce;
+    [SerializeField] bool isUsingSpecialGravity = false;
+    [SerializeField] LayerMask groundLayer;
     Vector3 gravityDirection = Vector3.down;
     bool isGrounded = false;
-    [SerializeField] bool isUsingSpecialGravity = false;
     const float FALLING_GRAVITY_FORCE = 9.8f;
     const float BASE_GRAVITY_FORCE = 9.8f;
 
@@ -40,6 +42,7 @@ public class GravityManager : MonoBehaviour{
                 isUsingSpecialGravity = false;
                 GravityDirection = Vector3.down;
                 characterRigidbody.velocity = Vector3.zero;
+                RotateAlignToGround();
             }
             else if(!isUsingSpecialGravity){
                 gravityForce = FALLING_GRAVITY_FORCE;
@@ -48,6 +51,16 @@ public class GravityManager : MonoBehaviour{
     }
 
     void GravityApply() => characterRigidbody.AddForce(gravityDirection * gravityForce);
+    
+    void RotateAlignToGround(){
+        float distToGround = transform.localScale.y;
+        RaycastHit hit;
+        const float OFFSET = 0.1f;
+        if(Physics.Raycast(transform.position, -transform.up, out hit, distToGround + OFFSET, groundLayer)){
+            var newRotation = Quaternion.FromToRotation(meshObject.transform.up, hit.normal) * meshObject.transform.rotation;
+            meshObject.transform.rotation = newRotation;
+        }
+    }
 
     public void ResetGravity(){
         GravityDirection = Vector3.down;

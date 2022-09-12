@@ -981,7 +981,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965876480}
-  m_LocalRotation: {x: -3.2044312e-17, y: 0.017801058, z: 5.7051293e-19, w: 0.9998416}
+  m_LocalRotation: {x: 3.2044305e-17, y: 0.017801058, z: -5.7051283e-19, w: 0.9998416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1754,8 +1754,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityType: 0
   characterRigidbody: {fileID: 1694306910}
+  meshObject: {fileID: 2118339488}
   gravityForce: 5
   isUsingSpecialGravity: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &1694306916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1811,6 +1815,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 1694306917}
   playerInput: {fileID: 1694306907}
+  meshObject: {fileID: 2118339488}
+  spinSpeed: 200
+  inSpin: 0
 --- !u!1 &1742377594
 GameObject:
   m_ObjectHideFlags: 0

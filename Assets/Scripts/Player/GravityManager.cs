@@ -51,6 +51,7 @@ public class GravityManager : MonoBehaviour{
     }
 
     void GravityApply() => characterRigidbody.AddForce(gravityDirection * gravityForce);
+    
     void RotateAlignToGround(){
         float distToGround = transform.localScale.y;
         RaycastHit hit;
@@ -58,9 +59,9 @@ public class GravityManager : MonoBehaviour{
         if(Physics.Raycast(transform.position, -transform.up, out hit, distToGround + OFFSET, groundLayer)){
             var newRotation = Quaternion.FromToRotation(meshObject.transform.up, hit.normal) * meshObject.transform.rotation;
             meshObject.transform.rotation = newRotation;
-            Debug.Log("Ground");
         }
     }
+
     public void ResetGravity(){
         GravityDirection = Vector3.down;
         GravityForce = BASE_GRAVITY_FORCE;

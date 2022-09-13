@@ -24,9 +24,9 @@ public class Trampoline : MonoBehaviour{
     }
     
     void CallJumpAnimation(GameObject target){
-        Animator playerAnimator;
-        if(target.TryGetComponent<Animator>(out playerAnimator)){
-            playerAnimator.Play(Animations.TrampolineJump.ToString(), 0);
+        AnimationManager animationManager;
+        if(target.TryGetComponent<AnimationManager>(out animationManager)){
+            animationManager.PlayAnimation(Animations.TrampolineJump, 0);
         }
     }
 

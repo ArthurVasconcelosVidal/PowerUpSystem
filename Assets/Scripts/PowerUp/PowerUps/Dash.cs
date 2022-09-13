@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 public class Dash : MonoBehaviour, IPressReleaseAction{
     [SerializeField] InputActionManager playerInput;
-    [SerializeField] Animator animator;
+    [SerializeField] AnimationManager animationManager;
     [SerializeField] Rigidbody playerRigidBody;
     [SerializeField] GameObject forwardReference; 
     bool canDash = true;
     [SerializeField] float dashSpeed = 5;
     [SerializeField] float dashTime;
     [SerializeField] int dashRecoveryTime = 1;
-    [SerializeField] AnimationClip dashAnimation;
 
 
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => DashAction();
@@ -32,9 +31,9 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
     }
 
     void CallDashAnimation(){
-        if(!animator)
+        if(!animationManager)
             return;     
-        animator.Play(Animations.DashPose.ToString(), 0);
+        animationManager.PlayAnimation(Animations.DashPose, 0);
     }
 
     async void DashActive(Vector3 direction, float dashTime) {

@@ -7,12 +7,7 @@ public class AnimationManager : MonoBehaviour{
 
     [SerializeField] Animator playerAnimator;
     [SerializeField] int actualAnimPriority = 0;
-    //BlendTree teste;
-    /*
-        TODO:
-            - Fix jump and dash animations
-            - the actual anim priority value doesnt change from 1
-    */
+
     public Animator Animator {get => playerAnimator;}
 
     public void EnableRootMotion(bool enable =  true) => playerAnimator.applyRootMotion = enable;

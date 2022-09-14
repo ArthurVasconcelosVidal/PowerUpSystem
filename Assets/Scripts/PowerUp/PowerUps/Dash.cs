@@ -33,7 +33,7 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
     void CallDashAnimation(){
         if(!animationManager)
             return;     
-        animationManager.PlayAnimation(Animations.DashPose, 0);
+        animationManager.PlayAnimation(Animations.DashPose);
     }
 
     async void DashActive(Vector3 direction, float dashTime) {

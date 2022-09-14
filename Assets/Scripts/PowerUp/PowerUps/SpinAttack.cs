@@ -24,7 +24,7 @@ public class SpinAttack : MonoBehaviour, IPressReleaseAction{
     void Spin(bool state){
         spinActive = state;
         playerAnimator.SetBool(Animations.SpinPose.ToString(), state);
-        if(state) playerAnimator.Play(Animations.SpinPose.ToString(),0);
+        //if(state) playerAnimator.Play(Animations.SpinPose.ToString(),0);
         StartCoroutine(Spin());
         //Debug.Log((int)Animations.SpinPose);
     }

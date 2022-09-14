@@ -15,6 +15,11 @@ public enum Animations{
         - Each anim has a priority number, this will tell which animation has the priority to execute
     */
     IdleToRunTree,
+    BreathingIdle,
+    SilentWalking,
+    Walking,
+    Running,
+    PanicRunning,
     FallingIdle,
     FirstJumping,
     DoubleJumpFlip,

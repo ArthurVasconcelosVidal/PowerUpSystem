@@ -37,7 +37,7 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     void CallJumpAnimation(){
         if(!animationManager)
             return;
-        if(IsGrounded()) animationManager.CrossFadeFixedTimePlay(Animations.FirstJumping, 0.1f);
+        if(IsGrounded()) animationManager.PlayAnimation(Animations.FirstJumping, 0.1f);
         else if(canDoubleJump) animationManager.PlayAnimation(Animations.DoubleJumpFlip, 0);
     }
 

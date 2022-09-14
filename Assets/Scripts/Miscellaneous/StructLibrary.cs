@@ -16,6 +16,11 @@ namespace StructLibrary{
                 - Each anim has a priority number, this will tell which animation has the priority to execute
             */
             {Animations.IdleToRunTree,0},
+            {Animations.BreathingIdle,0},
+            {Animations.SilentWalking,0},
+            {Animations.Walking,0},
+            {Animations.Running,0},
+            {Animations.PanicRunning,0},
             {Animations.FallingIdle,0},
             {Animations.FirstJumping,1},
             {Animations.DoubleJumpFlip,1},

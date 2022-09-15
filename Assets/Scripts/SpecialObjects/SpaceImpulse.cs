@@ -98,8 +98,8 @@ public class SpaceImpulse : MonoBehaviour{
         animationManager.PlayAnimation(Animations.FlyPose, 0.3f);
     }
     void ToRollAnimation() {
-        var animator = player.GetComponent<Animator>();
-        animator.Play(Animations.DoubleJumpFlip.ToString(), 0);
+        var animationManager = player.GetComponent<AnimationManager>();
+        animationManager.ForceAnimationPlay(Animations.DoubleJumpFlip);
     }
 
     void EnableButtonBehaviour(bool enable){

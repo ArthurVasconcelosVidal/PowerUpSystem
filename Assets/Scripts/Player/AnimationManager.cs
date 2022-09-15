@@ -22,6 +22,12 @@ public class AnimationManager : MonoBehaviour{
         }
     }
 
+    public void ForceAnimationPlay(Animations anim, float fixedTransitionDuration = 0, int animLayer = 0){
+        if(fixedTransitionDuration > 0) playerAnimator.CrossFadeInFixedTime(anim.ToString(), fixedTransitionDuration, animLayer);
+        else playerAnimator.Play(anim.ToString(), animLayer);
+        actualAnimPriority = AnimationsDictonary.animations[anim];;
+    }
+
     void VerifyZeroPriorityState(){
         string actualAnim = ActualAnimName();
         if(actualAnim == Animations.BreathingIdle.ToString() 

@@ -2,43 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Threading.Tasks;
 
 public class SpinAttack : MonoBehaviour, IPressReleaseAction{
-    bool spinActive;
     float spinTime;
-    [SerializeField] Animator playerAnimator;
+    [SerializeField] AnimationManager animationManager;
     [SerializeField] InputActionManager playerInput;
-    [SerializeField] GameObject meshObject;
-    [SerializeField] float spinSpeed = 50;
+    [SerializeField] GameObject attackTrigger;
+    [SerializeField] float spinRecoveryTime;
+    [SerializeField] float spinAttackTime;
+    [SerializeField] bool canSpin = true;
     [SerializeField] bool inSpin;
-    // Start is called before the first frame update
-    void Start(){
-        
-    }
 
-    // Update is called once per frame
-    void Update(){
-        
-    }
-
-    void Spin(bool state){
-        spinActive = state;
-        playerAnimator.SetBool(Animations.SpinPose.ToString(), state);
-        //if(state) playerAnimator.Play(Animations.SpinPose.ToString(),0);
-        StartCoroutine(Spin());
-        //Debug.Log((int)Animations.SpinPose);
-    }
-
-    IEnumerator Spin(){
-        while(spinActive){
-            meshObject.transform.Rotate(0f, spinSpeed * Time.fixedDeltaTime, 0, Space.Self);
-            yield return null;
+    void Spin(){
+        if(canSpin){
+            canSpin = false;
+            SpinBehaviour();
+            SpinReload(spinRecoveryTime);
         }
     }
 
-    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Spin(true);
+    async void SpinBehaviour(){
+        attackTrigger.SetActive(true);
+        SpinAnimation(true);
+        await Task.Delay((int)(spinAttackTime*1000));
+        attackTrigger.SetActive(false);
+        SpinAnimation(false);
+    }
 
-    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => Spin(false);
+    async void SpinReload(float recoveryTime){
+        await Task.Delay((int)(recoveryTime*1000));
+        canSpin = true;
+    }
+
+    void SpinAnimation(bool status){
+        animationManager.Animator.SetBool(Animations.SpinPose.ToString(), status);
+        if(status) animationManager.PlayAnimation(Animations.SpinPose);
+    }
+
+    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Spin();
+
+    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext){}
 
     void OnEnable() {
         playerInput.OnWestButtonPerformed += OnButtonPressed;

@@ -28,6 +28,7 @@ namespace StructLibrary{
             {Animations.TrampolineJump,1},
             {Animations.FlyPose,3},
             {Animations.SpinPose,2},
+            {Animations.StrikeFowardKick, 2}
         };
     }
 

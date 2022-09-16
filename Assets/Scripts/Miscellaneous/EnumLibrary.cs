@@ -26,5 +26,6 @@ public enum Animations{
     DashPose,
     TrampolineJump,
     FlyPose,
-    SpinPose
+    SpinPose, 
+    StrikeFowardKick
 }

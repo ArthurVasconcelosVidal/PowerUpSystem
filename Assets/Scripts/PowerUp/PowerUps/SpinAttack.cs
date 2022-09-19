@@ -12,7 +12,6 @@ public class SpinAttack : MonoBehaviour, IPressReleaseAction{
     [SerializeField] float spinRecoveryTime;
     [SerializeField] float spinAttackTime;
     [SerializeField] bool canSpin = true;
-    [SerializeField] bool inSpin;
 
     void Spin(){
         if(canSpin){

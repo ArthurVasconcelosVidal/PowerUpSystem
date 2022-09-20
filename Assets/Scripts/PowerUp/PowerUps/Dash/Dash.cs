@@ -9,7 +9,7 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
     [SerializeField] protected AnimationManager animationManager;
     [SerializeField] protected Rigidbody playerRigidBody;
     [SerializeField] GameObject forwardReference; 
-    protected bool canDash = true;
+    [SerializeField] protected bool canDash = true;
     [SerializeField] protected float dashSpeed = 5;
     [SerializeField] protected float dashTime;
     [SerializeField] protected int dashRecoveryTime = 1;
@@ -42,15 +42,16 @@ public class Dash : MonoBehaviour, IPressReleaseAction{
             playerRigidBody.velocity = direction * dashSpeed;
             await Task.Yield();
         }
-
         playerRigidBody.velocity = Vector3.zero;
-        DashReload(dashRecoveryTime);
+        EndDashBehavior();
     }
 
     async void DashReload(int dashRecoveryTime){
         await Task.Delay(dashRecoveryTime * 1000);
         canDash = true;
     }
+
+    protected virtual void EndDashBehavior() => DashReload(dashRecoveryTime);
 
     void OnEnable() {
         playerInput.OnRightShoulderButtonPerformed += OnButtonPressed;

@@ -8,7 +8,7 @@ public class SpinAttack : MonoBehaviour, IPressReleaseAction{
     float spinTime;
     [SerializeField] AnimationManager animationManager;
     [SerializeField] InputActionManager playerInput;
-    [SerializeField] GameObject attackTrigger;
+    [SerializeField] AttackManager attackManager;
     [SerializeField] float spinRecoveryTime;
     [SerializeField] float spinAttackTime;
     [SerializeField] bool canSpin = true;
@@ -22,10 +22,10 @@ public class SpinAttack : MonoBehaviour, IPressReleaseAction{
     }
 
     async void SpinBehaviour(){
-        attackTrigger.SetActive(true);
+        attackManager.EnableAttackTrigger(true);
         SpinAnimation(true);
         await Task.Delay((int)(spinAttackTime*1000));
-        attackTrigger.SetActive(false);
+        attackManager.EnableAttackTrigger(false);
         SpinAnimation(false);
     }
 

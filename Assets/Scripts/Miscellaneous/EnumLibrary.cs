@@ -29,3 +29,11 @@ public enum Animations{
     SpinPose, 
     StrikeFowardKick
 }
+
+public enum ElementType{
+    Ground,
+    Normal,
+    Fire,
+    Water, 
+    Wind
+}

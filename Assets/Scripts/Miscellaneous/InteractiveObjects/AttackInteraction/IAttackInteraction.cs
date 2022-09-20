@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IAttackInteraction{
 
-    void AttackInteraction(GameObject whoIsAttacking, float damage = 0);
+    void AttackInteraction(GameObject whoIsAttacking, float damage, float forceImpact, ElementType elementType = ElementType.Normal);
     
 }

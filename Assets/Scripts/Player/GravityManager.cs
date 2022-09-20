@@ -64,7 +64,7 @@ public class GravityManager : MonoBehaviour{
 
     public void ResetGravity(){
         GravityDirection = Vector3.down;
-        GravityForce = BASE_GRAVITY_FORCE;
+        GravityForce = baseGravityForce;
         isUsingSpecialGravity = false;
     }
 }

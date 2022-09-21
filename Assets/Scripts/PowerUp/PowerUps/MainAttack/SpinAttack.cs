@@ -4,11 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 
-public class SpinAttack : MonoBehaviour, IPressReleaseAction{
+public class SpinAttack : MainAttack{
     float spinTime;
-    [SerializeField] AnimationManager animationManager;
-    [SerializeField] InputActionManager playerInput;
-    [SerializeField] AttackManager attackManager;
     [SerializeField] float spinRecoveryTime;
     [SerializeField] float spinAttackTime;
     [SerializeField] bool canSpin = true;
@@ -39,17 +36,5 @@ public class SpinAttack : MonoBehaviour, IPressReleaseAction{
         if(status) animationManager.PlayAnimation(Animations.SpinPose);
     }
 
-    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Spin();
-
-    public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext){}
-
-    void OnEnable() {
-        playerInput.OnWestButtonPerformed += OnButtonPressed;
-        playerInput.OnWestButtonCanceled += OnButtonReleased;
-    }
-    void OnDisable() {
-        playerInput.OnWestButtonPerformed -= OnButtonPressed;
-        playerInput.OnWestButtonCanceled -= OnButtonReleased;
-    }
-
+    public override void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Spin();
 }

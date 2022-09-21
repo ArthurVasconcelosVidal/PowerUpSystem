@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class DoubleJump : MonoBehaviour, IPressReleaseAction{
-    [SerializeField] Animator animator = null;
+    [SerializeField] AnimationManager animationManager = null;
     [SerializeField] GravityManager gravityManager;
     [SerializeField] InputActionManager inputActionManager;
     [SerializeField] Rigidbody rigidbody;
@@ -34,10 +35,10 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     }
     
     void CallJumpAnimation(){
-        if(!animator)
-            return;     
-        if(IsGrounded()) animator.CrossFadeInFixedTime(Animations.FirstJumping.ToString(), 0.1f);
-        else if(canDoubleJump) animator.Play(Animations.DoubleJumpFlip.ToString(), 0);
+        if(!animationManager)
+            return;
+        if(IsGrounded()) animationManager.PlayAnimation(Animations.FirstJumping, 0.1f);
+        else if(canDoubleJump) animationManager.PlayAnimation(Animations.DoubleJumpFlip, 0);
     }
 
     void SetJumpValues(JumpFeature jump){

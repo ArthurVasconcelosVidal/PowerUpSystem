@@ -1,14 +1,11 @@
 fileFormatVersion: 2
-guid: 216ee043ca6c4e741877926add76edbc
+guid: 0af6919910f396048af1c076cc2e3d5f
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable:
   - first:
-      74: 7721715186239825389
-    second: Spin
-  - first:
-      74: -8577336395134082359
-    second: Armature.001|Armature.001|Armature.001|Spin
+      74: -203655887218126122
+    second: BreathingIdle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -38,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Spin
-      takeName: Armature.001|Armature.001|Armature.001|Spin
+      name: BreathingIdle
+      takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 28
+      lastFrame: 323
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -50,7 +47,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
@@ -889,7 +886,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  remapMaterialsIfMaterialImportModeIsNone: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

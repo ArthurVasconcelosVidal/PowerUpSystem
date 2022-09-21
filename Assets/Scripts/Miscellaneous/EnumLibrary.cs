@@ -14,12 +14,36 @@ public enum Animations{
         - Each animation name correspond to a animator anim, the name has to be the same(case sensitive)
         - Each anim has a priority number, this will tell which animation has the priority to execute
     */
-    IdleToRunTree = 0,
-    FallingIdle = 0,
-    FirstJumping = 1,
-    DoubleJumpFlip = 1,
-    DashPose = 1,
-    TrampolineJump = 1,
-    FlyPose = 3,
-    SpinPose = 2
+    IdleToRunTree,
+    BreathingIdle,
+    SilentWalking,
+    Walking,
+    Running,
+    PanicRunning,
+    FallingIdle,
+    FirstJumping,
+    DoubleJumpFlip,
+    DashPose,
+    TrampolineJump,
+    FlyPose,
+    SpinPose, 
+    StrikeFowardKick
+}
+
+public enum ElementType{
+    Ground,
+    Normal,
+    Fire,
+    Water, 
+    Wind
+}
+
+public enum Layers{
+    Default = 0,
+    TransparentFX = 1,
+    IgnoreRaycast = 2,
+    Water = 4,
+    UI = 5,
+    Ground = 6,
+    GhostLayer = 7
 }

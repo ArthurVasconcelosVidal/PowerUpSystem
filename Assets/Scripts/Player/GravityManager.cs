@@ -13,8 +13,8 @@ public class GravityManager : MonoBehaviour{
     [SerializeField] LayerMask groundLayer;
     Vector3 gravityDirection = Vector3.down;
     bool isGrounded = false;
-    const float FALLING_GRAVITY_FORCE = 9.8f;
-    const float BASE_GRAVITY_FORCE = 9.8f;
+    float fallingGravityForce = 9.8f;
+    float baseGravityForce = 15f;
 
     public bool IsGrounded  { get => isGrounded;
                                 set{
@@ -38,14 +38,14 @@ public class GravityManager : MonoBehaviour{
 
     void GravityBehaviour(){
             if(IsGrounded){
-                gravityForce = BASE_GRAVITY_FORCE;
+                gravityForce = baseGravityForce;
                 isUsingSpecialGravity = false;
                 GravityDirection = Vector3.down;
                 characterRigidbody.velocity = Vector3.zero;
                 RotateAlignToGround();
             }
             else if(!isUsingSpecialGravity){
-                gravityForce = FALLING_GRAVITY_FORCE;
+                gravityForce = fallingGravityForce;
                 GravityDirection = Vector3.down;
             }
     }
@@ -64,7 +64,7 @@ public class GravityManager : MonoBehaviour{
 
     public void ResetGravity(){
         GravityDirection = Vector3.down;
-        GravityForce = BASE_GRAVITY_FORCE;
+        GravityForce = baseGravityForce;
         isUsingSpecialGravity = false;
     }
 }

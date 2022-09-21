@@ -94,12 +94,12 @@ public class SpaceImpulse : MonoBehaviour{
     }
 
     void ToFlyAnimation(){
-        var animator = player.GetComponent<Animator>();
-        animator.CrossFadeInFixedTime(Animations.FlyPose.ToString(), 0.3f);
+        var animationManager = player.GetComponent<AnimationManager>();
+        animationManager.PlayAnimation(Animations.FlyPose, 0.3f);
     }
     void ToRollAnimation() {
-        var animator = player.GetComponent<Animator>();
-        animator.Play(Animations.DoubleJumpFlip.ToString(), 0);
+        var animationManager = player.GetComponent<AnimationManager>();
+        animationManager.ForceAnimationPlay(Animations.DoubleJumpFlip);
     }
 
     void EnableButtonBehaviour(bool enable){

@@ -57,7 +57,7 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
             animValue -= increasingSpeedFactor * Time.fixedDeltaTime;
             animValue = Mathf.Clamp(animValue, inputActionManager.LeftStickValue.sqrMagnitude, RUNNING_ANIM_VALUE);
         }
-        else if(!isRunning){
+        else if(!isRunning || inputActionManager.LeftStickValue.sqrMagnitude == 0){
             animValue = inputActionManager.LeftStickValue.sqrMagnitude;
         }
         else if(inputActionManager.LeftStickValue.sqrMagnitude > INPUT_THRESHOLD){

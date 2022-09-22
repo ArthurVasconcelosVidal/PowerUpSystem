@@ -3,27 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackManager : MonoBehaviour{
-    float Damage {get;set;}
-    float ForceImpact {get;set;}
-    ElementType ElementType {get;set;}
+    
     GameObject AttackTriggerObject {get => this.gameObject;}
     SphereCollider TriggerCollider {get => GetComponent<SphereCollider>();}
     float TriggerRadius {get;set;}
+    AttackInfo attackInfo;
     const float BASE_TRIGGER_RADIUS = 1.3f;
-    public void EnableAttackTrigger(bool enable,float damage = 0, float forceImpact = 0, ElementType elementType = ElementType.Normal, float baseTriggerRadius = BASE_TRIGGER_RADIUS){
-        if(enable){
-            Damage = damage;
-            ForceImpact = forceImpact;
-            ElementType = elementType;
-            TriggerCollider.radius = baseTriggerRadius;
-        }
-        AttackTriggerObject.SetActive(enable);
+
+    public void EnableAttackTrigger(AttackInfo attackInfo, float baseTriggerRadius = BASE_TRIGGER_RADIUS){
+        this.attackInfo = attackInfo;
+        TriggerCollider.radius = baseTriggerRadius;
+        AttackTriggerObject.SetActive(true);
+    }
+
+    public void DisableAttackTrigger(){
+        attackInfo = null;
+        AttackTriggerObject.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other) {
+        Attack(other.gameObject, attackInfo);
+    }
+
+    public void Attack(GameObject attackedObject, AttackInfo attackInfo){
         IAttackInteraction objectAttacked;
-        if (other.gameObject.TryGetComponent<IAttackInteraction>(out objectAttacked))
-            objectAttacked.AttackInteraction(this.gameObject, Damage, ForceImpact, ElementType);
+        if (attackedObject.TryGetComponent<IAttackInteraction>(out objectAttacked))
+            objectAttacked.AttackInteraction(this.gameObject, attackInfo.damage, attackInfo.forceImpact, attackInfo.elementType);
     }
 
 

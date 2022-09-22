@@ -9,6 +9,7 @@ public class SpinAttack : MainAttack{
     [SerializeField] float spinRecoveryTime;
     [SerializeField] float spinAttackTime;
     [SerializeField] bool canSpin = true;
+    [SerializeField] AttackInfo attackInfo;
 
     void Spin(){
         if(canSpin){
@@ -19,10 +20,10 @@ public class SpinAttack : MainAttack{
     }
 
     async void SpinBehaviour(){
-        attackManager.EnableAttackTrigger(true);
+        attackManager.EnableAttackTrigger(attackInfo);
         SpinAnimation(true);
         await Task.Delay((int)(spinAttackTime*1000));
-        attackManager.EnableAttackTrigger(false);
+        attackManager.DisableAttackTrigger();
         SpinAnimation(false);
     }
 

@@ -33,8 +33,8 @@ public class SpinAttack : MainAttack{
     }
 
     void SpinAnimation(bool status){
-        animationManager.Animator.SetBool(Animations.SpinPose.ToString(), status);
-        if(status) animationManager.PlayAnimation(Animations.SpinPose);
+        AnimationManager.Animator.SetBool(Animations.SpinPose.ToString(), status);
+        if(status) AnimationManager.PlayAnimation(Animations.SpinPose);
     }
 
     public override void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Spin();

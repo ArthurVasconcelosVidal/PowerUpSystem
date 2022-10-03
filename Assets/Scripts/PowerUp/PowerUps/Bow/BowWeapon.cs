@@ -8,8 +8,8 @@ public class BowWeapon :MonoBehaviour, IWeapon{
     public WeaponType Weapon { get => WeaponType.bow; }
     MinMaxFloat shootForceBounds = new MinMaxFloat(0, 10);
     public void NormalWeaponUse(){
-        var arrow = Instantiate(bowProjectilePrefab, PlayerManager.instance.SpawnProjectilePoint.transform.position, PlayerManager.instance.MeshObject.transform.rotation);
-        arrow.GetComponent<BowProjectile>().Initialize(PlayerManager.instance.MeshObject.transform.forward, shootForceBounds, shootForceBounds.Max/2);
+        //var arrow = Instantiate(bowProjectilePrefab, PlayerManager.instance.SpawnProjectilePoint.transform.position, PlayerManager.instance.MeshObject.transform.rotation);
+        //arrow.GetComponent<BowProjectile>().Initialize(PlayerManager.instance.MeshObject.transform.forward, shootForceBounds, shootForceBounds.Max/2);
     }
 
     public void RespawnPowerUp(){

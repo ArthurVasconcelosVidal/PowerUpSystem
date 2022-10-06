@@ -20,10 +20,10 @@ public class SpinAttack : MainAttack{
     }
 
     async void SpinBehaviour(){
-        attackManager.EnableAttackTrigger(attackInfo);
+        AttackManager.EnableAttackTrigger(attackInfo);
         SpinAnimation(true);
         await Task.Delay((int)(spinAttackTime*1000));
-        attackManager.DisableAttackTrigger();
+        AttackManager.DisableAttackTrigger();
         SpinAnimation(false);
     }
 

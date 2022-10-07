@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public abstract class MainAttack : MonoBehaviour{
-    [SerializeField] protected AnimationManager animationManager;
-    [SerializeField] protected InputActionManager playerInput;
-    [SerializeField] protected AttackManager attackManager;
+    [SerializeField] protected AnimationManager AnimationManager { get => PlayerManager.instance.AnimationManager; }
+    [SerializeField] protected InputActionManager InputActionManager { get => PlayerManager.instance.InputActionManager; }
+    [SerializeField] protected AttackManager AttackManager {get => PlayerManager.instance.AttackManager; }
 
     public abstract void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext);
 
@@ -15,11 +15,11 @@ public abstract class MainAttack : MonoBehaviour{
     }
 
     void OnEnable() {
-        playerInput.OnWestButtonPerformed += OnButtonPressed;
-        playerInput.OnWestButtonCanceled += OnButtonReleased;
+        InputActionManager.OnWestButtonPerformed += OnButtonPressed;
+        InputActionManager.OnWestButtonCanceled += OnButtonReleased;
     }
     void OnDisable() {
-        playerInput.OnWestButtonPerformed -= OnButtonPressed;
-        playerInput.OnWestButtonCanceled -= OnButtonReleased;
+        InputActionManager.OnWestButtonPerformed -= OnButtonPressed;
+        InputActionManager.OnWestButtonCanceled -= OnButtonReleased;
     }
 }

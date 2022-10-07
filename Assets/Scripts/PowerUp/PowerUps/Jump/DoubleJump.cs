@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class DoubleJump : MonoBehaviour, IPressReleaseAction{
-    [SerializeField] AnimationManager animationManager = null;
-    [SerializeField] GravityManager gravityManager;
-    [SerializeField] InputActionManager inputActionManager;
-    [SerializeField] Rigidbody rigidbody;
+    AnimationManager AnimationManager { get => PlayerManager.instance.AnimationManager; }
+    GravityManager GravityManager { get => PlayerManager.instance.GravityManager; }
+    InputActionManager InputActionManager { get => PlayerManager.instance.InputActionManager; }
+    Rigidbody CharacterRigidbody { get => PlayerManager.instance.CharacterRigidbody; }
     [SerializeField] LayerMask groundLayer;
     [SerializeField] JumpFeature firstJump;
     [SerializeField] JumpFeature secondJump;
@@ -35,22 +35,22 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     }
     
     void CallJumpAnimation(){
-        if(!animationManager)
+        if(!AnimationManager)
             return;
-        if(IsGrounded()) animationManager.PlayAnimation(Animations.FirstJumping, 0.1f);
-        else if(canDoubleJump) animationManager.PlayAnimation(Animations.DoubleJumpFlip, 0);
+        if(IsGrounded()) AnimationManager.PlayAnimation(Animations.FirstJumping, 0.1f);
+        else if(canDoubleJump) AnimationManager.PlayAnimation(Animations.DoubleJumpFlip, 0);
     }
 
     void SetJumpValues(JumpFeature jump){
-        gravityManager.IsUsingSpecialGravity = true;
-        rigidbody.velocity = Vector3.zero;
-        gravityManager.GravityForce = -jump.JumpGravity;
-        rigidbody.AddForce(jump.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
+        GravityManager.IsUsingSpecialGravity = true;
+        CharacterRigidbody.velocity = Vector3.zero;
+        GravityManager.GravityForce = -jump.JumpGravity;
+        CharacterRigidbody.AddForce(jump.IniJumpVelocity * Vector3.up, ForceMode.VelocityChange);
     }
 
     void CancelJump(){
         if(!IsGrounded())
-            gravityManager.GravityForce = -actualJump.JumpGravity * fallMultiplier;
+            GravityManager.GravityForce = -actualJump.JumpGravity * fallMultiplier;
     }
 
     bool IsGrounded(float groundDistanceOffset = 0) {
@@ -63,12 +63,12 @@ public class DoubleJump : MonoBehaviour, IPressReleaseAction{
     }
 
     void OnEnable() {
-        inputActionManager.OnSouthSecondaryButtonPerformed += OnButtonPressed;
-        inputActionManager.OnSouthSecondaryButtonCanceled += OnButtonReleased;
+        InputActionManager.OnSouthSecondaryButtonPerformed += OnButtonPressed;
+        InputActionManager.OnSouthSecondaryButtonCanceled += OnButtonReleased;
     }
 
     void OnDisable() {
-        inputActionManager.OnSouthSecondaryButtonPerformed -= OnButtonPressed;
-        inputActionManager.OnSouthSecondaryButtonCanceled -= OnButtonReleased;
+        InputActionManager.OnSouthSecondaryButtonPerformed -= OnButtonPressed;
+        InputActionManager.OnSouthSecondaryButtonCanceled -= OnButtonReleased;
     }
 }

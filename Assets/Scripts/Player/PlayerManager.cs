@@ -6,26 +6,25 @@ public class PlayerManager : MonoBehaviour{
 
     public static PlayerManager instance;
 
-    [SerializeField] MovementManager movementManager;
+
     [SerializeField] InputActionManager inputActionManager;
+    [SerializeField] AnimationManager animationManager;
     [SerializeField] Rigidbody rigidbody;
     [SerializeField] GameObject meshObject;
-    [SerializeField] GameObject spawnProjectilePoint;
     [SerializeField] GravityManager gravityManager;
+    [SerializeField] AttackManager attackManager;
     [SerializeField] List<IPressReleaseAction> poewers = new List<IPressReleaseAction>();
 
-    public MovementManager MovementManager { get => movementManager; }
     public InputActionManager InputActionManager { get => inputActionManager; }
     public Rigidbody CharacterRigidbody { get => rigidbody; }
-    public GameObject MeshObject { get => meshObject; }
-    public GameObject SpawnProjectilePoint { get => spawnProjectilePoint; }
     public GravityManager GravityManager { get => gravityManager;}
+    public GameObject MeshObject { get => meshObject; }
+    public AnimationManager AnimationManager { get => animationManager; }
+    public AttackManager AttackManager { get => attackManager; }
     private void Awake() {
         if (instance == null) instance = this;
         else Destroy(this);
     } 
-
-    public void EnableMovement(bool enable) => movementManager.enabled = enable;
 
     public void EnablePowers(bool enable){
 

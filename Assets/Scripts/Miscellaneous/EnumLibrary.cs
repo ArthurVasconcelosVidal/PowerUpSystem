@@ -27,7 +27,7 @@ public enum Animations{
     TrampolineJump,
     FlyPose,
     SpinPose, 
-    StrikeFowardKick
+    StrikeForwardKick
 }
 
 public enum ElementType{

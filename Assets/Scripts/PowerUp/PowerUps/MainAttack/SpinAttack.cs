@@ -9,6 +9,7 @@ public class SpinAttack : MainAttack{
     [SerializeField] float spinRecoveryTime;
     [SerializeField] float spinAttackTime;
     [SerializeField] bool canSpin = true;
+    [SerializeField] AttackInfo attackInfo;
 
     void Spin(){
         if(canSpin){
@@ -19,10 +20,10 @@ public class SpinAttack : MainAttack{
     }
 
     async void SpinBehaviour(){
-        attackManager.EnableAttackTrigger(true);
+        AttackManager.EnableAttackTrigger(attackInfo);
         SpinAnimation(true);
         await Task.Delay((int)(spinAttackTime*1000));
-        attackManager.EnableAttackTrigger(false);
+        AttackManager.DisableAttackTrigger();
         SpinAnimation(false);
     }
 
@@ -32,8 +33,8 @@ public class SpinAttack : MainAttack{
     }
 
     void SpinAnimation(bool status){
-        animationManager.Animator.SetBool(Animations.SpinPose.ToString(), status);
-        if(status) animationManager.PlayAnimation(Animations.SpinPose);
+        AnimationManager.Animator.SetBool(Animations.SpinPose.ToString(), status);
+        if(status) AnimationManager.PlayAnimation(Animations.SpinPose);
     }
 
     public override void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Spin();

@@ -1032,7 +1032,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2118339489}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &825271819
 MeshRenderer:
@@ -1627,7 +1627,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2118339489}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1480866293
 MeshRenderer:
@@ -2053,6 +2053,7 @@ GameObject:
   - component: {fileID: 1694306914}
   - component: {fileID: 1694306918}
   - component: {fileID: 1694306920}
+  - component: {fileID: 1694306921}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2325,13 +2326,32 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1694306905}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3775fdf429c3d094fb111f1dd44ef4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boomerangPrefab: {fileID: 254843299101939665, guid: 1b07d5ee9e5d4034d9bbc8e4764988af, type: 3}
+  spawnPoint: {fileID: 1984991358}
   timeToReload: 2
+--- !u!114 &1694306921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694306905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d4671f5cc884a64caaeff00b4a60909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombPrefab: {fileID: 752714791923304981, guid: 6c043cf5f0956824d868e201ae1b1502, type: 3}
+  spawnPoint: {fileID: 1984991358}
+  timeToExplodeBomb: 2
+  timeInExplosion: 0.3
+  throwBombForce: 6
+  timeToReload: 1
 --- !u!1 &1742377594
 GameObject:
   m_ObjectHideFlags: 0
@@ -2611,7 +2631,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2118339489}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1993368047
 GameObject:
@@ -2755,9 +2775,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1984991359}
   - {fileID: 1480866292}
   - {fileID: 825271818}
-  - {fileID: 1984991359}
   - {fileID: 70960482}
   - {fileID: 1682713503}
   m_Father: {fileID: 1694306906}

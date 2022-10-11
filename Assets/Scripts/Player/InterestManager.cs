@@ -9,7 +9,7 @@ public class InterestManager : MonoBehaviour{
 
     }
 
-    GameObject GetClosesObject(){
+    void GetClosesObject(){
         
     }
 }

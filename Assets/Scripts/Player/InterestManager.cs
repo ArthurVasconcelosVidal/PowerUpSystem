@@ -6,36 +6,53 @@ using System.Threading.Tasks;
 
 public class InterestManager : MonoBehaviour{
     [SerializeField] List<GameObject> interestObjects = new List<GameObject>();
-    [SerializeField] List<int> closestIndex;
+    [SerializeField] List<int> closestIndexList;
     KDTree interestObjectsTree;
+    [SerializeField] GameObject Aim;
+    [SerializeField] GameObject closestObject;
+    GameObject ClosestObject {
+        get{
+            if (interestObjects.Count == 1){
+                return interestObjects[0];
+            }else if(interestObjects.Count == 0){
+                return null;
+            }else{
+                return closestObject;
+            }
+        }
+
+        set => closestObject = value;
+    }
+
+    //Debug
+    private void Update() {
+        if(ClosestObject){
+            Aim.transform.position = ClosestObject.transform.position;
+        }
+    }
 
     void Awake() {
         Vector3[] objectPoints = GetPointFromObjects(interestObjects);
         BuildKDTree(objectPoints);
     }
 
-    void OnEnable() {
-        //Start trigger
-        VerifyClosestObject(); 
-    }
-
     async void VerifyClosestObject(){
-        //Fix the never ending call
-        //Only do all these things if necessary
         const float SECONDS = 0.5f;
         await Task.Delay((int)(SECONDS * 1000));
         
-        if(interestObjectsTree.Count > 0){
+        if(interestObjectsTree.Count > 1){
             AttTreePositions();
-            closestIndex = QueryClosestInTree();        
+            closestIndexList = QueryClosestInTree();
+            ClosestObject = interestObjects[closestIndexList[0]];
+            VerifyClosestObject(); 
         }
-
-        VerifyClosestObject();
     }
 
     void OnTriggerEnter(Collider other) {
-        if(other.CompareTag(Tags.InterestObject.ToString()))
+        if(other.CompareTag(Tags.InterestObject.ToString())){
             IOInterestObject(true, other.gameObject);
+            VerifyClosestObject(); //Start verify Trigger
+        }   
     }
 
     void OnTriggerExit(Collider other) {
@@ -49,8 +66,10 @@ public class InterestManager : MonoBehaviour{
         else
             interestObjects.Remove(gameObject);
         
-        Vector3[] objectPoints = GetPointFromObjects(interestObjects);
-        ReSizeTree(objectPoints);
+        if(interestObjects.Count > 1 ){
+            Vector3[] objectPoints = GetPointFromObjects(interestObjects);
+            ReSizeTree(objectPoints);
+        }
     }
 
     Vector3[] GetPointFromObjects(List<GameObject> objects){
@@ -72,6 +91,7 @@ public class InterestManager : MonoBehaviour{
     }
 
     void AttTreePositions(){
+        //fix a index out of range
         for (int i = 0; i < interestObjectsTree.Count; i++){
             interestObjectsTree.Points[i] = interestObjects[i].transform.position;
         }

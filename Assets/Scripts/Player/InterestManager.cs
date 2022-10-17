@@ -2,21 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DataStructures.ViliWonka.KDTree;
+using System.Threading.Tasks;
 
 public class InterestManager : MonoBehaviour{
     [SerializeField] List<GameObject> interestObjects = new List<GameObject>();
-    KDTree interestObjectsTree;
     [SerializeField] List<int> closestIndex;
-    int nextAddPosition;
+    KDTree interestObjectsTree;
 
     void Awake() {
         Vector3[] objectPoints = GetPointFromObjects(interestObjects);
         BuildKDTree(objectPoints);
     }
 
-    void FixedUpdate() {
-        AttTreePositions();
-        closestIndex = QueryClosestInTree();
+    void OnEnable() {
+        //Start trigger
+        VerifyClosestObject(); 
+    }
+
+    async void VerifyClosestObject(){
+        //Fix the never ending call
+        //Only do all these things if necessary
+        const float SECONDS = 0.5f;
+        await Task.Delay((int)(SECONDS * 1000));
+        
+        if(interestObjectsTree.Count > 0){
+            AttTreePositions();
+            closestIndex = QueryClosestInTree();        
+        }
+
+        VerifyClosestObject();
     }
 
     void OnTriggerEnter(Collider other) {
@@ -58,12 +72,10 @@ public class InterestManager : MonoBehaviour{
     }
 
     void AttTreePositions(){
-        if(interestObjectsTree.Count > 0){
-            for (int i = 0; i < interestObjectsTree.Count; i++){
-                interestObjectsTree.Points[i] = interestObjects[i].transform.position;
-            }
-            interestObjectsTree.Rebuild();
+        for (int i = 0; i < interestObjectsTree.Count; i++){
+            interestObjectsTree.Points[i] = interestObjects[i].transform.position;
         }
+        interestObjectsTree.Rebuild();
     }
 
     List<int> QueryClosestInTree(){

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using System.Threading.Tasks;
@@ -7,47 +8,47 @@ public class LookToTarget : MonoBehaviour{
     [SerializeField] InterestManager interestManager;
     [SerializeField] MultiAimConstraint headAim;
     [SerializeField] GameObject headAimObject;
+    [SerializeField] GameObject baseLookPosition;
+    [SerializeField] bool isLooking = false;
     [SerializeField] float speed;
 
-    void OnClosestObjectBehavior(object sender, GameObject closestObject) => StartLookAt(closestObject);
+    void OnClosestObjectBehavior(object sender, EventArgs args) => StartLookAt();
 
-    void StartLookAt(GameObject closestGameObject){
-        
-    }
-/*
-    IEnumerator MoveAimToPoint(GameObject targetObj){
-        while (true){
-            yield return new WaitForSeconds(waitTime);
-            print("WaitAndPrint " + Time.time);
+    void StartLookAt(){
+        if(!isLooking){
+            isLooking = true;
+            StopCoroutine(MoveBackToOrigin());
+            MoveAimToPoint();
         }
+
     }
 
-    async void MoveAimToPoint(GameObject targetObj){
+    async void MoveAimToPoint(){
+        while (interestManager.ClosestObject){
+            var direction = interestManager.ClosestObject.transform.position - headAimObject.transform.position;
+            if(direction.sqrMagnitude > 0.05) headAimObject.transform.position += direction.normalized * speed * Time.fixedDeltaTime; 
+            await Task.Yield();
+        }
+        isLooking = false;
+        StartCoroutine(MoveBackToOrigin());
+    }
+
+    IEnumerator MoveBackToOrigin(){
         float percent = 0;
         Vector3 startPosition = headAimObject.transform.position;
-        
         while (percent < 1){
             percent += Time.fixedDeltaTime * speed;
-            headAimObject.transform.position = Vector3.Lerp(startPosition, targetObj.transform.position, percent);
-            await Task.Yield();
+            headAimObject.transform.position = Vector3.Lerp(startPosition, baseLookPosition.transform.position, percent);
+            yield return null;
         }
+    }
 
-        //MoveWhileClosestObjectExist(headAimObject);
-    }
-/*
-    async void MoveWhileClosestObjectExist(GameObject objToMove){
-        while (interestManager.ClosestObject){
-            objToMove.transform.position = interestManager.ClosestObject.transform.position;
-            await Task.Yield();
-        }
-    }
-*/
     void OnEnable() {
-        interestManager.OnClosestObjectActive += OnClosestObjectBehavior;
+        interestManager.OnClosestObject += OnClosestObjectBehavior;
     }
 
     void OnDisable() {
-        interestManager.OnClosestObjectActive -= OnClosestObjectBehavior;
+        interestManager.OnClosestObject -= OnClosestObjectBehavior;
     }
  
 }

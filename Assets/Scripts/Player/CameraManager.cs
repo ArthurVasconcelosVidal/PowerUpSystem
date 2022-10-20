@@ -10,6 +10,7 @@ public class CameraManager : MonoBehaviour, IPressReleaseAction{
     [SerializeField] CinemachineVirtualCamera virtualCamera;
     [SerializeField] float camSpeedY = 1; //Default
     [SerializeField] float camSpeedX = 80; //Default
+    bool canSwitchCamera = false;
 
     InputActionManager InputActionManager { get {return PlayerManager.instance.InputActionManager; } }
 
@@ -25,8 +26,11 @@ public class CameraManager : MonoBehaviour, IPressReleaseAction{
     }
 
     void SwtichCamera(bool state){
-        freeLookCM.gameObject.SetActive(state);
-        virtualCamera.gameObject.SetActive(!state);
+        if(canSwitchCamera){
+            freeLookCM.gameObject.SetActive(state);
+            virtualCamera.gameObject.SetActive(!state);
+        }
+
     }
     
     public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => SwtichCamera(false);
@@ -34,13 +38,13 @@ public class CameraManager : MonoBehaviour, IPressReleaseAction{
     public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => SwtichCamera(true);
 
     void OnEnable() {
-        InputActionManager.OnRightTriggerButtonPerformed += OnButtonPressed;
-        InputActionManager.OnRightTriggerButtonCanceled += OnButtonReleased;  
+        //InputActionManager.OnRightTriggerButtonPerformed += OnButtonPressed;
+        //InputActionManager.OnRightTriggerButtonCanceled += OnButtonReleased;  
     }
 
     void OnDisable() {
-        InputActionManager.OnRightTriggerButtonPerformed -= OnButtonPressed;
-        InputActionManager.OnRightTriggerButtonCanceled -= OnButtonReleased; 
+        //InputActionManager.OnRightTriggerButtonPerformed -= OnButtonPressed;
+        //InputActionManager.OnRightTriggerButtonCanceled -= OnButtonReleased; 
     }
 
 }

@@ -47,3 +47,8 @@ public enum Layers{
     Ground = 6,
     GhostLayer = 7
 }
+
+public enum Tags{
+    InterestObject,
+    Ground
+}

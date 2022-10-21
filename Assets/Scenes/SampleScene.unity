@@ -1321,7 +1321,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965876480}
-  m_LocalRotation: {x: 0.13867922, y: 0.017629001, z: -0.0024690286, w: 0.9901774}
+  m_LocalRotation: {x: 0.13867924, y: 0.017628986, z: -0.0024690265, w: 0.9901774}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1701,10 +1701,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interestManager: {fileID: 1322622929}
-  headAim: {fileID: 1834730087}
   headAimObject: {fileID: 841434253}
   baseLookPosition: {fileID: 2026401628}
   isLooking: 0
+  isMovingToPoint: 0
+  isMovingToOrigin: 0
   speed: 2
 --- !u!1 &1361134280
 GameObject:

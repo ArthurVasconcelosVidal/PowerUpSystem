@@ -11,12 +11,10 @@ public class InterestManager : MonoBehaviour{
     [SerializeField] List<int> closestIndexList;
     KDTree interestObjectsTree;
     GameObject closestObject;
-    public event EventHandler OnClosestObjectActive;
+    public event EventHandler OnClosestObject;
     public GameObject ClosestObject {
         get{
-            if (interestObjects.Count == 1){
-                return interestObjects[0];
-            }else if(interestObjects.Count == 0){
+            if(interestObjects.Count == 0){
                 return null;
             }else{
                 return closestObject;
@@ -25,7 +23,7 @@ public class InterestManager : MonoBehaviour{
 
         private set {
             closestObject = value;
-            OnClosestObjectActive?.Invoke(this,  EventArgs.Empty);
+            OnClosestObject?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -36,12 +34,12 @@ public class InterestManager : MonoBehaviour{
 
     async void VerifyClosestObject(){
         const float SECONDS = 0.5f;
-        await Task.Delay((int)(SECONDS * 1000));
         
         if(interestObjects.Count > 1){
             AttTreePositions();
             closestIndexList = QueryClosestInTree();
             ClosestObject = interestObjects[closestIndexList[0]];
+            await Task.Delay((int)(SECONDS * 1000));
             VerifyClosestObject(); 
         }else if (interestObjects.Count == 1){
             ClosestObject = interestObjects[0];

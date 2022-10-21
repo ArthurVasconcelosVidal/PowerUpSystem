@@ -1,53 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using System.Threading.Tasks;
 public class LookToTarget : MonoBehaviour{
     [SerializeField] InterestManager interestManager;
-    [SerializeField] MultiAimConstraint headAim;
+    [SerializeField] GameObject MeshObject {get => PlayerManager.instance.MeshObject;}
     [SerializeField] GameObject headAimObject;
+    [SerializeField] GameObject baseLookPosition;
+    bool rightAngle;
+    [SerializeField] bool isLooking = false;
+    [SerializeField] bool isMovingToPoint = false;
+    [SerializeField] bool isMovingToOrigin = false;
     [SerializeField] float speed;
+    
+    void OnClosestObjectBehavior(object sender, EventArgs args) => StartLookAt();
 
-    void OnClosestObjectBehavior(object sender, GameObject closestObject) => StartLookAt(closestObject);
-
-    void StartLookAt(GameObject closestGameObject){
-        
-    }
-/*
-    IEnumerator MoveAimToPoint(GameObject targetObj){
-        while (true){
-            yield return new WaitForSeconds(waitTime);
-            print("WaitAndPrint " + Time.time);
+    void StartLookAt(){
+        if(!isLooking){
+            isLooking = true;
+            SetIsLooking();
+            MoveToPoint();
         }
     }
 
-    async void MoveAimToPoint(GameObject targetObj){
+    async void SetIsLooking(){
+        const float SECONDS = 0.5f;
+        await Task.Delay((int)(SECONDS * 1000));
+        if(interestManager.ClosestObject) isLooking = true;
+        else isLooking = false; 
+        
+        if(isLooking) {
+            rightAngle = LookInRightAngle();
+            SetIsLooking();
+            if(!isMovingToPoint && rightAngle) MoveToPoint();
+        }else if(headAimObject.transform.position != baseLookPosition.transform.position && !isMovingToOrigin){
+            MoveToOrigin();
+        }
+    }
+
+    bool LookInRightAngle(){
+        var direction = interestManager.ClosestObject.transform.position - MeshObject.transform.position;
+        float angle = Vector3.Dot(direction.normalized, MeshObject.transform.forward);
+        if (angle > 0)
+            return true;
+        else
+            return false;
+    }
+
+    async void MoveToPoint(){
+        isMovingToPoint = true;
+        while (interestManager.ClosestObject && isLooking && rightAngle){
+            var direction = interestManager.ClosestObject.transform.position - headAimObject.transform.position;
+            if(direction.sqrMagnitude > 0.05) headAimObject.transform.position += direction.normalized * speed * Time.fixedDeltaTime;
+            await Task.Yield();
+        }
+        isMovingToPoint = false;
+    }
+
+    async void MoveToOrigin(){
         float percent = 0;
         Vector3 startPosition = headAimObject.transform.position;
-        
-        while (percent < 1){
+        isMovingToOrigin = true;
+        while (percent < 1 && (!isLooking || !rightAngle)){
             percent += Time.fixedDeltaTime * speed;
-            headAimObject.transform.position = Vector3.Lerp(startPosition, targetObj.transform.position, percent);
+            headAimObject.transform.position = Vector3.Lerp(startPosition, baseLookPosition.transform.position, percent);
             await Task.Yield();
         }
+        isMovingToOrigin = false;
+    }
 
-        //MoveWhileClosestObjectExist(headAimObject);
-    }
-/*
-    async void MoveWhileClosestObjectExist(GameObject objToMove){
-        while (interestManager.ClosestObject){
-            objToMove.transform.position = interestManager.ClosestObject.transform.position;
-            await Task.Yield();
-        }
-    }
-*/
     void OnEnable() {
-        interestManager.OnClosestObjectActive += OnClosestObjectBehavior;
+        interestManager.OnClosestObject += OnClosestObjectBehavior;
     }
 
     void OnDisable() {
-        interestManager.OnClosestObjectActive -= OnClosestObjectBehavior;
+        interestManager.OnClosestObject -= OnClosestObjectBehavior;
     }
  
 }

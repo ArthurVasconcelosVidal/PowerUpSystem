@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour{
     [SerializeField] GameObject meshObject;
     [SerializeField] GravityManager gravityManager;
     [SerializeField] AttackManager attackManager;
+    [SerializeField] InterestManager interestManager;
     [SerializeField] List<IPressReleaseAction> poewers = new List<IPressReleaseAction>();
 
     public InputActionManager InputActionManager { get => inputActionManager; }
@@ -21,6 +22,7 @@ public class PlayerManager : MonoBehaviour{
     public GameObject MeshObject { get => meshObject; }
     public AnimationManager AnimationManager { get => animationManager; }
     public AttackManager AttackManager { get => attackManager; }
+    public InterestManager InterestManager { get => interestManager; }
     private void Awake() {
         if (instance == null) instance = this;
         else Destroy(this);

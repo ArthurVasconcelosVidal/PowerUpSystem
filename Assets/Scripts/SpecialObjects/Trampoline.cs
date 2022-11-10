@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Trampoline : MonoBehaviour{
+
+    Rigidbody PlayerRb { get => PlayerManager.instance.CharacterRigidbody; }
+    GravityManager PlayerGravityManager { get => PlayerManager.instance.GravityManager; }
+    AnimationManager PlayerAnimationManager { get => PlayerManager.instance.AnimationManager; }
     [SerializeField] string playerTag;
     [SerializeField] JumpFeature jumpFeature;
 
@@ -15,25 +19,22 @@ public class Trampoline : MonoBehaviour{
     }
 
     void TrampolineJump(GameObject target){
-        Rigidbody rigidbody = target.GetComponent<Rigidbody>();
-        GravityManager gravityManager = target.GetComponent<GravityManager>();
-        gravityManager.IsUsingSpecialGravity = true;
-        rigidbody.velocity = Vector3.zero;
-        gravityManager.GravityForce = -jumpFeature.JumpGravity;
-        rigidbody.AddForce(jumpFeature.IniJumpVelocity * transform.up, ForceMode.VelocityChange);
+        PlayerGravityManager.IsUsingSpecialGravity = true;
+        PlayerRb.velocity = Vector3.zero;
+        PlayerGravityManager.GravityForce = -jumpFeature.JumpGravity;
+        PlayerRb.AddForce(jumpFeature.IniJumpVelocity * transform.up, ForceMode.VelocityChange);
     }
     
     void CallJumpAnimation(GameObject target){
-        AnimationManager animationManager;
-        if(target.TryGetComponent<AnimationManager>(out animationManager)){
-            animationManager.PlayAnimation(Animations.TrampolineJump, 0);
+        if(PlayerAnimationManager){
+            PlayerAnimationManager.PlayAnimation(Animations.TrampolineJump, 0);
         }
     }
 
     void ResetDoubleJump(GameObject target){
-        DoubleJump playerJumpBehaviour;
-        if(target.TryGetComponent<DoubleJump>(out playerJumpBehaviour)){
-            playerJumpBehaviour.CanDoubleJump = true;
+        DoubleJump playerJumpBehavior = target.GetComponentInChildren<DoubleJump>();
+        if(playerJumpBehavior){
+            playerJumpBehavior.CanDoubleJump = true;
         }
     }
 }

@@ -5,58 +5,46 @@ using System.Threading.Tasks;
 using UnityEngine.InputSystem;
 
 public class SpaceImpulse : MonoBehaviour{
+
+    PlayerManager PlayerManager { get => PlayerManager.instance; }
+
     [SerializeField] GameObject target;
     [SerializeField] string playerTag;
     [SerializeField] float speedToTarget;
     [SerializeField] float speedToCenter;
     [SerializeField] float rotationSpeed;
     [SerializeField] float timeToEnableCollider;
-    [SerializeField] bool applyForceAtEnd;
     [SerializeField] float forceAtEnd;
-    [SerializeField] GameObject player;
-    [SerializeField] GameObject meshObject;
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag(playerTag)){
-            GetComponent<SphereCollider>().enabled = false;
+            EnableSphereCollider(false);
             EnableComponents(false);
             StartCoroutine(MoveTo(transform.position, speedToCenter));
             EnableButtonBehaviour(true);
-            var animator = player.GetComponent<Animator>();
             RotateTo();
             ToFlyAnimation();
         }
     }
 
-    void EnableComponents(bool enable){
-        player.GetComponent<GravityManager>().enabled = enable;
-        player.GetComponent<MovementManager>().enabled = enable;
-        player.GetComponent<Rigidbody>().isKinematic = !enable;
-    }
-
     void QuitSpace(){
         EnableComponents(true);
         EnableButtonBehaviour(false);
-        EnableSphereCollider();
+        EnableSphereCollider(true);
         StopAllCoroutines();
         ToRollAnimation();
-    }
-    
-    async void EnableSphereCollider(){
-        await Task.Delay((int)(timeToEnableCollider*1000));
-        GetComponent<SphereCollider>().enabled = true;
     }
 
     void LaunchPlayer(){
         StopAllCoroutines();
-        StartCoroutine(MoveTo(target.transform.position, speedToTarget, true, applyForceAtEnd));
+        StartCoroutine(MoveTo(target.transform.position, speedToTarget, true));
         EnableButtonBehaviour(false);
     }
 
     IEnumerator MoveTo(Vector3 position, float speed, bool activeComponetsAtEnd = false, bool applyForceAtEnd = false){
         float actualTime = 0;
-        var playerRb = player.GetComponent<Rigidbody>();
-        Vector3 iniPoint = player.transform.position;
+        Vector3 iniPoint = PlayerManager.transform.position;
+        Rigidbody playerRb = PlayerManager.CharacterRigidbody;
         while (actualTime < 1){
             playerRb.MovePosition(Vector3.Lerp(iniPoint, position, actualTime));
             actualTime += speed * Time.deltaTime;
@@ -65,13 +53,13 @@ public class SpaceImpulse : MonoBehaviour{
 
         playerRb.velocity = Vector3.zero;
         
-        if(activeComponetsAtEnd) ActiveComponents();
-        if(applyForceAtEnd) ApplyForce(playerRb);
+        if(activeComponetsAtEnd) ActiveComponents(); 
+        ApplyForce(playerRb);
     }
     
     async void RotateTo(){
         float actualTime = 0;
-        var playerRb = player.GetComponent<Rigidbody>();
+        GameObject meshObject = PlayerManager.MeshObject;
         Quaternion iniRotation = meshObject.transform.rotation;
         Vector3 direction = (target.transform.position - transform.position).normalized;
         Quaternion rotateToDirection = Quaternion.LookRotation(direction, meshObject.transform.up);
@@ -84,26 +72,20 @@ public class SpaceImpulse : MonoBehaviour{
 
     void ActiveComponents(){
         EnableComponents(true);
-        EnableSphereCollider();
+        EnableSphereCollider(true);
         ToRollAnimation();
     }
 
     void ApplyForce(Rigidbody playerRb){
-        Vector3 direction = (target.transform.position - transform.position).normalized;
-        playerRb.AddForce(direction * forceAtEnd, ForceMode.Impulse);
-    }
-
-    void ToFlyAnimation(){
-        var animationManager = player.GetComponent<AnimationManager>();
-        animationManager.PlayAnimation(Animations.FlyPose, 0.3f);
-    }
-    void ToRollAnimation() {
-        var animationManager = player.GetComponent<AnimationManager>();
-        animationManager.ForceAnimationPlay(Animations.DoubleJumpFlip);
+        if(forceAtEnd > 0){
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            playerRb.AddForce(direction * forceAtEnd, ForceMode.Impulse);
+        }
+        
     }
 
     void EnableButtonBehaviour(bool enable){
-        var playerInput = player.GetComponent<InputActionManager>();
+        var playerInput = PlayerManager.InputActionManager;
         if(enable){
             playerInput.OnEastPrimaryButtonPerformed += OnButtonPressed;
             playerInput.OnSouthPrimaryButtonPerformed += OnButtonReleased;
@@ -113,7 +95,22 @@ public class SpaceImpulse : MonoBehaviour{
         }
     }
 
-    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => QuitSpace();
+    void EnableComponents(bool enable){
+        PlayerManager.GravityManager.enabled = enable;
+        PlayerManager.CanUseMovement = enable;
+        PlayerManager.CharacterRigidbody.isKinematic = !enable;
+        PlayerManager.CanUseLookToTarget = enable;
+        PlayerManager.CanUseActions = enable;
+    }
 
+    async void EnableSphereCollider(bool enable){
+        await Task.Delay((int)(timeToEnableCollider*1000));
+        GetComponent<SphereCollider>().enabled = enable;
+    }
+
+    void ToFlyAnimation() => PlayerManager.AnimationManager.PlayAnimation(Animations.FlyPose, 0.3f);
+    void ToRollAnimation() => PlayerManager.AnimationManager.ForceAnimationPlay(Animations.DoubleJumpFlip);
+    
+    public void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => QuitSpace();
     public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => LaunchPlayer();
 }

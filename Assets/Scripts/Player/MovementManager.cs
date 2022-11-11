@@ -8,6 +8,7 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     Vector3 direction = Vector3.zero;
     [SerializeField] AnimationManager PlayerAnimator { get => PlayerManager.instance.AnimationManager; }
     [SerializeField] InputActionManager InputActionManager { get => PlayerManager.instance.InputActionManager; }
+    bool CanMove { get => PlayerManager.instance.CanUseMovement; }
     [SerializeField] GameObject meshObject;
     [SerializeField] Rigidbody rigidbody;
     [SerializeField] float movementSpeed;
@@ -21,12 +22,14 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     public Vector3 RealPlayerDirection { get { return direction; } }
 
     void FixedUpdate(){
-        direction = ObjectRelatedDirection(InputActionManager.LeftStickValue.normalized, Camera.main.gameObject);
-        if (direction != Vector3.zero){  
-            MovePlayer();
-            RotatePlayer();
-        } 
-        WalkAnimation(isRunning);
+        if(CanMove){
+            direction = ObjectRelatedDirection(InputActionManager.LeftStickValue.normalized, Camera.main.gameObject);
+            if (direction != Vector3.zero){  
+                MovePlayer();
+                RotatePlayer();
+            } 
+            WalkAnimation(isRunning);
+        }
     }
 
     Vector3 ObjectRelatedDirection(Vector2 inputDirection, GameObject relatedObject){

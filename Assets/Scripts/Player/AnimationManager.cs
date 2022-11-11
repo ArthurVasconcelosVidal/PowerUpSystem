@@ -35,9 +35,17 @@ public class AnimationManager : MonoBehaviour{
         || actualAnim == Animations.Walking.ToString()
         || actualAnim == Animations.Running.ToString()
         || actualAnim == Animations.PanicRunning.ToString()
-        || actualAnim == Animations.FallingIdle.ToString())
+        || actualAnim == Animations.FallingIdle.ToString()
+        || actualAnim == "null")
             actualAnimPriority = 0;
     }
 
-    string ActualAnimName() => playerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+    string ActualAnimName(){
+        string name;
+        if (playerAnimator.GetCurrentAnimatorClipInfo(0).Length > 0)
+            name = playerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        else 
+            name = "null"; //In Test
+        return name;
+    }
 }

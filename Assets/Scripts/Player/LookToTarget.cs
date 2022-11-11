@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using System.Threading.Tasks;
 public class LookToTarget : MonoBehaviour{
+    PlayerManager PlayerManager { get => PlayerManager.instance; }
     InterestManager InterestManager { get => PlayerManager.instance.InterestManager; }
     GameObject MeshObject { get => PlayerManager.instance.MeshObject; }
     [SerializeField] GameObject headAimObject;
@@ -27,7 +28,7 @@ public class LookToTarget : MonoBehaviour{
         bool inOriginPoint = true;
 
         do {
-            if(InterestManager.ClosestObject){
+            if(InterestManager.ClosestObject && PlayerManager.CanUseLookToTarget){
                 isLooking = true;
                 rightAngle = LookInRightAngle();
                 inOriginPoint = headAimObject.transform.position == baseLookPosition.transform.position; 

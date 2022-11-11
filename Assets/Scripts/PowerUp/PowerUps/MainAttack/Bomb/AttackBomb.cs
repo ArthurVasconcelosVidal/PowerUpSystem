@@ -15,7 +15,7 @@ public class AttackBomb : MainAttack{
     [SerializeField] float timeToReload;
     bool canShootBomb = true;
     
-    public override void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => ShootBomb();
+    public override void OnButtonPressed(InputAction.CallbackContext buttonContext) => ShootBomb();
 
     void ShootBomb(){
         if(canShootBomb){

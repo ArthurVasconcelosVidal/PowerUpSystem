@@ -37,5 +37,5 @@ public class SpinAttack : MainAttack{
         if(status) AnimationManager.PlayAnimation(Animations.SpinPose);
     }
 
-    public override void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => Spin();
+    public override void OnButtonPressed(InputAction.CallbackContext buttonContext) => Spin();
 }

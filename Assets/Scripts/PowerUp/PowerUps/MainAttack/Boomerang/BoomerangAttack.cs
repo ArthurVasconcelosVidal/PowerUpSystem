@@ -11,7 +11,7 @@ public class BoomerangAttack : MainAttack{
     GameObject MeshObject { get => PlayerManager.instance.MeshObject; }
     bool canShootBoomerang = true;
 
-    public override void OnButtonPressed(object sender, InputAction.CallbackContext buttonContext) => ShootBoomerang();
+    public override void OnButtonPressed(InputAction.CallbackContext buttonContext) => ShootBoomerang();
     void ShootBoomerang(){
         if(canShootBoomerang){
             canShootBoomerang = false;

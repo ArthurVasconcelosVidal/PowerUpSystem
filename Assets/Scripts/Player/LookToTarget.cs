@@ -5,45 +5,50 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using System.Threading.Tasks;
 public class LookToTarget : MonoBehaviour{
-    [SerializeField] InterestManager interestManager;
-    [SerializeField] GameObject MeshObject {get => PlayerManager.instance.MeshObject;}
+    PlayerManager PlayerManager { get => PlayerManager.instance; }
+    InterestManager InterestManager { get => PlayerManager.instance.InterestManager; }
+    GameObject MeshObject { get => PlayerManager.instance.MeshObject; }
     [SerializeField] GameObject headAimObject;
     [SerializeField] GameObject baseLookPosition;
-    bool rightAngle;
-    [SerializeField] bool isLooking = false;
-    [SerializeField] bool isMovingToPoint = false;
-    [SerializeField] bool isMovingToOrigin = false;
     [SerializeField] float speed;
+    [SerializeField][Range(-1,1)] float lookAngleThreshHold = 0; 
+    bool rightAngle;
+    bool isLooking = false;
+    bool isMovingToPoint = false;
+    bool isMovingToOrigin = false;
     
     void OnClosestObjectBehavior(object sender, EventArgs args) => StartLookAt();
 
     void StartLookAt(){
-        if(!isLooking){
-            isLooking = true;
-            SetIsLooking();
-            MoveToPoint();
-        }
+        if(!isLooking)
+            LookingUpdate();
     }
 
-    async void SetIsLooking(){
-        const float SECONDS = 0.5f;
-        await Task.Delay((int)(SECONDS * 1000));
-        if(interestManager.ClosestObject) isLooking = true;
-        else isLooking = false; 
+    async void LookingUpdate(){
+        bool inOriginPoint = true;
+
+        do {
+            if(InterestManager.ClosestObject && PlayerManager.CanUseLookToTarget){
+                isLooking = true;
+                rightAngle = LookInRightAngle();
+                inOriginPoint = headAimObject.transform.position == baseLookPosition.transform.position; 
+                if(!isMovingToPoint && rightAngle) MoveToPoint();
+                else if(!isMovingToPoint && !rightAngle && !inOriginPoint) MoveToOrigin();  
+            }
+            else 
+                isLooking = false;
+
+            await Task.Yield();
+        } while(isLooking);
         
-        if(isLooking) {
-            rightAngle = LookInRightAngle();
-            SetIsLooking();
-            if(!isMovingToPoint && rightAngle) MoveToPoint();
-        }else if(headAimObject.transform.position != baseLookPosition.transform.position && !isMovingToOrigin){
+        if(!inOriginPoint && !isMovingToOrigin)
             MoveToOrigin();
-        }
     }
 
     bool LookInRightAngle(){
-        var direction = interestManager.ClosestObject.transform.position - MeshObject.transform.position;
+        var direction = InterestManager.ClosestObject.transform.position - MeshObject.transform.position;
         float angle = Vector3.Dot(direction.normalized, MeshObject.transform.forward);
-        if (angle > 0)
+        if (angle > lookAngleThreshHold)
             return true;
         else
             return false;
@@ -51,8 +56,8 @@ public class LookToTarget : MonoBehaviour{
 
     async void MoveToPoint(){
         isMovingToPoint = true;
-        while (interestManager.ClosestObject && isLooking && rightAngle){
-            var direction = interestManager.ClosestObject.transform.position - headAimObject.transform.position;
+        while (InterestManager.ClosestObject && isLooking && rightAngle){
+            var direction = InterestManager.ClosestObject.transform.position - headAimObject.transform.position;
             if(direction.sqrMagnitude > 0.05) headAimObject.transform.position += direction.normalized * speed * Time.fixedDeltaTime;
             await Task.Yield();
         }
@@ -72,11 +77,11 @@ public class LookToTarget : MonoBehaviour{
     }
 
     void OnEnable() {
-        interestManager.OnClosestObject += OnClosestObjectBehavior;
+        InterestManager.OnClosestObject += OnClosestObjectBehavior;
     }
 
     void OnDisable() {
-        interestManager.OnClosestObject -= OnClosestObjectBehavior;
+        InterestManager.OnClosestObject -= OnClosestObjectBehavior;
     }
  
 }

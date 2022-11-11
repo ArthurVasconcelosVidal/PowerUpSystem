@@ -6,8 +6,9 @@ using UnityEngine.InputSystem;
 public class MovementManager : MonoBehaviour, IPressReleaseAction{
         
     Vector3 direction = Vector3.zero;
-    [SerializeField] Animator playerAnimator;
-    [SerializeField] InputActionManager inputActionManager;
+    [SerializeField] AnimationManager PlayerAnimator { get => PlayerManager.instance.AnimationManager; }
+    [SerializeField] InputActionManager InputActionManager { get => PlayerManager.instance.InputActionManager; }
+    bool CanMove { get => PlayerManager.instance.CanUseMovement; }
     [SerializeField] GameObject meshObject;
     [SerializeField] Rigidbody rigidbody;
     [SerializeField] float movementSpeed;
@@ -21,12 +22,14 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     public Vector3 RealPlayerDirection { get { return direction; } }
 
     void FixedUpdate(){
-        direction = ObjectRelatedDirection(inputActionManager.LeftStickValue.normalized, Camera.main.gameObject);
-        if (direction != Vector3.zero){  
-            MovePlayer();
-            RotatePlayer();
-        } 
-        WalkAnimation(isRunning);
+        if(CanMove){
+            direction = ObjectRelatedDirection(InputActionManager.LeftStickValue.normalized, Camera.main.gameObject);
+            if (direction != Vector3.zero){  
+                MovePlayer();
+                RotatePlayer();
+            } 
+            WalkAnimation(isRunning);
+        }
     }
 
     Vector3 ObjectRelatedDirection(Vector2 inputDirection, GameObject relatedObject){
@@ -39,11 +42,11 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     void MovePlayer(){
         if(!isRunning)
             speed = movementSpeed;
-        else if(speed < runningSpeed && inputActionManager.LeftStickValue.sqrMagnitude > INPUT_THRESHOLD)
+        else if(speed < runningSpeed && InputActionManager.LeftStickValue.sqrMagnitude > INPUT_THRESHOLD)
             speed += increasingSpeedFactor * Time.fixedDeltaTime;
 
         speed = Mathf.Clamp(speed, 0, runningSpeed);
-        rigidbody.MovePosition(transform.position + direction * inputActionManager.LeftStickValue.sqrMagnitude * speed * Time.fixedDeltaTime);
+        rigidbody.MovePosition(transform.position + direction * InputActionManager.LeftStickValue.sqrMagnitude * speed * Time.fixedDeltaTime);
     }
 
     void RotatePlayer(){
@@ -53,18 +56,18 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
 
     public void WalkAnimation(bool isRunning){
         const float RUNNING_ANIM_VALUE = 2;
-        if(!isRunning && animValue > inputActionManager.LeftStickValue.sqrMagnitude){
+        if(!isRunning && animValue > InputActionManager.LeftStickValue.sqrMagnitude){
             animValue -= increasingSpeedFactor * Time.fixedDeltaTime;
-            animValue = Mathf.Clamp(animValue, inputActionManager.LeftStickValue.sqrMagnitude, RUNNING_ANIM_VALUE);
+            animValue = Mathf.Clamp(animValue, InputActionManager.LeftStickValue.sqrMagnitude, RUNNING_ANIM_VALUE);
         }
-        else if(!isRunning || inputActionManager.LeftStickValue.sqrMagnitude == 0){
-            animValue = inputActionManager.LeftStickValue.sqrMagnitude;
+        else if(!isRunning || InputActionManager.LeftStickValue.sqrMagnitude == 0){
+            animValue = InputActionManager.LeftStickValue.sqrMagnitude;
         }
-        else if(inputActionManager.LeftStickValue.sqrMagnitude > INPUT_THRESHOLD){
+        else if(InputActionManager.LeftStickValue.sqrMagnitude > INPUT_THRESHOLD){
             animValue += increasingSpeedFactor * Time.fixedDeltaTime;
             animValue = Mathf.Clamp(animValue, INPUT_THRESHOLD, RUNNING_ANIM_VALUE);
         }
-		playerAnimator.SetFloat("MovVelocity", animValue);
+		PlayerAnimator.Animator.SetFloat("MovVelocity", animValue);
 	}
 
     //Debug
@@ -78,13 +81,13 @@ public class MovementManager : MonoBehaviour, IPressReleaseAction{
     public void OnButtonReleased(object sender, InputAction.CallbackContext buttonContext) => isRunning = false;
 
     void OnEnable() {
-        inputActionManager.OnWestButtonPerformed += OnButtonPressed;
-        inputActionManager.OnWestButtonCanceled += OnButtonReleased;
+        InputActionManager.OnWestButtonPerformed += OnButtonPressed;
+        InputActionManager.OnWestButtonCanceled += OnButtonReleased;
     }
 
     void OnDisable() {
-        inputActionManager.OnWestButtonPerformed -= OnButtonPressed;
-        inputActionManager.OnWestButtonCanceled -= OnButtonReleased;
+        InputActionManager.OnWestButtonPerformed -= OnButtonPressed;
+        InputActionManager.OnWestButtonCanceled -= OnButtonReleased;
         isRunning = false;
     }
 }

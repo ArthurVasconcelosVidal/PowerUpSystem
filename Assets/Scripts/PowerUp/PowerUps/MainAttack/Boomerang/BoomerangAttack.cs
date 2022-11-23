@@ -7,8 +7,10 @@ using UnityEngine.InputSystem;
 public class BoomerangAttack : MainAttack{
     [SerializeField] GameObject boomerangPrefab;
     [SerializeField] GameObject spawnPoint;
+    [SerializeField] GameObject basicTargetObject;
     [SerializeField] float timeToReload;
     GameObject MeshObject { get => PlayerManager.instance.MeshObject; }
+    InterestManager InterestManager { get => PlayerManager.instance.InterestManager; }
     bool canShootBoomerang = true;
 
     public override void OnButtonPressed(InputAction.CallbackContext buttonContext) => ShootBoomerang();
@@ -32,13 +34,16 @@ public class BoomerangAttack : MainAttack{
     }
 
     void StartBoomerang(GameObject boomerang){
-            BoomerangProjectile boomerangProj = boomerang.GetComponent<BoomerangProjectile>();
-            Vector3 targetPoint = GetTarget();
-            boomerangProj.StartBoo(transform.gameObject, targetPoint);
+        BoomerangProjectile boomerangProj = boomerang.GetComponent<BoomerangProjectile>();
+        Transform targetPoint = GetTarget();
+        boomerangProj.StartBoo(transform, targetPoint);
     }
 
-    Vector3 GetTarget(){
-        //Implement the get target function with the Interest System mechanic
-        return transform.position + (MeshObject.transform.forward * 5);
+    Transform GetTarget(){
+        if (InterestManager.ClosestObject)
+            return InterestManager.ClosestObject.transform;
+        else
+            return basicTargetObject.transform;
     }
+
 }

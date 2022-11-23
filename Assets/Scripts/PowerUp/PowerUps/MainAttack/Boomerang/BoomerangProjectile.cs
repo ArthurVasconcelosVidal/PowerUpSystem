@@ -8,35 +8,30 @@ public class BoomerangProjectile : MonoBehaviour{
     [SerializeField] Rigidbody boomerangRB;
     [SerializeField] float speed;
     [SerializeField] GameObject meshObject;
-    GameObject returnObj;
-    Vector3 targetPnt;
 
-    public void StartBoo(GameObject returnObj, Vector3 targetPnt){
-        this.returnObj = returnObj;
-        this.targetPnt = targetPnt;
-        BoomerangBehavior(returnObj.transform.position, targetPnt);
+    public void StartBoo(Transform returnObj, Transform endTarget){
+        BoomerangBehavior(returnObj, endTarget);
     }
 
-    async void BoomerangBehavior(Vector3 startPoint, Vector3 endPoint, bool canBooReturn = true){
+    async void BoomerangBehavior(Transform startTarget, Transform endTarget, bool canBooReturn = true){
         const float MAX_DISTANCE = 1;
         const float BEZIER_TIME_OFFSET = 0.1f;
         const float MID_POINT_OFFSET = 7;
         float actualPos = 0;
         
         while (actualPos < MAX_DISTANCE){
-            if(!canBooReturn) endPoint = returnObj.transform.position;
-            actualPos = InverseV3Lerp(startPoint, endPoint, transform.position);
+            actualPos = InverseV3Lerp(startTarget.position, endTarget.position, transform.position);
             float nextStep = Mathf.Clamp01(actualPos + BEZIER_TIME_OFFSET);
-            Vector3 midPoint = CalculateMidPoint(startPoint, endPoint, MID_POINT_OFFSET);
-            Vector3 nextPos = PositionAtQuadraticBezierCurve(startPoint, midPoint, endPoint,nextStep);
-            Vector3 direction = (nextPos - transform.position ).normalized;
+            Vector3 midPoint = CalculateMidPoint(startTarget.position, endTarget.position, MID_POINT_OFFSET);
+            Vector3 nextPos = PositionAtQuadraticBezierCurve(startTarget.position, midPoint, endTarget.position, nextStep);
+            Vector3 direction = (nextPos - transform.position).normalized;
             boomerangRB.MovePosition(transform.position + direction * speed * Time.fixedDeltaTime);
             RotateBoo();
             await Task.Yield();
         }
 
         if(canBooReturn){
-            BoomerangBehavior(endPoint, returnObj.transform.position, false);
+            BoomerangBehavior(endTarget, startTarget, false);
         }else{
             DestroyItself();
         }
